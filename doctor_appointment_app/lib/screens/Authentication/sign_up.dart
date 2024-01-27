@@ -1,10 +1,12 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/screens/Authentication/sign_in.dart';
+import 'package:doctor_appointment_app/screens/ready_for_home.dart';
 
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -20,7 +22,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _confirmPasswrordController =
       TextEditingController();
 
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool isLoading = false;
 
   @override
@@ -200,66 +203,96 @@ class _SignUpState extends State<SignUp> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12))),
                           onPressed: () async {
-                            // try {
-                            //   setState(() {
-                            //     isLoading = true;
-                            //   });
+                            try {
+                              setState(() {
+                                isLoading = true;
+                              });
 
-                            //   if (_passwordController.text ==
-                            //       _confirmPasswrordController.text) {
-                            //     await _auth.createUserWithEmailAndPassword(
-                            //         email: _emailController.text,
-                            //         password: _passwordController.text);
+                              if (_passwordController.text ==
+                                  _confirmPasswrordController.text) {
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text);
 
-                            //     FirebaseFirestore firebaseFirestore =
-                            //         FirebaseFirestore.instance;
+                                FirebaseFirestore firebaseFirestore =
+                                    FirebaseFirestore.instance;
 
-                            //     UserModel userModel = UserModel();
-                            //     User? user = _auth.currentUser;
+                                UserModel userModel = UserModel();
+                                User? user = _auth.currentUser;
 
-                            //     userModel.uid = user!.uid;
-                            //     userModel.name = _nameController.text;
-                            //     userModel.email =
-                            //         _emailController.text.trim().toLowerCase();
-                            //     userModel.password = _passwordController.text;
-                            //     userModel.role = "user";
+                                userModel.uid = user!.uid;
+                                userModel.name = _nameController.text;
+                                userModel.email =
+                                    _emailController.text.trim().toLowerCase();
+                                // userModel.password = _passwordController.text;
+                                userModel.role = "user";
 
-                            //     await firebaseFirestore
-                            //         .collection("users")
-                            //         .doc(user.uid)
-                            //         .set(userModel.toMap())
-                            //         .then((value) => {
-                            //               setState(() {
-                            //                 isLoading = false;
-                            //               }),
-                            //               Navigator.push(
-                            //                   context,
-                            //                   MaterialPageRoute(
-                            //                       builder: (context) =>
-                            //                           SignIn()))
-                            //             });
-                            //   }
-                            // } catch (e) {
-                            //   print(e);
+                                await firebaseFirestore
+                                    .collection("Users")
+                                    .doc(user.uid)
+                                    .set(userModel.toMap())
+                                    .then((value) => {
+                                          setState(() {
+                                            isLoading = false;
+                                          }),
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ReadyForHome()))
+                                        });
+                              } else {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                print("else part");
+                                return;
+                              }
+                            } catch (e) {
+                              print(e);
+                              print("catch part");
 
-                            //   setState(() {
-                            //     isLoading = false;
-                            //   });
-                            //   return;
-                            // }
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignIn()));
+                              setState(() {
+                                isLoading = false;
+                              });
+                              return;
+                            }
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => SignIn()));
                           },
-                          child: const Text(
-                            "Sign Up",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          )),
+                          child: isLoading == false
+                              ? Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignIn()));
+                        },
+                        child: Text("Have account? Sign in")),
                     const SizedBox(
                       height: 40,
                     ),

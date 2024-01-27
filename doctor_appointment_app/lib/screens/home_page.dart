@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/Models/backend.dart';
+import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/Widgets/hospital_card.dart';
 import 'package:doctor_appointment_app/Widgets/specialist_card.dart';
 import 'package:doctor_appointment_app/screens/favorite.dart';
 import 'package:doctor_appointment_app/screens/onboarding/onboarding.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -14,6 +18,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  final _auth = FirebaseAuth.instance;
+  getfun() async {
+    UserModel? currentUser = await getCurrentUser();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getfun();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
@@ -36,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(" Location"),
+                        Text("London"),
                         Row(
                           children: [
                             Icon(

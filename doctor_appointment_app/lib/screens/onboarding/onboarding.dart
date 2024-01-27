@@ -1,3 +1,4 @@
+import 'package:doctor_appointment_app/screens/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/screens/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/screens/ready_for_home.dart';
 import 'package:flutter/material.dart';
@@ -58,13 +59,13 @@ class _OnBoarding1State extends State<OnBoarding1> {
                           height: 20,
                         ),
                         Container(
-                            width: width * 0.75,
+                            width: width * 0.85,
                             height: height * 0.45,
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: const Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage("images/onboarding1.png")),
+                                  // fit: BoxFit.,
+                                  image: AssetImage("images/4.png")),
                             )),
                         const SizedBox(
                           height: 20,
@@ -119,13 +120,13 @@ class _OnBoarding1State extends State<OnBoarding1> {
                           height: 20,
                         ),
                         Container(
-                            width: width * 0.75,
+                            width: width * 0.85,
                             height: height * 0.45,
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: const Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage("images/onboarding2.png")),
+                                  // fit: BoxFit.cover,
+                                  image: AssetImage("images/1.png")),
                             )),
                         const SizedBox(
                           height: 20,
@@ -177,13 +178,13 @@ class _OnBoarding1State extends State<OnBoarding1> {
                           height: 20,
                         ),
                         Container(
-                            width: width * 0.75,
+                            width: width * 0.85,
                             height: height * 0.45,
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: const Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage("images/onboarding3.png")),
+                                  // fit: BoxFit.cover,
+                                  image: AssetImage("images/2.png")),
                             )),
                         const SizedBox(
                           height: 20,

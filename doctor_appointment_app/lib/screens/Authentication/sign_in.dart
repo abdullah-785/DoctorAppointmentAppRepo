@@ -1,5 +1,8 @@
+import 'package:doctor_appointment_app/screens/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/screens/ready_for_home.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -9,6 +12,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final _auth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
@@ -45,6 +51,7 @@ class _SignInState extends State<SignIn> {
               height: 4,
             ),
             TextFormField(
+              controller: _emailController,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.email_outlined),
                 hintText: "example@gamil.com",
@@ -71,6 +78,7 @@ class _SignInState extends State<SignIn> {
               height: 4,
             ),
             TextFormField(
+              controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.lock_outline),
@@ -109,11 +117,18 @@ class _SignInState extends State<SignIn> {
                       backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ReadyForHome()));
+                  onPressed: () async {
+                    try {
+                      await _auth.signInWithEmailAndPassword(
+                          email: _emailController.text,
+                          password: _passwordController.text);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReadyForHome()));
+                    } catch (e) {
+                      print(e);
+                    }
                   },
                   child: const Text(
                     "Sign In",
@@ -123,6 +138,15 @@ class _SignInState extends State<SignIn> {
                         color: Colors.white),
                   )),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUp()));
+                },
+                child: Text("Have not account? Sign up")),
             const SizedBox(
               height: 35,
             ),
