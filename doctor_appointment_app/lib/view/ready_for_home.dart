@@ -1,8 +1,8 @@
-import 'package:doctor_appointment_app/Widgets/navbar.dart';
-import 'package:doctor_appointment_app/screens/Booking.dart';
-import 'package:doctor_appointment_app/screens/favorite.dart';
-import 'package:doctor_appointment_app/screens/home_page.dart';
-import 'package:doctor_appointment_app/screens/profile.dart';
+import 'package:doctor_appointment_app/resources/components/navbar.dart';
+import 'package:doctor_appointment_app/view/Booking.dart';
+import 'package:doctor_appointment_app/view/favorite.dart';
+import 'package:doctor_appointment_app/view/home_page.dart';
+import 'package:doctor_appointment_app/view/profile.dart';
 import 'package:flutter/material.dart';
 
 class ReadyForHome extends StatefulWidget {

@@ -1,8 +1,8 @@
-import 'package:doctor_appointment_app/Widgets/doctor_detail_card.dart';
-import 'package:doctor_appointment_app/Widgets/review_widget.dart';
-import 'package:doctor_appointment_app/Widgets/working_hours_widget.dart';
-import 'package:doctor_appointment_app/screens/book_appointment.dart';
-import 'package:doctor_appointment_app/screens/doctor_reviews.dart';
+import 'package:doctor_appointment_app/resources/components/doctor_detail_card.dart';
+import 'package:doctor_appointment_app/resources/components/review_widget.dart';
+import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
+import 'package:doctor_appointment_app/view/book_appointment.dart';
+import 'package:doctor_appointment_app/view/doctor_reviews.dart';
 import 'package:flutter/material.dart';
 
 class DoctorDetails extends StatefulWidget {

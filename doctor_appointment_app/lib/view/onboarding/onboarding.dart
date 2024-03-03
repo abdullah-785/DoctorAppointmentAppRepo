@@ -1,6 +1,6 @@
-import 'package:doctor_appointment_app/screens/Authentication/sign_in.dart';
-import 'package:doctor_appointment_app/screens/Authentication/sign_up.dart';
-import 'package:doctor_appointment_app/screens/ready_for_home.dart';
+
+import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
+import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:flutter/material.dart';
 
 class OnBoarding1 extends StatefulWidget {

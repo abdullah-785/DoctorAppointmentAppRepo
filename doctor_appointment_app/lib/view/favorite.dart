@@ -1,5 +1,5 @@
-import 'package:doctor_appointment_app/Widgets/hospital_card.dart';
-import 'package:doctor_appointment_app/Widgets/specialist_card.dart';
+import 'package:doctor_appointment_app/resources/components/hospital_card.dart';
+import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteScreen extends StatefulWidget {

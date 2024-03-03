@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/backend.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
-import 'package:doctor_appointment_app/Widgets/hospital_card.dart';
-import 'package:doctor_appointment_app/Widgets/specialist_card.dart';
-import 'package:doctor_appointment_app/screens/favorite.dart';
-import 'package:doctor_appointment_app/screens/onboarding/onboarding.dart';
+import 'package:doctor_appointment_app/resources/components/hospital_card.dart';
+import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
+import 'package:doctor_appointment_app/view/favorite.dart';
+import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

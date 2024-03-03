@@ -1,12 +1,15 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
-import 'package:doctor_appointment_app/screens/Authentication/sign_in.dart';
-import 'package:doctor_appointment_app/screens/ready_for_home.dart';
+import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
+import 'package:doctor_appointment_app/view/ready_for_home.dart';
+import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -22,14 +25,15 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _confirmPasswrordController =
       TextEditingController();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  bool isLoading = false;
+  // bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).width * 1;
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -203,70 +207,70 @@ class _SignUpState extends State<SignUp> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12))),
                           onPressed: () async {
-                            try {
-                              setState(() {
-                                isLoading = true;
-                              });
+                            authViewModel.signUp(_emailController.text, _passwordController.text, _confirmPasswrordController.text, _nameController.text, context );
 
-                              if (_passwordController.text ==
-                                  _confirmPasswrordController.text) {
-                                await _auth.createUserWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text);
+                            // try {
+                            //   setState(() {
+                            //     isLoading = true;
+                            //   });
 
-                                FirebaseFirestore firebaseFirestore =
-                                    FirebaseFirestore.instance;
+                            //   if (_passwordController.text ==
+                            //       _confirmPasswrordController.text) {
+                            //     await _auth.createUserWithEmailAndPassword(
+                            //         email: _emailController.text,
+                            //         password: _passwordController.text);
 
-                                UserModel userModel = UserModel();
-                                User? user = _auth.currentUser;
+                            //     FirebaseFirestore firebaseFirestore =
+                            //         FirebaseFirestore.instance;
 
-                                userModel.uid = user!.uid;
-                                userModel.name = _nameController.text;
-                                userModel.email =
-                                    _emailController.text.trim().toLowerCase();
-                                // userModel.password = _passwordController.text;
-                                userModel.role = "user";
+                            //     UserModel userModel = UserModel();
+                            //     User? user = _auth.currentUser;
 
-                                await firebaseFirestore
-                                    .collection("Users")
-                                    .doc(user.uid)
-                                    .set(userModel.toMap())
-                                    .then((value) => {
-                                          setState(() {
-                                            isLoading = false;
-                                          }),
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ReadyForHome()))
-                                        });
-                              } else {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                print("else part");
-                                return;
-                              }
-                            } catch (e) {
-                              print(e);
-                              print("catch part");
+                            //     userModel.uid = user!.uid;
+                            //     userModel.name = _nameController.text;
+                            //     userModel.email =
+                            //         _emailController.text.trim().toLowerCase();
+                            //     // userModel.password = _passwordController.text;
+                            //     userModel.role = "user";
 
-                              setState(() {
-                                isLoading = false;
-                              });
-                              return;
-                            }
-                            setState(() {
-                              isLoading = false;
-                            });
+                            //     await firebaseFirestore
+                            //         .collection("Users")
+                            //         .doc(user.uid)
+                            //         .set(userModel.toMap())
+                            //         .then((value) => {
+                            //               setState(() {
+                            //                 isLoading = false;
+                            //               }),
+                            //               Navigator.push(
+                            //                   context,
+                            //                   MaterialPageRoute(
+                            //                       builder: (context) =>
+                            //                           ReadyForHome()))
+                            //             });
+                            //   } else {
+                            //     setState(() {
+                            //       isLoading = false;
+                            //     });
+                            //     print("else part");
+                            //     return;
+                            //   }
+                            // } catch (e) {
+                            //   print(e);
+                            //   print("catch part");
+
+                            //   setState(() {
+                            //     isLoading = false;
+                            //   });
+                            //   return;
+                            // }
+                            
 
                             // Navigator.push(
                             //     context,
                             //     MaterialPageRoute(
                             //         builder: (context) => SignIn()));
                           },
-                          child: isLoading == false
+                          child: authViewModel.isLoading == false
                               ? Text(
                                   "Sign Up",
                                   style: TextStyle(
@@ -274,13 +278,7 @@ class _SignUpState extends State<SignUp> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 )
-                              : Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )),
+                              : SpinKitCircle(color:Colors.white, size: 35,))
                     ),
                     SizedBox(
                       height: 10,

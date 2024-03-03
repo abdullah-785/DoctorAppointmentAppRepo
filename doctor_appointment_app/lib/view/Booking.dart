@@ -1,6 +1,6 @@
-import 'package:doctor_appointment_app/Widgets/cancelled_booking_Card.dart';
-import 'package:doctor_appointment_app/Widgets/completed_booking.dart';
-import 'package:doctor_appointment_app/Widgets/upcomming_booking_card.dart';
+import 'package:doctor_appointment_app/resources/components/cancelled_booking_Card.dart';
+import 'package:doctor_appointment_app/resources/components/completed_booking.dart';
+import 'package:doctor_appointment_app/resources/components/upcomming_booking_card.dart';
 import 'package:flutter/material.dart';
 
 class Bookings extends StatefulWidget {

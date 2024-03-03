@@ -1,7 +1,7 @@
-import 'package:doctor_appointment_app/Widgets/review_widget.dart';
-import 'package:doctor_appointment_app/Widgets/specialist_card.dart';
-import 'package:doctor_appointment_app/Widgets/working_hours_widget.dart';
-import 'package:doctor_appointment_app/screens/hospital_review.dart';
+import 'package:doctor_appointment_app/resources/components/review_widget.dart';
+import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
+import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
+import 'package:doctor_appointment_app/view/hospital_review.dart';
 import 'package:flutter/material.dart';
 
 class HospitalDetails extends StatefulWidget {

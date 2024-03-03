@@ -1,6 +1,7 @@
-import 'package:doctor_appointment_app/Widgets/booking_date.dart';
-import 'package:doctor_appointment_app/Widgets/booking_time.dart';
-import 'package:doctor_appointment_app/Widgets/doctor_detail_card.dart';
+
+import 'package:doctor_appointment_app/resources/components/booking_date.dart';
+import 'package:doctor_appointment_app/resources/components/booking_time.dart';
+import 'package:doctor_appointment_app/resources/components/doctor_detail_card.dart';
 import 'package:flutter/material.dart';
 
 class BookOppointment extends StatefulWidget {

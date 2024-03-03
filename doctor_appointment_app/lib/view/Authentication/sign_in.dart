@@ -1,8 +1,12 @@
-import 'package:doctor_appointment_app/screens/Authentication/sign_up.dart';
-import 'package:doctor_appointment_app/screens/ready_for_home.dart';
+
+import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
+import 'package:doctor_appointment_app/view/ready_for_home.dart';
+import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -15,10 +19,13 @@ class _SignInState extends State<SignIn> {
   final _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).width * 1;
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -118,25 +125,29 @@ class _SignInState extends State<SignIn> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () async {
-                    try {
-                      await _auth.signInWithEmailAndPassword(
-                          email: _emailController.text,
-                          password: _passwordController.text);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReadyForHome()));
-                    } catch (e) {
-                      print(e);
-                    }
+                    authViewModel.signIn(_emailController.text, _passwordController.text, context);
+                    authViewModel.authenticatedUser();
+                    
+
+                    // try {
+                    //   await _auth.signInWithEmailAndPassword(
+                    //       email: _emailController.text,
+                    //       password: _passwordController.text);
+                    //   Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => ReadyForHome()));
+                    // } catch (e) {
+                    //   print(e);
+                    // }
                   },
-                  child: const Text(
+                  child: authViewModel.isLoading == false? Text(
                     "Sign In",
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
-                  )),
+                  ): SpinKitCircle(size: 35, color: Colors.white)),
             ),
             SizedBox(
               height: 10,

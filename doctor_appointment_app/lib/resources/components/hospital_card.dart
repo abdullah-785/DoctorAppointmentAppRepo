@@ -1,4 +1,5 @@
-import 'package:doctor_appointment_app/screens/hospital_details.dart';
+
+import 'package:doctor_appointment_app/view/hospital_details.dart';
 import 'package:flutter/material.dart';
 
 class HospitalCard extends StatelessWidget {

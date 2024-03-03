@@ -1,3 +1,9 @@
+import 'dart:developer';
+
+import 'package:doctor_appointment_app/Models/backend.dart';
+import 'package:doctor_appointment_app/Models/user_model.dart';
+import 'package:doctor_appointment_app/utils/utils.dart';
+import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -8,6 +14,18 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  final loggedIn = AuthViewModel().authenticatedUser();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    
+    
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +93,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(
             height: 5,
           ),
-          Text("Esther Howord",
+          Text(Utils.name.toString(),
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
 
           SizedBox(
