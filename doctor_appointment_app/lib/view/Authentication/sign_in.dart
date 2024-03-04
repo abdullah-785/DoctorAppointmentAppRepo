@@ -126,7 +126,7 @@ class _SignInState extends State<SignIn> {
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () async {
                     authViewModel.signIn(_emailController.text, _passwordController.text, context);
-                    authViewModel.authenticatedUser();
+                    // authViewModel.authenticatedUser();
                     
 
                     // try {

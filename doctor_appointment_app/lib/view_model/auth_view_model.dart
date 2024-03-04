@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class AuthViewModel with ChangeNotifier {
@@ -16,9 +19,15 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> signUp(String email, String password, String confirmPasswrod,
-      String name, BuildContext context) async {
+      String name, File file, BuildContext context) async {
     try {
       setLoading(true);
+      final ref = FirebaseStorage.instance
+                                    .ref()
+                                    .child("userImage")
+                                    .child(DateTime.now().toString());
+                                await ref.putFile(file!);
+                                String imageUrl = await ref.getDownloadURL();
       print(email + " " + password);
 
       if (password == confirmPasswrod) {
@@ -33,7 +42,7 @@ class AuthViewModel with ChangeNotifier {
         userModel.uid = user!.uid;
         userModel.name = name;
         userModel.email = email.trim().toLowerCase();
-        // userModel.password = _passwordController.text;
+        userModel.image = imageUrl;
         userModel.role = "user";
 
         await firebaseFirestore
@@ -85,7 +94,7 @@ class AuthViewModel with ChangeNotifier {
       } else {
         setLoading(false);
         Utils.FlushBarErrorMessage("Please enter your credientials", context);
-        
+
         return;
       }
     } catch (e) {
@@ -95,23 +104,19 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
+  // Future<void> authenticatedUser() async {
+  //   UserModel loggedIn = UserModel();
+  //   User? user = FirebaseAuth.instance.currentUser;
 
-  Future<void> authenticatedUser() async{
-    UserModel loggedIn = UserModel();
-    User? user = FirebaseAuth.instance.currentUser;
+  //   FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(user!.uid)
+  //       .get()
+  //       .then((value) {
+  //     loggedIn = UserModel.fromMap(value.data());
+  //   });
 
-    FirebaseFirestore.instance.collection("users").doc(user!.uid).get().then((value){
-      loggedIn = UserModel.fromMap(value.data());
-      
-
-    });
-
-    Utils.email = loggedIn.email;
-    Utils.name = loggedIn.name;
-
-    
-
-    
-
-  }
+  //   Utils.email = loggedIn.email;
+  //   Utils.name = loggedIn.name;
+  // }
 }

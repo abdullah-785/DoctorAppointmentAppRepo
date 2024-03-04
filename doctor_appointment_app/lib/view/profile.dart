@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/backend.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -15,16 +17,22 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
-  final loggedIn = AuthViewModel().authenticatedUser();
+  // final loggedIn = AuthViewModel().authenticatedUser();
+  UserModel loggedIn = UserModel();
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    
+    
 
-    
-    
-    
+    FirebaseFirestore.instance.collection("Users").doc(user!.uid).get().then((value){
+      loggedIn = UserModel.fromMap(value.data());
+      
+
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -93,7 +101,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(
             height: 5,
           ),
-          Text(Utils.name.toString(),
+          Text(loggedIn.name.toString(),
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
 
           SizedBox(
@@ -177,7 +185,6 @@ class _ProfileState extends State<Profile> {
           Divider(
             color: Colors.grey.shade300,
           ),
-
           SizedBox(
             height: 10,
           ),

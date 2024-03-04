@@ -1,15 +1,20 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:path/path.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -25,15 +30,22 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _confirmPasswrordController =
       TextEditingController();
 
+  File? file;
+  
+
   // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // bool isLoading = false;
+
+  ImagePicker image = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).width * 1;
     final authViewModel = Provider.of<AuthViewModel>(context);
+
+    final fileName = file != null ? basename(file!.path) : "No file Selected";
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -68,6 +80,18 @@ class _SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(
                       height: 40,
+                    ),
+
+                    GestureDetector(
+                      onTap: () {
+                        selectFile();
+                      },
+                      child: CircleAvatar(
+                        radius: 70,
+                        backgroundImage: file == null
+                            ? const AssetImage("images/uploadImageVector.jpg")
+                            : Image.file(file!).image,
+                      ),
                     ),
                     const Align(
                         alignment: Alignment.topLeft,
@@ -207,68 +231,9 @@ class _SignUpState extends State<SignUp> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12))),
                           onPressed: () async {
-                            authViewModel.signUp(_emailController.text, _passwordController.text, _confirmPasswrordController.text, _nameController.text, context );
+                            authViewModel.signUp(_emailController.text, _passwordController.text, _confirmPasswrordController.text, _nameController.text, file!, context );
 
-                            // try {
-                            //   setState(() {
-                            //     isLoading = true;
-                            //   });
-
-                            //   if (_passwordController.text ==
-                            //       _confirmPasswrordController.text) {
-                            //     await _auth.createUserWithEmailAndPassword(
-                            //         email: _emailController.text,
-                            //         password: _passwordController.text);
-
-                            //     FirebaseFirestore firebaseFirestore =
-                            //         FirebaseFirestore.instance;
-
-                            //     UserModel userModel = UserModel();
-                            //     User? user = _auth.currentUser;
-
-                            //     userModel.uid = user!.uid;
-                            //     userModel.name = _nameController.text;
-                            //     userModel.email =
-                            //         _emailController.text.trim().toLowerCase();
-                            //     // userModel.password = _passwordController.text;
-                            //     userModel.role = "user";
-
-                            //     await firebaseFirestore
-                            //         .collection("Users")
-                            //         .doc(user.uid)
-                            //         .set(userModel.toMap())
-                            //         .then((value) => {
-                            //               setState(() {
-                            //                 isLoading = false;
-                            //               }),
-                            //               Navigator.push(
-                            //                   context,
-                            //                   MaterialPageRoute(
-                            //                       builder: (context) =>
-                            //                           ReadyForHome()))
-                            //             });
-                            //   } else {
-                            //     setState(() {
-                            //       isLoading = false;
-                            //     });
-                            //     print("else part");
-                            //     return;
-                            //   }
-                            // } catch (e) {
-                            //   print(e);
-                            //   print("catch part");
-
-                            //   setState(() {
-                            //     isLoading = false;
-                            //   });
-                            //   return;
-                            // }
                             
-
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => SignIn()));
                           },
                           child: authViewModel.isLoading == false
                               ? Text(
@@ -382,4 +347,18 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
+
+ Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.single.path!;
+
+    setState(() => file = File(path));
+  }
+ 
+
+
 }
+
+

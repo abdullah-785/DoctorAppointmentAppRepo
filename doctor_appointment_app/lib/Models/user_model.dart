@@ -3,6 +3,7 @@ class UserModel {
   String? name;
   String? email;
   String? password;
+  String? image;
   // String? phone;
   // String? address;
   String? role;
@@ -12,6 +13,7 @@ class UserModel {
       this.name,
       this.email,
       this.password,
+      this.image,
       // this.phone,
       // this.address,
       this.role});
@@ -22,6 +24,7 @@ class UserModel {
         name: map['name'],
         email: map['email'],
         password: map['password'],
+        image: map['image'],
         // phone: map['phone'],
         // address: map['address'],
         role: map['role']);
@@ -33,6 +36,7 @@ class UserModel {
       'name': name,
       'email': email,
       'password': password,
+      'image': image,
       // 'phone': phone,
       // 'address': address,
       'role': role
