@@ -69,4 +69,7 @@ flutter {
 dependencies {
     // implementation platform('com.google.firebase:firebase-bom:32.7.1')
     implementation platform('com.google.firebase:firebase-bom:32.7.1')
+    // implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
+    // implementation 'com.google.firebase:firebase-storage:22.0.0'
+    // implementation 'com.google.firebase:firebase-appcheck:23.0.0'
 }

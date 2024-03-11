@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
+import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
+import 'package:doctor_appointment_app/view/home_page.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -19,15 +21,15 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> signUp(String email, String password, String confirmPasswrod,
-      String name, File file, BuildContext context) async {
+      String name, BuildContext context) async {
     try {
       setLoading(true);
-      final ref = FirebaseStorage.instance
-                                    .ref()
-                                    .child("userImage")
-                                    .child(DateTime.now().toString());
-                                await ref.putFile(file!);
-                                String imageUrl = await ref.getDownloadURL();
+      // final ref = FirebaseStorage.instance
+      //                               .ref()
+      //                               .child("userImage")
+      //                               .child(DateTime.now().toString());
+      //                           await ref.putFile(file!);
+      //                           String imageUrl = await ref.getDownloadURL();
       print(email + " " + password);
 
       if (password == confirmPasswrod) {
@@ -42,7 +44,7 @@ class AuthViewModel with ChangeNotifier {
         userModel.uid = user!.uid;
         userModel.name = name;
         userModel.email = email.trim().toLowerCase();
-        userModel.image = imageUrl;
+        // userModel.image = imageUrl;
         userModel.role = "user";
 
         await firebaseFirestore
@@ -88,9 +90,14 @@ class AuthViewModel with ChangeNotifier {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         Utils.FlushBarErrorMessage("Logged In Successfully", context);
+
+        
+
         setLoading(false);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ReadyForHome()));
+
+        // ReadyForHome()
       } else {
         setLoading(false);
         Utils.FlushBarErrorMessage("Please enter your credientials", context);

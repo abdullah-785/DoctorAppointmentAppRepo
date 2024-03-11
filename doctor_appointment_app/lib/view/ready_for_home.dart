@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/resources/components/navbar.dart';
+import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Booking.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/home_page.dart';
 import 'package:doctor_appointment_app/view/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ReadyForHome extends StatefulWidget {
@@ -13,6 +17,30 @@ class ReadyForHome extends StatefulWidget {
 }
 
 class _ReadyForHomeState extends State<ReadyForHome> {
+
+  UserModel loggedIn = UserModel();
+        User? user = FirebaseAuth.instance.currentUser;
+
+        
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+            .collection("Users")
+            .doc(user!.uid)
+            .get()
+            .then((value) {
+          loggedIn = UserModel.fromMap(value.data());
+          print(loggedIn.email);
+          Utils.name = loggedIn.name;
+        Utils.email = loggedIn.email;
+        Utils.image = loggedIn.image;
+        });
+        
+
+        
+  }
   @override
   Widget build(BuildContext context) {
     return MyBottomNavBar();

@@ -1,11 +1,17 @@
+import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/resources/components/review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
 import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
 import 'package:doctor_appointment_app/view/hospital_review.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class HospitalDetails extends StatefulWidget {
-  const HospitalDetails({super.key});
+  
+
+   HospitalDetails({super.key, required this.hospitalDoc});
+
+  HospitalModel hospitalDoc;
 
   @override
   State<HospitalDetails> createState() => _HospitalDetailsState();
@@ -37,12 +43,10 @@ class _HospitalDetailsState extends State<HospitalDetails>
                 Container(
                     width: width * 1,
                     height: 250,
-                    child: const Image(
-                        fit: BoxFit.cover,
-                        image: AssetImage("images/hospital1.jpg"))),
+                    child:  Image.network(widget.hospitalDoc.image.toString())),
                 Padding(
                   padding:
-                      const EdgeInsets.only(top: 40.0, left: 16, right: 16),
+                       EdgeInsets.only(top: 40.0, left: 16, right: 16),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -124,16 +128,16 @@ class _HospitalDetailsState extends State<HospitalDetails>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Serenty Wellness Clinic",
+                        Text(
+                          widget.hospitalDoc.name.toString(),
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
 
-                        const Text(
-                          "Dental, Skin Care, Eye Care",
+                        Text(
+                          widget.hospitalDoc.specializeIn.toString(),
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -143,22 +147,29 @@ class _HospitalDetailsState extends State<HospitalDetails>
                         const SizedBox(
                           height: 20,
                         ),
-                        const Row(
+                         Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: 18,
-                              color: Colors.blue,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 3),
+                              child: Icon(
+                                Icons.location_on_outlined,
+                                size: 18,
+                                color: Colors.blue,
+                              ),
                             ),
                             SizedBox(
                               width: 8,
                             ),
-                            Text(
-                              "8502 Preston Rd, Inglewood, Maine 9870",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey),
+                            Expanded(
+                              child: Text(
+                                widget.hospitalDoc.address.toString(),
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey),
+                              ),
                             ),
                           ],
                         ),

@@ -1,4 +1,5 @@
 
+import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _OnBoarding1State extends State<OnBoarding1> {
               child: InkWell(
                 onTap: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => ReadyForHome()));
+                      MaterialPageRoute(builder: (context) => SignIn()));
                 },
                 child: const Align(
                   alignment: Alignment.topRight,
@@ -296,7 +297,7 @@ class _OnBoarding1State extends State<OnBoarding1> {
                     onTap: () {
                       if (index == 2) {
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => SignUp()));
+                            MaterialPageRoute(builder: (context) => SignIn()));
                       } else {
                         setState(() {
                           index = index + 1;

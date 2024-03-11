@@ -1,25 +1,33 @@
 
+import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/view/hospital_details.dart';
 import 'package:flutter/material.dart';
 
-class HospitalCard extends StatelessWidget {
-  const HospitalCard({
+class HospitalCard extends StatefulWidget {
+   HospitalCard({
     super.key,
     required this.widthParam,
+    this.hospitalModel,
   });
   final double widthParam;
+  HospitalModel? hospitalModel;
 
+  @override
+  State<HospitalCard> createState() => _HospitalCardState();
+}
+
+class _HospitalCardState extends State<HospitalCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HospitalDetails()));
+            MaterialPageRoute(builder: (context) => HospitalDetails(hospitalDoc: widget.hospitalModel!,)));
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 12),
         child: Container(
-          width: widthParam,
+          width: widget.widthParam,
           height: 200,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey.withOpacity(.4)),
@@ -31,14 +39,13 @@ class HospitalCard extends StatelessWidget {
                 Container(
                     // color: Colors.blue,
                     height: 130,
-                    width: widthParam,
+                    width: widget.widthParam,
                     child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(8),
                             topRight: Radius.circular(8)),
-                        child: Image.asset(
-                          "images/hospital1.jpg",
-                          fit: BoxFit.cover,
+                        child: Image.network(widget.hospitalModel!.image.toString(), 
+                        fit: BoxFit.cover,
                         ))),
                 Container(
                   height: 130,
@@ -99,14 +106,14 @@ class HospitalCard extends StatelessWidget {
                   ),
                 )
               ]),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(left: 8.0, right: 8, top: 5),
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ElevateDental",
+                      widget.hospitalModel!.name.toString(),
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),

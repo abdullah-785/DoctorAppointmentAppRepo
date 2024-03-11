@@ -1,13 +1,15 @@
+import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/resources/components/doctor_detail_card.dart';
 import 'package:doctor_appointment_app/resources/components/review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
 import 'package:doctor_appointment_app/view/book_appointment.dart';
 import 'package:doctor_appointment_app/view/doctor_reviews.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DoctorDetails extends StatefulWidget {
-  const DoctorDetails({super.key});
-
+  DoctorDetails({super.key, required this.doctorDoc});
+  DoctorModel? doctorDoc;
   @override
   State<DoctorDetails> createState() => _DoctorDetailsState();
 }
@@ -101,9 +103,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           ),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: const Image(
-                                image: AssetImage("images/doctor1.jpg"),
-                                fit: BoxFit.cover,
+                              child: Image.network(widget.doctorDoc!.image.toString(),
+                              fit: BoxFit.cover,
                               )),
                         ),
                         const Icon(
@@ -118,22 +119,25 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         // mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Dr. Jonny Wilson",
+                          Text(
+                            widget.doctorDoc!.name.toString(),
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            "Dentist",
+                            widget.doctorDoc!.specializeIn.toString(),
                             style: TextStyle(color: Colors.grey[500]),
                           ),
-                          const Row(children: [
+                           Row(children: [
                             Icon(
                               Icons.location_on_outlined,
                               size: 18,
                               color: Colors.blue,
                             ),
                             Text(
-                              "New York, United States",
+                              widget.doctorDoc!.address.toString(), style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[500],
+                              ),
                             ),
                           ]),
                         ],
@@ -181,8 +185,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     style: TextStyle(fontSize: 16),
                   ),
 
-                  const Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                   Text(
+                    widget.doctorDoc!.about.toString(),
                     maxLines: 3,
                     style: TextStyle(color: Colors.grey),
                   ),
@@ -239,15 +243,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Row(children: [
+                   Row(children: [
                     Icon(
                       Icons.location_on_outlined,
                       size: 18,
                       color: Colors.blue,
                     ),
-                    Text(
-                      "8502 Preston Road, New York, United States",
-                      style: TextStyle(),
+                    Expanded(
+                      child: Text(
+                        widget.doctorDoc!.address.toString(),
+                        style: TextStyle(),
+                      ),
                     ),
                   ]),
                   const SizedBox(

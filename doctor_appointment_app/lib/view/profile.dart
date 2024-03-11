@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/backend.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
+import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
   // final loggedIn = AuthViewModel().authenticatedUser();
-  UserModel loggedIn = UserModel();
-  User? user = FirebaseAuth.instance.currentUser;
+  // UserModel loggedIn = UserModel();
+  // User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -28,11 +29,11 @@ class _ProfileState extends State<Profile> {
     
     
 
-    FirebaseFirestore.instance.collection("Users").doc(user!.uid).get().then((value){
-      loggedIn = UserModel.fromMap(value.data());
+    // FirebaseFirestore.instance.collection("Users").doc(user!.uid).get().then((value){
+    //   loggedIn = UserModel.fromMap(value.data());
       
 
-    });
+    // });
   }
   @override
   Widget build(BuildContext context) {
@@ -79,8 +80,8 @@ class _ProfileState extends State<Profile> {
               ),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: const Image(
-                    image: AssetImage("images/doctor1.jpg"),
+                  child: Image(
+                    image: NetworkImage(Utils.image.toString()),
                     fit: BoxFit.cover,
                   )),
             ),
@@ -101,7 +102,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(
             height: 5,
           ),
-          Text(loggedIn.name.toString(),
+          Text(Utils.email.toString(),
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
 
           SizedBox(
@@ -252,9 +253,14 @@ class _ProfileState extends State<Profile> {
                 width: 10,
               ),
               Expanded(
-                  child: Text(
-                "Logout",
-              )),
+                  child: InkWell(
+                    onTap: (){
+                      logout(context);
+                    },
+                    child: Text(
+                                    "Logout",
+                                  ),
+                  )),
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 15,
@@ -267,4 +273,11 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => SignIn()));
+  }
 }
+

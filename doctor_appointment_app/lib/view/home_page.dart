@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/backend.dart';
+import 'package:doctor_appointment_app/Models/doctor_model.dart';
+import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/resources/components/hospital_card.dart';
 import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
@@ -9,6 +11,7 @@ import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -396,25 +399,77 @@ class _HomePageState extends State<HomePage> {
                   height: 15,
                 ),
 
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      HospitalCard(
-                        widthParam: 240,
+                ////////////////////
+                ///Where condition ==> .where('A', isEqualTo: "B")
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Hospital')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SpinKitCircle(size: 35, color: Colors.blue);
+                    }
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (!snapshot.hasData) {
+                      return const Text('No data found');
+                    }
+
+                    final List<HospitalModel> hospital =
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      return HospitalModel.fromMap(
+                          document.data() as Map<String, dynamic>);
+                    }).toList();
+
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: hospital.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              // When a document is tapped, navigate to the next page and pass the selected task as a parameter.
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) =>
+                              //         RestaurantDetail(
+                              //             selectedRestaurants:
+                              //                 restaurants[index]),
+                              //   ),
+                              // );
+                            },
+                            // restaurants[index].name.toString()
+                            child: HospitalCard(
+                              widthParam: 240,
+                              hospitalModel: hospital[index],
+                              // name: restaurants[index].name.toString(),
+                              // level:
+                              //     restaurants[index].level.toString(),
+                              // address:
+                              //     restaurants[index].address.toString(),
+                              // // image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D",
+                              // image:
+                              //     restaurants[index].image.toString(),
+                              // rating:
+                              //     restaurants[index].level.toString(),
+                              // avgPrice: restaurants[index]
+                              //     .avgPrice
+                              //     .toString(),
+                            ),
+                          );
+                        },
                       ),
-                      HospitalCard(
-                        widthParam: 240,
-                      ),
-                      HospitalCard(
-                        widthParam: 240,
-                      ),
-                      HospitalCard(
-                        widthParam: 240,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
+
+               
                 const SizedBox(
                   height: 30,
                 ),
@@ -437,10 +492,46 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                SpecialistCard(width: width),
-                SpecialistCard(width: width),
-                SpecialistCard(width: width),
-                SpecialistCard(width: width),
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Doctor')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SpinKitCircle(size: 35, color: Colors.blue);
+                    }
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (!snapshot.hasData) {
+                      return const Text('No data found');
+                    }
+
+                    final List<DoctorModel> doctor =
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      return DoctorModel.fromMap(
+                          document.data() as Map<String, dynamic>);
+                    }).toList();
+
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: 500,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: doctor.length,
+                        itemBuilder: (context, index) {
+                          return SpecialistCard(width: width, doctorDoc: doctor[index],);
+                        },
+                      ),
+                    );
+                  },
+                ),
+                // SpecialistCard(width: width),
+                // SpecialistCard(width: width),
+                // SpecialistCard(width: width),
+                // SpecialistCard(width: width),
                 const SizedBox(
                   height: 100,
                 ),

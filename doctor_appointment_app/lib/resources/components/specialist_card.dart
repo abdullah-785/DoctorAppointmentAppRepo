@@ -1,21 +1,31 @@
+import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/view/doctor_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class SpecialistCard extends StatelessWidget {
-  const SpecialistCard({
+class SpecialistCard extends StatefulWidget {
+  SpecialistCard({
     super.key,
     required this.width,
+    this.doctorDoc
   });
 
   final double width;
+  DoctorModel? doctorDoc;
+
+  @override
+  State<SpecialistCard> createState() => _SpecialistCardState();
+}
+
+class _SpecialistCardState extends State<SpecialistCard> {
+  
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
-        width: width * 1,
+        width: widget.width * 1,
         height: 180,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -37,7 +47,7 @@ class SpecialistCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: width * 0.24,
+                    width: widget.width * 0.24,
                     height: 105,
                     decoration: BoxDecoration(
                       color: Colors.grey,
@@ -45,9 +55,9 @@ class SpecialistCard extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: const Image(
-                          fit: BoxFit.fill,
-                          image: AssetImage("images/doctor1.jpg")),
+                      child: Image.network(widget.doctorDoc!.image.toString(), 
+                      
+                      fit: BoxFit.cover,)
                     ),
                   ),
                   SizedBox(
@@ -57,7 +67,7 @@ class SpecialistCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: width * 0.52,
+                        width: widget.width * 0.52,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           // crossAxisAlignment: CrossA,
@@ -68,7 +78,7 @@ class SpecialistCard extends StatelessWidget {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.blue[100]),
-                              child: const Row(
+                              child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
@@ -80,7 +90,7 @@ class SpecialistCard extends StatelessWidget {
                                       width: 5,
                                     ),
                                     Text(
-                                      "Professional Doctor",
+                                      widget.doctorDoc!.name.toString(),
                                       style: TextStyle(
                                           color: Colors.blue, fontSize: 11),
                                     )
@@ -101,7 +111,7 @@ class SpecialistCard extends StatelessWidget {
                         height: 8,
                       ),
                       Text(
-                        "Dr. Jane Cooper",
+                        widget.doctorDoc!.name.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.w400, fontSize: 16),
                       ),
@@ -109,14 +119,14 @@ class SpecialistCard extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        "Dentist",
+                        widget.doctorDoc!.specializeIn.toString(),
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                       SizedBox(
                         height: 15,
                       ),
                       Container(
-                        width: width * 0.52,
+                        width: widget.width * 0.52,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           // crossAxisAlignment: Cross,
@@ -169,11 +179,11 @@ class SpecialistCard extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DoctorDetails()));
+                      MaterialPageRoute(builder: (context) => DoctorDetails(doctorDoc: widget.doctorDoc,)));
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  width: width * 0.87,
+                  width: widget.width * 0.87,
                   height: 32,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),

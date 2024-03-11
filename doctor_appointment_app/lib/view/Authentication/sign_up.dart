@@ -7,11 +7,13 @@ import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path/path.dart';
@@ -30,14 +32,15 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _confirmPasswrordController =
       TextEditingController();
 
-  File? file;
+  // File? file;
+
+  // // final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // // bool isLoading = false;
+
+  // ImagePicker image = ImagePicker();
   
-
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // bool isLoading = false;
-
-  ImagePicker image = ImagePicker();
+  // String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,7 @@ class _SignUpState extends State<SignUp> {
     final height = MediaQuery.sizeOf(context).width * 1;
     final authViewModel = Provider.of<AuthViewModel>(context);
 
-    final fileName = file != null ? basename(file!.path) : "No file Selected";
+    // final fileName = file != null ? basename(file!.path) : "No file Selected";
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -81,18 +84,20 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(
                       height: 40,
                     ),
+                    // GestureDetector(
+                    //   onTap: () async {
+                    //     // selectFile();
+                    //     // uploadImage();
+                    //   },
+                    //   child: CircleAvatar(
+                    //     radius: 70,
+                    //     backgroundImage: imageUrl == null
+                    //         ? AssetImage("images/uploadImageVector.jpg")
+                    //         : AssetImage("images/2.png"),
 
-                    GestureDetector(
-                      onTap: () {
-                        selectFile();
-                      },
-                      child: CircleAvatar(
-                        radius: 70,
-                        backgroundImage: file == null
-                            ? const AssetImage("images/uploadImageVector.jpg")
-                            : Image.file(file!).image,
-                      ),
-                    ),
+                    //         // Image.file(file!).image,
+                    //   ),
+                    // ),
                     const Align(
                         alignment: Alignment.topLeft,
                         child: Text(
@@ -223,28 +228,29 @@ class _SignUpState extends State<SignUp> {
                       height: 30,
                     ),
                     SizedBox(
-                      width: width * 1,
-                      height: 40,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12))),
-                          onPressed: () async {
-                            authViewModel.signUp(_emailController.text, _passwordController.text, _confirmPasswrordController.text, _nameController.text, file!, context );
+                        width: width * 1,
+                        height: 40,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12))),
+                            onPressed: () async {
 
-                            
-                          },
-                          child: authViewModel.isLoading == false
-                              ? Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                )
-                              : SpinKitCircle(color:Colors.white, size: 35,))
-                    ),
+                              authViewModel.signUp(_emailController.text, _passwordController.text, _confirmPasswrordController.text, _nameController.text, context );
+                            },
+                            child: authViewModel.isLoading == false
+                                ? Text(
+                                    "Sign Up",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  )
+                                : SpinKitCircle(
+                                    color: Colors.white,
+                                    size: 35,
+                                  ))),
                     SizedBox(
                       height: 10,
                     ),
@@ -348,17 +354,13 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
- Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+  
 
-    if (result == null) return;
-    final path = result.files.single.path!;
-
-    setState(() => file = File(path));
-  }
- 
 
 
 }
+
+
+
 
 

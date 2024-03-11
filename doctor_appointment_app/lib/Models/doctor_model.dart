@@ -1,44 +1,38 @@
-class HospitalModel {
+class DoctorModel {
   String? uid;
   String? name;
   String? specializeIn;
   String? address;
   // String? availabilityTimeTo;
   // String? availabilityTimeFrom;
-  String? websiteLink;
-  String? contactNumber;
-  String? call;
+  String? about;
   String? image;
-  List<String>? gallary;
+  
 
-  HospitalModel(
+  DoctorModel(
       {this.uid,
       this.name,
       this.specializeIn,
       this.address,
       // this.availabilityTimeTo,
       // this.availabilityTimeFrom,
-      this.websiteLink,
-      this.contactNumber,
-      this.call,
+      this.about,
       this.image,
-      this.gallary,
+      
       
       });
 
-  factory HospitalModel.fromMap(map) {
-    return HospitalModel(
+  factory DoctorModel.fromMap(map) {
+    return DoctorModel(
         uid: map['uid'],
         name: map['name'],
         specializeIn: map['specializeIn'],
         address: map['address'],
         // availabilityTimeTo: map['availabilityTimeTo'],
         // availabilityTimeFrom: map['availabilityTimeFrom'],
-        websiteLink: map['websiteLink'],
-        contactNumber: map['contactNumber'],
-        call: map['call'],
+        about: map['about'],
         image: map['image'],
-        gallary: map['gallary'],
+        
         
     );
 
@@ -52,11 +46,9 @@ class HospitalModel {
       'address': address,
       // 'availabilityTime': availabilityTimeTo,
       // 'availabilityTimeFrom': availabilityTimeFrom,
-      'websiteLink': websiteLink,
-      'contactNumber': contactNumber,
-      'call': call,
+      'about': about,
       'image': image,
-      'gallary': gallary,
+      
     };
   }
 }

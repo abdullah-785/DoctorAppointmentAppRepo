@@ -1,3 +1,5 @@
+import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
+import 'package:doctor_appointment_app/view/dumy.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: OnBoarding1(),
+        home: const OnBoarding1(),
       ),
     );
   }
