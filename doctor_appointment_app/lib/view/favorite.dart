@@ -46,18 +46,18 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  SpecialistCard(
-                    width: width,
-                  ),
-                  SpecialistCard(
-                    width: width,
-                  ),
-                  SpecialistCard(
-                    width: width,
-                  ),
-                  SpecialistCard(
-                    width: width,
-                  ),
+                  // SpecialistCard(
+                  //   width: width,
+                  // ),
+                  // SpecialistCard(
+                  //   width: width,
+                  // ),
+                  // SpecialistCard(
+                  //   width: width,
+                  // ),
+                  // SpecialistCard(
+                  //   width: width,
+                  // ),
                 ],
               ),
             ),
@@ -68,30 +68,30 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: HospitalCard(
-                      widthParam: width * 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: HospitalCard(
-                      widthParam: width * 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: HospitalCard(
-                      widthParam: width * 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: HospitalCard(
-                      widthParam: width * 1,
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 16.0),
+                  //   child: HospitalCard(
+                  //     widthParam: width * 1,
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 16.0),
+                  //   child: HospitalCard(
+                  //     widthParam: width * 1,
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 16.0),
+                  //   child: HospitalCard(
+                  //     widthParam: width * 1,
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 16.0),
+                  //   child: HospitalCard(
+                  //     widthParam: width * 1,
+                  //   ),
+                  // ),
                 ],
               ),
             )

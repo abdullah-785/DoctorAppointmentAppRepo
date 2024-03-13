@@ -332,11 +332,11 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
+            padding: EdgeInsets.only(bottom: 20.0),
             child: InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BookOppointment()));
+                    MaterialPageRoute(builder: (context) => BookOppointment(doctorDocument: widget.doctorDoc!,)));
               },
               child: Container(
                 alignment: Alignment.center,

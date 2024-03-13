@@ -377,9 +377,9 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                                 const SizedBox(
                                                   height: 5,
                                                 ),
-                                                SpecialistCard(width: width),
-                                                SpecialistCard(width: width),
-                                                SpecialistCard(width: width),
+                                                // SpecialistCard(width: width),
+                                                // SpecialistCard(width: width),
+                                                // SpecialistCard(width: width),
                                               ],
                                             ),
                                           ),

@@ -36,7 +36,11 @@ class _ReadyForHomeState extends State<ReadyForHome> {
           Utils.name = loggedIn.name;
         Utils.email = loggedIn.email;
         Utils.image = loggedIn.image;
+        Utils.uid = loggedIn.uid;
+        Utils.role = loggedIn.role;
         });
+
+        
         
 
         

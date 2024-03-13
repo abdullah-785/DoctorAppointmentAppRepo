@@ -9,14 +9,21 @@ import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthViewModel with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isLoading = false;
+  bool isShow = false;
 
   setLoading(value) {
     isLoading = value;
+    notifyListeners();
+  }
+
+  setIsShow(value){
+    isShow = value;
     notifyListeners();
   }
 
@@ -44,7 +51,7 @@ class AuthViewModel with ChangeNotifier {
         userModel.uid = user!.uid;
         userModel.name = name;
         userModel.email = email.trim().toLowerCase();
-        // userModel.image = imageUrl;
+        userModel.image = "https://firebasestorage.googleapis.com/v0/b/doctor-appointment-8be7f.appspot.com/o/userImage%2Fistockphoto-1470505351-612x612.jpg?alt=media&token=ff83d33c-9b9d-4c5c-ba9f-68476427d5c0";
         userModel.role = "user";
 
         await firebaseFirestore
@@ -52,7 +59,10 @@ class AuthViewModel with ChangeNotifier {
             .doc(user.uid)
             .set(userModel.toMap())
             .then((value) => {
+              //Save logged in user in shared preferences
+              sharedPref(),
                   setLoading(false),
+                  /// navigate to next page
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ReadyForHome()))
                 });
@@ -89,10 +99,11 @@ class AuthViewModel with ChangeNotifier {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
-        Utils.FlushBarErrorMessage("Logged In Successfully", context);
+        // Utils.FlushBarErrorMessage("Logged In Successfully", context);
 
         
-
+        //Save logged in user in shared preferences
+          sharedPref();
         setLoading(false);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ReadyForHome()));
@@ -111,19 +122,10 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
-  // Future<void> authenticatedUser() async {
-  //   UserModel loggedIn = UserModel();
-  //   User? user = FirebaseAuth.instance.currentUser;
+ void sharedPref() async{
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isLoggedIn', true);
+  print("Shared Preference is saved");
 
-  //   FirebaseFirestore.instance
-  //       .collection("users")
-  //       .doc(user!.uid)
-  //       .get()
-  //       .then((value) {
-  //     loggedIn = UserModel.fromMap(value.data());
-  //   });
-
-  //   Utils.email = loggedIn.email;
-  //   Utils.name = loggedIn.name;
-  // }
+ }
 }

@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctor_appointment_app/Models/backend.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -18,23 +18,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
-  // final loggedIn = AuthViewModel().authenticatedUser();
-  // UserModel loggedIn = UserModel();
-  // User? user = FirebaseAuth.instance.currentUser;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    
-    
-
-    // FirebaseFirestore.instance.collection("Users").doc(user!.uid).get().then((value){
-    //   loggedIn = UserModel.fromMap(value.data());
-      
-
-    // });
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -276,6 +259,9 @@ class _ProfileState extends State<Profile> {
 
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
+
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => SignIn()));
   }

@@ -58,11 +58,14 @@ class _SignInState extends State<SignIn> {
               height: 4,
             ),
             TextFormField(
+              keyboardType: TextInputType.emailAddress,
               controller: _emailController,
               decoration: InputDecoration(
+                
                 prefixIcon: const Icon(Icons.email_outlined),
                 hintText: "example@gamil.com",
                 border: OutlineInputBorder(
+                  
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: Colors.black54, width: .4)),
                 focusedBorder: OutlineInputBorder(
@@ -86,10 +89,18 @@ class _SignInState extends State<SignIn> {
             ),
             TextFormField(
               controller: _passwordController,
-              obscureText: true,
+              obscureText: authViewModel.isShow,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.lock_outline),
-                suffixIcon: const Icon(Icons.remove_red_eye),
+                suffixIcon: authViewModel.isShow == false?InkWell(
+                  onTap: (){
+                    authViewModel.setIsShow(true);
+                  },
+                  child: Icon(Icons.visibility)) :InkWell(
+                    onTap: (){
+                      authViewModel.setIsShow(false);
+                    },
+                    child: Icon(Icons.visibility_off)),
                 hintText: "Passoword",
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),

@@ -1,11 +1,16 @@
 
+import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/resources/components/booking_date.dart';
 import 'package:doctor_appointment_app/resources/components/booking_time.dart';
 import 'package:doctor_appointment_app/resources/components/doctor_detail_card.dart';
+import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class BookOppointment extends StatefulWidget {
-  const BookOppointment({super.key});
+   BookOppointment({super.key, required this.doctorDocument});
+  DoctorModel doctorDocument;
 
   @override
   State<BookOppointment> createState() => _BookOppointmentState();
@@ -14,6 +19,7 @@ class BookOppointment extends StatefulWidget {
 class _BookOppointmentState extends State<BookOppointment> {
   @override
   Widget build(BuildContext context) {
+    final bookOppointmentViewModel = Provider.of<BookOppointmentViewModel>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -181,123 +187,240 @@ class _BookOppointmentState extends State<BookOppointment> {
                     height: 20,
                   ),
 
-                  const Text(
-                    "Day",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  // const Text(
+                  //   "Oppointment Date",
+                  //   style: TextStyle(fontSize: 16, color: Colors.black),
+                  // ),
+                  // const SizedBox(
+                  //   height: 15,
+                  // ),
 
-                  const SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        BookingDayWidget(
-                          col: Colors.blue,
-                          borderColor: Colors.blue,
-                          textColor: Colors.white,
-                          day: "Today",
-                          date: "25 Dec",
-                        ),
-                        BookingDayWidget(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          day: "Tuesday",
-                          date: "26 Dec",
-                        ),
-                        BookingDayWidget(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          day: "Wednesday",
-                          date: "27 Dec",
-                        ),
-                        BookingDayWidget(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          day: "Thursday",
-                          date: "28 Dec",
-                        ),
-                        BookingDayWidget(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          day: "Friday",
-                          date: "29 Dec",
-                        ),
-                        BookingDayWidget(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          day: "Saturday",
-                          date: "30 Dec",
-                        ),
-                        BookingDayWidget(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          day: "Sunday",
-                          date: "31 Dec",
-                        ),
-                      ],
-                    ),
-                  ),
+                  
+
+                  // Text(bookOppointmentViewModel.selectedDate.toString()),
+                  // CalendarDatePicker(initialDate: DateTime.timestamp(), firstDate: DateTime.now(), lastDate: DateTime(2030), onDateChanged: (DateTime d){
+                  //     bookOppointmentViewModel.setDateTime(d);
+
+                  CalendarDatePicker(
+                    
+  initialDate: DateTime.now().add(Duration(days: 1)),
+  firstDate: DateTime.now().add(Duration(days: 1)),
+  lastDate: DateTime(2030),
+  
+  
+  onDateChanged: (DateTime selectedDate) {
+    // Your logic when the date is changed
+    bookOppointmentViewModel.setDateTime(selectedDate);
+
+  },
+),
+
+
+                      
+
+                      
+                  // }),
+
+                  
                   const SizedBox(
                     height: 20,
                   ),
 
                   const Text(
-                    "Date",
+                    "Select your slot",
                     style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
 
-                  const SingleChildScrollView(
+                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        BookingTime(
-                          col: Colors.blue,
-                          borderColor: Colors.blue,
-                          textColor: Colors.white,
-                          time: "7:00 PM",
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("10:00 am");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "10:00 am"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "10:00 am"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "10:00 am"? Colors.white: Colors.grey,
+                            time: "10:00 am",
+                          ),
                         ),
-                        BookingTime(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          time: "8:00 Pm",
+
+
+
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("11:00 am");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "11:00 am"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "11:00 am"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "11:00 am"? Colors.white: Colors.grey,
+                            time: "11:00 am",
+                          ),
                         ),
-                        BookingTime(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          time: "9:00 Pm",
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("12:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "12:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "12:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "12:00 pm"? Colors.white: Colors.grey,
+                            time: "12:00 pm",
+                          ),
                         ),
-                        BookingTime(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          time: "10:00 Pm",
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("01:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "01:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "01:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "01:00 pm"? Colors.white: Colors.grey,
+                            time: "01:00 pm",
+                          ),
                         ),
-                        BookingTime(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          time: "11:00 Pm",
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("02:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "02:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "02:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "02:00 pm"? Colors.white: Colors.grey,
+                            time: "02:00 pm",
+                          ),
                         ),
-                        BookingTime(
-                          col: Colors.white,
-                          borderColor: Color.fromARGB(226, 158, 158, 158),
-                          textColor: Colors.grey,
-                          time: "12:00 AM",
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("03:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "03:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "03:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "03:00 pm"? Colors.white: Colors.grey,
+                            time: "03:00 pm",
+                          ),
                         ),
-                      ],
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("04:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "04:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "04:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "04:00 pm"? Colors.white: Colors.grey,
+                            time: "04:00 pm",
+                          ),
+                        ),
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("05:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "05:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "05:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "05:00 pm"? Colors.white: Colors.grey,
+                            time: "05:00 pm",
+                          ),
+                        ),
+
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("06:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "06:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "06:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "06:00 pm"? Colors.white: Colors.grey,
+                            time: "06:00 pm",
+                          ),
+                        ),
+
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("07:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "07:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "07:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "07:00 pm"? Colors.white: Colors.grey,
+                            time: "07:00 pm",
+                          ),
+                        ),
+
+
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("08:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "08:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "08:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "08:00 pm"? Colors.white: Colors.grey,
+                            time: "08:00 pm",
+                          ),
+                        ),
+
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("09:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "09:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "09:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "09:00 pm"? Colors.white: Colors.grey,
+                            time: "09:00 pm",
+                          ),
+                        ),
+
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("10:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "10:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "10:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "10:00 pm"? Colors.white: Colors.grey,
+                            time: "10:00 pm",
+                          ),
+                        ),
+
+
+                        InkWell(
+                          onTap: (){
+                            bookOppointmentViewModel.setSlot("11:00 pm");
+                          },
+                          child: BookingTime(
+                            col: bookOppointmentViewModel.slot == "11:00 pm"? Colors.blue: Colors.white,
+                            borderColor: bookOppointmentViewModel.slot == "11:00 pm"? Colors.blue: Color.fromARGB(226, 158, 158, 158),
+                            textColor: bookOppointmentViewModel.slot == "11:00 pm"? Colors.white: Colors.grey,
+                            time: "11:00 pm",
+                          ),
+                        ),
+
+
+
+
+
+
+
+                                              ],
                     ),
                   ),
 
@@ -328,17 +451,22 @@ class _BookOppointmentState extends State<BookOppointment> {
                     height: 30,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width * .9,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const Text(
-                        "Book Oppointment",
-                        style: TextStyle(color: Colors.white),
+                    padding:  EdgeInsets.only(bottom: 20.0),
+                    child: InkWell(
+                      onTap: (){
+                        bookOppointmentViewModel.bookOppointment(widget.doctorDocument.uid.toString(), context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width * .9,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: bookOppointmentViewModel.isLoading == false? Text(
+                          "Book Oppointment",
+                          style: TextStyle(color: Colors.white),
+                        ): SpinKitCircle(size: 35, color: Colors.white)
                       ),
                     ),
                   ),

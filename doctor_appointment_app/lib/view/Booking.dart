@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/Models/booking_model.dart';
 import 'package:doctor_appointment_app/resources/components/cancelled_booking_Card.dart';
 import 'package:doctor_appointment_app/resources/components/completed_booking.dart';
 import 'package:doctor_appointment_app/resources/components/upcomming_booking_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Bookings extends StatefulWidget {
   const Bookings({super.key});
@@ -26,7 +29,7 @@ class _BookingsState extends State<Bookings> {
             elevation: 0,
             backgroundColor: Colors.white,
             title: const Text(
-              "Favorite",
+              "Bookings",
               style: TextStyle(color: Colors.black),
             ),
             bottom: const TabBar(
@@ -49,10 +52,45 @@ class _BookingsState extends State<Bookings> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                BookingCardUpcomming(width: width),
-                BookingCardUpcomming(width: width),
-                BookingCardUpcomming(width: width),
-                BookingCardUpcomming(width: width),
+                // BookingCardUpcomming(width: width),
+
+
+                StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Oppointments').where('status',isEqualTo: 'Upcomming').snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SpinKitCircle(size: 35, color: Colors.blue);
+                  }
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+      
+                  if (!snapshot.hasData) {
+                    return const Text('No data found');
+                  }
+      
+                  final List<BookingModel> booking =
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    return BookingModel.fromMap(
+                        document.data() as Map<String, dynamic>);
+                  }).toList();
+      
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: 500,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: booking.length,
+                      itemBuilder: (context, index) {
+                        return BookingCardUpcomming(width: width, bookingDoc: booking[index],);
+                      },
+                    ),
+                  );
+                },
+              ),
+                
               ],
             ),
           ),
@@ -97,4 +135,7 @@ class _BookingsState extends State<Bookings> {
       ),
     );
   }
+
+
+  
 }

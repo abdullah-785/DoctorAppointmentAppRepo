@@ -1,11 +1,15 @@
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/view/dumy.dart';
+import 'package:doctor_appointment_app/view/home_page.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
+import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
+import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -14,18 +18,54 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+// void readSharedPref() async{
+//   final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+//   bool? repeat = prefs.getBool('isLoggedIn');
+  
+//   value = repeat;
+//   print("The isLoggedIn user value is : " + value.toString());
+
+
+// }
+
+
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool? value = true;
+  // @override
+  // void initState() async{
+  //   super.initState();
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  // bool? repeat = prefs.getBool('isLoggedIn');
+  
+  
+  // setState(() {
+  // value = repeat;  
+  // });
+  // print("The isLoggedIn user value is : " + value.toString());
+    
+  // }
+  // @override
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => AuthViewModel()),
-      // ChangeNotifierProvider(create: (_) => A)
+      ChangeNotifierProvider(create: (_) => BookOppointmentViewModel()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
+
+          useMaterial3: true,
         ),
-        home: const OnBoarding1(),
+        home: OnBoarding1(),
       ),
     );
   }

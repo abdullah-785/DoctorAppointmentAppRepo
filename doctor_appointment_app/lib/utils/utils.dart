@@ -7,6 +7,8 @@ class Utils{
   static String? name;
   static String? email;
   static String? image;
+  static String? uid;
+  static String? role;
 
 
 
