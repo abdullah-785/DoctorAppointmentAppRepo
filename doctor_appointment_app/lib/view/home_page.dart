@@ -23,12 +23,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final _auth = FirebaseAuth.instance;
-  
 
   @override
   void initState() {
     // TODO: implement initState
-    
+
     super.initState();
   }
 
@@ -90,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     prefixIcon: const Icon(Icons.search),
                     // hintText: "Search",
                     label: const Text("Search"),
-      
+
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8)),
                   )),
@@ -122,8 +121,7 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.topRight,
                           child: Text(
                             "See All",
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.blue),
+                            style: TextStyle(fontSize: 12, color: Colors.blue),
                           )))
                 ],
               ),
@@ -134,8 +132,7 @@ class _HomePageState extends State<HomePage> {
                 width: width * 1,
                 height: 130,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(8)),
+                    color: Colors.blue, borderRadius: BorderRadius.circular(8)),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -259,8 +256,7 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.topRight,
                           child: Text(
                             "See All",
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.blue),
+                            style: TextStyle(fontSize: 12, color: Colors.blue),
                           )))
                 ],
               ),
@@ -387,15 +383,14 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.topRight,
                           child: Text(
                             "See All",
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.blue),
+                            style: TextStyle(fontSize: 12, color: Colors.blue),
                           )))
                 ],
               ),
               const SizedBox(
                 height: 15,
               ),
-      
+
               ////////////////////
               ///Where condition ==> .where('A', isEqualTo: "B")
               StreamBuilder<QuerySnapshot>(
@@ -410,17 +405,17 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
-      
+
                   if (!snapshot.hasData) {
                     return const Text('No data found');
                   }
-      
+
                   final List<HospitalModel> hospital =
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     return HospitalModel.fromMap(
                         document.data() as Map<String, dynamic>);
                   }).toList();
-      
+
                   return SizedBox(
                     width: MediaQuery.of(context).size.width * 1,
                     height: 200,
@@ -429,35 +424,11 @@ class _HomePageState extends State<HomePage> {
                       itemCount: hospital.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {
-                            // When a document is tapped, navigate to the next page and pass the selected task as a parameter.
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) =>
-                            //         RestaurantDetail(
-                            //             selectedRestaurants:
-                            //                 restaurants[index]),
-                            //   ),
-                            // );
-                          },
+                          onTap: () {},
                           // restaurants[index].name.toString()
                           child: HospitalCard(
                             widthParam: 240,
                             hospitalModel: hospital[index],
-                            // name: restaurants[index].name.toString(),
-                            // level:
-                            //     restaurants[index].level.toString(),
-                            // address:
-                            //     restaurants[index].address.toString(),
-                            // // image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D",
-                            // image:
-                            //     restaurants[index].image.toString(),
-                            // rating:
-                            //     restaurants[index].level.toString(),
-                            // avgPrice: restaurants[index]
-                            //     .avgPrice
-                            //     .toString(),
                           ),
                         );
                       },
@@ -465,8 +436,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-      
-             
+
               const SizedBox(
                 height: 30,
               ),
@@ -481,8 +451,7 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.topRight,
                           child: Text(
                             "See All",
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.blue),
+                            style: TextStyle(fontSize: 12, color: Colors.blue),
                           )))
                 ],
               ),
@@ -490,9 +459,8 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('Doctor')
-                    .snapshots(),
+                stream:
+                    FirebaseFirestore.instance.collection('Doctor').snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -501,25 +469,28 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
-      
+
                   if (!snapshot.hasData) {
                     return const Text('No data found');
                   }
-      
+
                   final List<DoctorModel> doctor =
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     return DoctorModel.fromMap(
                         document.data() as Map<String, dynamic>);
                   }).toList();
-      
+
                   return SizedBox(
                     width: MediaQuery.of(context).size.width * 1,
-                    height: 500,
+                    height: MediaQuery.of(context).size.height * 1,
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: doctor.length,
                       itemBuilder: (context, index) {
-                        return SpecialistCard(width: width, doctorDoc: doctor[index],);
+                        return SpecialistCard(
+                          width: width,
+                          doctorDoc: doctor[index],
+                        );
                       },
                     ),
                   );

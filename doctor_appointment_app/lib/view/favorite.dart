@@ -18,8 +18,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       initialIndex: 0,
       length: 2,
       child: Scaffold(
+        
         backgroundColor: Colors.white,
         appBar: AppBar(
+            automaticallyImplyLeading: false,
             centerTitle: true,
             foregroundColor: Colors.black,
             elevation: 0,

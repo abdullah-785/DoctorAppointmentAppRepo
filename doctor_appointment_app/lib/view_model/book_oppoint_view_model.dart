@@ -32,7 +32,6 @@ class BookOppointmentViewModel with ChangeNotifier{
     notifyListeners();
   }
 
-
 //Book Oppointment 
 void bookOppointment(String doctorUid, BuildContext context) async {
 
@@ -46,24 +45,37 @@ void bookOppointment(String doctorUid, BuildContext context) async {
     setIsLoading(true);
     
   int? generatedBookingId = generateAutoBookingId();
+  String date = selectedDate!.year.toString() +"-"+ selectedDate!.month.toString() +"-"+ selectedDate!.day.toString();
+  
   // Create a DoctorModel instance
   BookingModel doctorModel = BookingModel(
     bookingId: '#01002'+ generatedBookingId.toString(),
-    date: selectedDate,
+    date: date, 
     time: slot,
     status: "Upcomming",
     doctorRef: FirebaseFirestore.instance.collection('Doctor').doc(doctorUid),
     userRef: FirebaseFirestore.instance.collection("Users").doc(Utils.uid),
+    createAt: DateTime.now(),
+    
   );
 
   // Convert DoctorModel instance to a map
   Map<String, dynamic> doctorMap = doctorModel.toMap();
 
   // Store the map in Firestore
-  await FirebaseFirestore.instance.collection('Oppointments').add(doctorMap);
+  DocumentReference documentReference =  await FirebaseFirestore.instance.collection('Oppointments').add(doctorMap);
+  // Update the uid field with the document ID
+  await documentReference.update({'uid': documentReference.id});
 
   setIsLoading(false);
-  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Bookings()));
+  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Bookings()));
+  Navigator.pushReplacement<void, void>(
+    context,
+    MaterialPageRoute<void>(
+      builder: (BuildContext context) => const Bookings(),
+    ),
+  );
+
   } catch (e) {
     setIsLoading(false);
     Utils.FlushBarErrorMessage(e.toString(), context);
@@ -85,6 +97,22 @@ int? generateAutoBookingId(){
   }
   
 }
+
+
+  Future<DoctorModel> fetchDoctorDetails(BookingModel bookingDoc) async {
+  DocumentReference<Map<String, dynamic>>? doctorRef = bookingDoc.doctorRef;
+  if (doctorRef != null) {
+    String doctorId = doctorRef.id; // Extracting the document ID directly
+    DocumentSnapshot doctorSnapshot = await FirebaseFirestore.instance
+        .collection("Doctor")
+        .doc(doctorId)
+        .get();
+    return DoctorModel.fromMap(doctorSnapshot.data()!);
+  } else {
+    throw Exception("Doctor reference is null");
+  }
+}
+
 
 
 

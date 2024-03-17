@@ -28,13 +28,13 @@ class _OnBoarding1State extends State<OnBoarding1> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 12.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(context,
+              child:  Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: (){
+                    Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => SignIn()));
-                },
-                child: const Align(
-                  alignment: Alignment.topRight,
+                  },
                   child: Text(
                     "Skip",
                     style: TextStyle(

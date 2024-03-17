@@ -30,22 +30,22 @@ class _ProfileState extends State<Profile> {
           ),
           Row(
             children: [
-              Container(
-                width: 35,
-                height: 35,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey.shade400)),
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 18,
-                ),
-              ),
+              // Container(
+              //   width: 35,
+              //   height: 35,
+              //   decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       border: Border.all(color: Colors.grey.shade400)),
+              //   child: Icon(
+              //     Icons.arrow_back,
+              //     size: 18,
+              //   ),
+              // ),
               Expanded(
                   child: Text(
                 textAlign: TextAlign.center,
                 "Your Profile",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ))
             ],
           ),

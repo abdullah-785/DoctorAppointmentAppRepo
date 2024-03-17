@@ -3,6 +3,7 @@ import 'package:doctor_appointment_app/Models/booking_model.dart';
 import 'package:doctor_appointment_app/resources/components/cancelled_booking_Card.dart';
 import 'package:doctor_appointment_app/resources/components/completed_booking.dart';
 import 'package:doctor_appointment_app/resources/components/upcomming_booking_card.dart';
+import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -24,6 +25,8 @@ class _BookingsState extends State<Bookings> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+            automaticallyImplyLeading: false,
+
             centerTitle: true,
             foregroundColor: Colors.black,
             elevation: 0,
@@ -47,90 +50,128 @@ class _BookingsState extends State<Bookings> {
                   ),
                 ])),
         body: TabBarView(children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // BookingCardUpcomming(width: width),
-
-
-                StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('Oppointments').where('status',isEqualTo: 'Upcomming').snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return SpinKitCircle(size: 35, color: Colors.blue);
-                  }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-      
-                  if (!snapshot.hasData) {
-                    return const Text('No data found');
-                  }
-      
-                  final List<BookingModel> booking =
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
-                    return BookingModel.fromMap(
-                        document.data() as Map<String, dynamic>);
-                  }).toList();
-      
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width * 1,
-                    height: 500,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: booking.length,
-                      itemBuilder: (context, index) {
-                        return BookingCardUpcomming(width: width, bookingDoc: booking[index],);
-                      },
-                    ),
-                  );
+          StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Oppointments')
+              .where('status',isEqualTo: 'Upcomming')
+              .where('userRef', isEqualTo: 'Users/${Utils.uid}').orderBy('createAt', descending: true)
+              .snapshots(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SpinKitCircle(size: 35, color: Colors.blue);
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            
+            if (!snapshot.hasData) {
+              return const Text('No data found');
+            }
+            
+            final List<BookingModel> booking =
+                snapshot.data!.docs.map((DocumentSnapshot document) {
+              return BookingModel.fromMap(
+                  document.data() as Map<String, dynamic>);
+            }).toList();
+            
+            return SizedBox(
+              width: MediaQuery.of(context).size.width * 1,
+              height: MediaQuery.of(context).size.height * 1,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: booking.length,
+                itemBuilder: (context, index) {
+                  return BookingCardUpcoming(width: width, bookingDoc: booking[index],);
                 },
               ),
-                
-              ],
-            ),
-          ),
+            );
+          },
+                      ),
+          
 
           //Completed
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                BookingCardCompleted(width: width),
-                BookingCardCompleted(width: width),
-                BookingCardCompleted(width: width),
-                BookingCardCompleted(width: width),
-              ],
-            ),
-          ),
+          StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Oppointments')
+              .where('status', isEqualTo: 'Completed')
+              .where('userRef', isEqualTo: 'Users/${Utils.uid}').orderBy('createAt', descending: true)
+              .snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SpinKitCircle(size: 35, color: Colors.blue);
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+                    
+            if (!snapshot.hasData) {
+              return const Text('No data found');
+            }
+                    
+            final List<BookingModel> booking = snapshot.data!.docs.map((DocumentSnapshot document) {
+              return BookingModel.fromMap(document.data() as Map<String, dynamic>);
+            }).toList();
+                    
+            return SizedBox(
+              width: MediaQuery.of(context).size.width * 1,
+              height: MediaQuery.of(context).size.height * 1,
+              child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: booking.length,
+                    itemBuilder: (context, index) {
+                      return BookingCardCompleted(width: width, bookingDoc: booking[index],);
+                    },
+              ),
+            );
+          },
+                    ),
 
           //Cancelled
 
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                BookingCardCancelled(
-                  width: width,
-                ),
-                BookingCardCancelled(
-                  width: width,
-                ),
-                BookingCardCancelled(
-                  width: width,
-                ),
-                BookingCardCancelled(
-                  width: width,
-                ),
-              ],
-            ),
-          )
+          StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Oppointments')
+              .where('status',isEqualTo: 'Cancelled')
+              .where('userRef', isEqualTo: 'Users/${Utils.uid}').orderBy('createAt', descending: true)
+              .snapshots(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SpinKitCircle(size: 35, color: Colors.blue);
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            
+            if (!snapshot.hasData) {
+              return const Text('No data found');
+            }
+            
+            final List<BookingModel> booking =
+                snapshot.data!.docs.map((DocumentSnapshot document) {
+              return BookingModel.fromMap(
+                  document.data() as Map<String, dynamic>);
+            }).toList();
+            
+            return SizedBox(
+              width: MediaQuery.of(context).size.width * 1,
+              height: MediaQuery.of(context).size.height * 1,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: booking.length,
+                itemBuilder: (context, index) {
+                  return BookingCardCancelled(
+            width: width,
+            bookingDoc: booking[index],
+          );
+                  
+                  
+                },
+              ),
+            );
+          },
+                      )
         ]),
       ),
     );
