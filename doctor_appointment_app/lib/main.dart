@@ -1,3 +1,4 @@
+import 'package:doctor_appointment_app/Models/doctor_favorite.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/view/dumy.dart';
 import 'package:doctor_appointment_app/view/home_page.dart';
@@ -5,6 +6,7 @@ import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
+import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -57,6 +59,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => AuthViewModel()),
       ChangeNotifierProvider(create: (_) => BookOppointmentViewModel()),
+      ChangeNotifierProvider(create: (_) => DoctorFavoriteViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

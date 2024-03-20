@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/Models/doctor_favorite.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
+import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/doctor_details.dart';
+import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class SpecialistCard extends StatefulWidget {
   SpecialistCard({
@@ -22,6 +27,7 @@ class _SpecialistCardState extends State<SpecialistCard> {
 
   @override
   Widget build(BuildContext context) {
+    final favoriteViewModel = Provider.of<DoctorFavoriteViewModel>(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
@@ -99,9 +105,31 @@ class _SpecialistCardState extends State<SpecialistCard> {
                             // Spacer(),
                             Align(
                               alignment: Alignment.topRight,
-                              child: Icon(
-                                Icons.favorite_border_rounded,
-                                color: Colors.grey[500],
+                              child: InkWell(
+                                onTap: () async{
+                                  // final collection = await FirebaseFirestore.instance.collection("Favorite").doc().get();
+                                  // DoctorFavoriteModel doctorFavoriteModel = DoctorFavoriteModel(
+                                  //   createdAt: DateTime.now(),
+                                  //   userRef: FirebaseFirestore.instance.collection("Users").doc(Utils.uid),
+                                  //   doctorRef: FirebaseFirestore.instance.collection("Doctor").doc(widget.doctorDoc!.uid),
+
+                                  // );
+
+                                  // Map<String, dynamic> doctorMap = doctorFavoriteModel.toMap();
+                                  // DocumentReference ref = await FirebaseFirestore.instance.collection("Favorite").add(doctorMap);
+
+                                  // await ref.update({"uid": ref.id});
+                                  // kkl
+
+                                  favoriteViewModel.doctorLiked(widget.doctorDoc!, context);
+
+
+
+                                },
+                                child: Icon(
+                                  Icons.favorite_border_rounded,
+                                  color: Colors.grey[500],
+                                ),
                               ),
                             )
                           ],

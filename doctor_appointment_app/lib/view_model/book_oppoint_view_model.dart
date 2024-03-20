@@ -68,13 +68,9 @@ void bookOppointment(String doctorUid, BuildContext context) async {
   await documentReference.update({'uid': documentReference.id});
 
   setIsLoading(false);
-  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Bookings()));
-  Navigator.pushReplacement<void, void>(
-    context,
-    MaterialPageRoute<void>(
-      builder: (BuildContext context) => const Bookings(),
-    ),
-  );
+ 
+  // );
+  Navigator.push(context, MaterialPageRoute(builder: (context) => Bookings()));
 
   } catch (e) {
     setIsLoading(false);

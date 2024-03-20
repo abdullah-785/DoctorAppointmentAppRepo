@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/Models/booking_model.dart';
+import 'package:doctor_appointment_app/Models/doctor_favorite.dart';
 import 'package:doctor_appointment_app/resources/components/hospital_card.dart';
 import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
+import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -48,6 +53,46 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
+
+                  StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Favorite')
+              .where('userRef', isEqualTo: 'Users/${Utils.uid}').snapshots(),
+              // .where('status',isEqualTo: 'Upcomming')
+              // .orderBy('createAt', descending: true)
+              
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SpinKitCircle(size: 35, color: Colors.blue);
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            
+            if (!snapshot.hasData) {
+              return const Text('No data found');
+            }
+            
+            final List<DoctorFavoriteModel> doctorFavorite =
+                snapshot.data!.docs.map((DocumentSnapshot document) {
+              return DoctorFavoriteModel.fromMap(
+                  document.data() as Map<String, dynamic>);
+            }).toList();
+            
+            return SizedBox(
+              width: MediaQuery.of(context).size.width * 1,
+              height: MediaQuery.of(context).size.height * 1,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: doctorFavorite.length,
+                itemBuilder: (context, index) {
+                  return SpecialistCard(width: width);
+                },
+              ),
+            );
+          },
+                      ),
                   // SpecialistCard(
                   //   width: width,
                   // ),
