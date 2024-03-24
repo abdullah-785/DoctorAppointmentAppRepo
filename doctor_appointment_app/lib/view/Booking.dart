@@ -25,7 +25,8 @@ class _BookingsState extends State<Bookings> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            automaticallyImplyLeading: false,
+
+            // automaticallyImplyLeading: false,
 
             centerTitle: true,
             foregroundColor: Colors.black,
@@ -51,132 +52,138 @@ class _BookingsState extends State<Bookings> {
                 ])),
         body: TabBarView(children: [
           StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Oppointments')
-              .where('status',isEqualTo: 'Upcomming')
-              .where('userRef', isEqualTo: 'Users/${Utils.uid}').orderBy('createAt', descending: true)
-              .snapshots(),
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SpinKitCircle(size: 35, color: Colors.blue);
-            }
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            
-            if (!snapshot.hasData) {
-              return const Text('No data found');
-            }
-            
-            final List<BookingModel> booking =
-                snapshot.data!.docs.map((DocumentSnapshot document) {
-              return BookingModel.fromMap(
-                  document.data() as Map<String, dynamic>);
-            }).toList();
-            
-            return SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 1,
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: booking.length,
-                itemBuilder: (context, index) {
-                  return BookingCardUpcoming(width: width, bookingDoc: booking[index],);
-                },
-              ),
-            );
-          },
-                      ),
-          
+            stream: FirebaseFirestore.instance
+                .collection('Oppointments')
+                .where('status', isEqualTo: 'Upcomming')
+                .where('userRef', isEqualTo: 'Users/${Utils.uid}')
+                .orderBy('createAt', descending: true)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SpinKitCircle(size: 35, color: Colors.blue);
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              if (!snapshot.hasData) {
+                return const Text('No data found');
+              }
+
+              final List<BookingModel> booking =
+                  snapshot.data!.docs.map((DocumentSnapshot document) {
+                return BookingModel.fromMap(
+                    document.data() as Map<String, dynamic>);
+              }).toList();
+
+              return SizedBox(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.height * 1,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: booking.length,
+                  itemBuilder: (context, index) {
+                    return BookingCardUpcoming(
+                      width: width,
+                      bookingDoc: booking[index],
+                    );
+                  },
+                ),
+              );
+            },
+          ),
 
           //Completed
           StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Oppointments')
-              .where('status', isEqualTo: 'Completed')
-              .where('userRef', isEqualTo: 'Users/${Utils.uid}').orderBy('createAt', descending: true)
-              .snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SpinKitCircle(size: 35, color: Colors.blue);
-            }
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-                    
-            if (!snapshot.hasData) {
-              return const Text('No data found');
-            }
-                    
-            final List<BookingModel> booking = snapshot.data!.docs.map((DocumentSnapshot document) {
-              return BookingModel.fromMap(document.data() as Map<String, dynamic>);
-            }).toList();
-                    
-            return SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 1,
-              child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: booking.length,
-                    itemBuilder: (context, index) {
-                      return BookingCardCompleted(width: width, bookingDoc: booking[index],);
-                    },
-              ),
-            );
-          },
-                    ),
+            stream: FirebaseFirestore.instance
+                .collection('Oppointments')
+                .where('status', isEqualTo: 'Completed')
+                .where('userRef', isEqualTo: 'Users/${Utils.uid}')
+                .orderBy('createAt', descending: true)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SpinKitCircle(size: 35, color: Colors.blue);
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              if (!snapshot.hasData) {
+                return const Text('No data found');
+              }
+
+              final List<BookingModel> booking =
+                  snapshot.data!.docs.map((DocumentSnapshot document) {
+                return BookingModel.fromMap(
+                    document.data() as Map<String, dynamic>);
+              }).toList();
+
+              return SizedBox(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.height * 1,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: booking.length,
+                  itemBuilder: (context, index) {
+                    return BookingCardCompleted(
+                      width: width,
+                      bookingDoc: booking[index],
+                    );
+                  },
+                ),
+              );
+            },
+          ),
 
           //Cancelled
 
           StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Oppointments')
-              .where('status',isEqualTo: 'Cancelled')
-              .where('userRef', isEqualTo: 'Users/${Utils.uid}').orderBy('createAt', descending: true)
-              .snapshots(),
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SpinKitCircle(size: 35, color: Colors.blue);
-            }
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            
-            if (!snapshot.hasData) {
-              return const Text('No data found');
-            }
-            
-            final List<BookingModel> booking =
-                snapshot.data!.docs.map((DocumentSnapshot document) {
-              return BookingModel.fromMap(
-                  document.data() as Map<String, dynamic>);
-            }).toList();
-            
-            return SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 1,
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: booking.length,
-                itemBuilder: (context, index) {
-                  return BookingCardCancelled(
-            width: width,
-            bookingDoc: booking[index],
-          );
-                  
-                  
-                },
-              ),
-            );
-          },
-                      )
+            stream: FirebaseFirestore.instance
+                .collection('Oppointments')
+                .where('status', isEqualTo: 'Cancelled')
+                .where('userRef', isEqualTo: 'Users/${Utils.uid}')
+                .orderBy('createAt', descending: true)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SpinKitCircle(size: 35, color: Colors.blue);
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              if (!snapshot.hasData) {
+                return const Text('No data found');
+              }
+
+              final List<BookingModel> booking =
+                  snapshot.data!.docs.map((DocumentSnapshot document) {
+                return BookingModel.fromMap(
+                    document.data() as Map<String, dynamic>);
+              }).toList();
+
+              return SizedBox(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.height * 1,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: booking.length,
+                  itemBuilder: (context, index) {
+                    return BookingCardCancelled(
+                      width: width,
+                      bookingDoc: booking[index],
+                    );
+                  },
+                ),
+              );
+            },
+          )
         ]),
       ),
     );
   }
-
-
-  
 }

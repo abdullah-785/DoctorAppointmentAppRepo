@@ -1,4 +1,3 @@
-
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
@@ -20,12 +19,12 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).width * 1;
     final authViewModel = Provider.of<AuthViewModel>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -61,11 +60,9 @@ class _SignInState extends State<SignIn> {
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
               decoration: InputDecoration(
-                
                 prefixIcon: const Icon(Icons.email_outlined),
                 hintText: "example@gamil.com",
                 border: OutlineInputBorder(
-                  
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: Colors.black54, width: .4)),
                 focusedBorder: OutlineInputBorder(
@@ -92,15 +89,17 @@ class _SignInState extends State<SignIn> {
               obscureText: authViewModel.isShow,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.lock_outline),
-                suffixIcon: authViewModel.isShow == false?InkWell(
-                  onTap: (){
-                    authViewModel.setIsShow(true);
-                  },
-                  child: Icon(Icons.visibility)) :InkWell(
-                    onTap: (){
-                      authViewModel.setIsShow(false);
-                    },
-                    child: Icon(Icons.visibility_off)),
+                suffixIcon: authViewModel.isShow == false
+                    ? InkWell(
+                        onTap: () {
+                          authViewModel.setIsShow(true);
+                        },
+                        child: Icon(Icons.visibility))
+                    : InkWell(
+                        onTap: () {
+                          authViewModel.setIsShow(false);
+                        },
+                        child: Icon(Icons.visibility_off)),
                 hintText: "Passoword",
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -136,9 +135,9 @@ class _SignInState extends State<SignIn> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
                   onPressed: () async {
-                    authViewModel.signIn(_emailController.text, _passwordController.text, context);
+                    authViewModel.signIn(_emailController.text,
+                        _passwordController.text, context);
                     // authViewModel.authenticatedUser();
-                    
 
                     // try {
                     //   await _auth.signInWithEmailAndPassword(
@@ -152,13 +151,15 @@ class _SignInState extends State<SignIn> {
                     //   print(e);
                     // }
                   },
-                  child: authViewModel.isLoading == false? Text(
-                    "Sign In",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ): SpinKitCircle(size: 35, color: Colors.white)),
+                  child: authViewModel.isLoading == false
+                      ? Text(
+                          "Sign In",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        )
+                      : SpinKitCircle(size: 35, color: Colors.white)),
             ),
             SizedBox(
               height: 10,

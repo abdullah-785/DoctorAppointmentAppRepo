@@ -17,7 +17,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,33 +103,6 @@ class _ProfileState extends State<Profile> {
               Expanded(
                   child: Text(
                 "Your Profile",
-              )),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: Colors.blue,
-              )
-            ],
-          ),
-          Divider(
-            color: Colors.grey.shade300,
-          ),
-
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              Icon(
-                Icons.favorite_outline_rounded,
-                color: Colors.blue,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                  child: Text(
-                "Favourite",
               )),
               Icon(
                 Icons.arrow_forward_ios_rounded,
@@ -237,13 +209,13 @@ class _ProfileState extends State<Profile> {
               ),
               Expanded(
                   child: InkWell(
-                    onTap: (){
-                      logout(context);
-                    },
-                    child: Text(
-                                    "Logout",
-                                  ),
-                  )),
+                onTap: () {
+                  logout(context);
+                },
+                child: Text(
+                  "Logout",
+                ),
+              )),
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 15,
@@ -266,4 +238,3 @@ class _ProfileState extends State<Profile> {
         .pushReplacement(MaterialPageRoute(builder: (context) => SignIn()));
   }
 }
-

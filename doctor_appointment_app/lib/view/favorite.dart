@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/booking_model.dart';
 import 'package:doctor_appointment_app/Models/doctor_favorite.dart';
+import 'package:doctor_appointment_app/Models/hospital_favorite_model.dart';
+import 'package:doctor_appointment_app/resources/components/favorite_hospital.dart';
+import 'package:doctor_appointment_app/resources/components/favorite_specialist_card.dart';
 import 'package:doctor_appointment_app/resources/components/hospital_card.dart';
 import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
@@ -23,7 +26,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       initialIndex: 0,
       length: 2,
       child: Scaffold(
-        
         backgroundColor: Colors.white,
         appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -53,46 +55,50 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-
                   StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Favorite')
-              .where('userRef', isEqualTo: 'Users/${Utils.uid}').snapshots(),
-              // .where('status',isEqualTo: 'Upcomming')
-              // .orderBy('createAt', descending: true)
-              
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SpinKitCircle(size: 35, color: Colors.blue);
-            }
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            
-            if (!snapshot.hasData) {
-              return const Text('No data found');
-            }
-            
-            final List<DoctorFavoriteModel> doctorFavorite =
-                snapshot.data!.docs.map((DocumentSnapshot document) {
-              return DoctorFavoriteModel.fromMap(
-                  document.data() as Map<String, dynamic>);
-            }).toList();
-            
-            return SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 1,
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: doctorFavorite.length,
-                itemBuilder: (context, index) {
-                  return SpecialistCard(width: width);
-                },
-              ),
-            );
-          },
-                      ),
+                    stream: FirebaseFirestore.instance
+                        .collection('Favorite')
+                        .where('userRef', isEqualTo: 'Users/${Utils.uid}')
+                        .snapshots(),
+                    // .snapshots(),
+
+                    // .where('status',isEqualTo: 'Upcomming')
+                    // .orderBy('createAt', descending: true)
+
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return SpinKitCircle(size: 35, color: Colors.blue);
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData) {
+                        return const Text('No data found');
+                      }
+
+                      final List<DoctorFavoriteModel> doctorFavorite =
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        return DoctorFavoriteModel.fromMap(
+                            document.data() as Map<String, dynamic>);
+                      }).toList();
+
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: MediaQuery.of(context).size.height * 1,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: doctorFavorite.length,
+                          itemBuilder: (context, index) {
+                            return FavoriteSpecialistCard(
+                                width: width,
+                                favoriteDoc: doctorFavorite[index]);
+                          },
+                        ),
+                      );
+                    },
+                  ),
                   // SpecialistCard(
                   //   width: width,
                   // ),
@@ -115,6 +121,52 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('FavoriteHospital')
+                        .snapshots(),
+                    // .where('userRef', isEqualTo: 'Users/${Utils.uid}')
+
+                    // .snapshots(),
+
+                    // .where('status',isEqualTo: 'Upcomming')
+                    // .orderBy('createAt', descending: true)
+
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return SpinKitCircle(size: 35, color: Colors.blue);
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData) {
+                        return const Text('No data found');
+                      }
+
+                      final List<HospitalFavoriteModel> hospitalFavorite =
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        return HospitalFavoriteModel.fromMap(
+                            document.data() as Map<String, dynamic>);
+                      }).toList();
+
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: MediaQuery.of(context).size.height * 1,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: hospitalFavorite.length,
+                          itemBuilder: (context, index) {
+                            return FavoriteHospitalCard(
+                              widthParam: width * 1,
+                              hospitalFavDoc: hospitalFavorite[index],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                   // Padding(
                   //   padding: const EdgeInsets.only(top: 16.0),
                   //   child: HospitalCard(
