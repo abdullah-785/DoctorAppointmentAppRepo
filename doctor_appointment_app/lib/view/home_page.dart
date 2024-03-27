@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
@@ -5,6 +6,8 @@ import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/resources/components/hospital_card.dart';
 import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
+import 'package:doctor_appointment_app/view/Booking.dart';
+import 'package:doctor_appointment_app/view/all_hospital_doctor.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
 
@@ -116,12 +119,21 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                       child: Align(
                           alignment: Alignment.topRight,
-                          child: Text(
-                            "See All",
-                            style: TextStyle(fontSize: 12, color: Colors.blue),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => Bookings())));
+                            },
+                            child: Text(
+                              "See All",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.blue),
+                            ),
                           )))
                 ],
               ),
@@ -245,7 +257,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 20,
               ),
-              const Row(
+              Row(
                 children: [
                   Text(
                     "Doctor Speciality",
@@ -254,9 +266,20 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                       child: Align(
                           alignment: Alignment.topRight,
-                          child: Text(
-                            "See All",
-                            style: TextStyle(fontSize: 12, color: Colors.blue),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AllDoctorHospital(
+                                          title: "Doctors",
+                                          isHospital: false)));
+                            },
+                            child: Text(
+                              "See All",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.blue),
+                            ),
                           )))
                 ],
               ),
@@ -269,20 +292,29 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Column(
                     children: [
-                      Container(
-                          width: 55,
-                          height: 55,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(255, 219, 234, 254),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(0.0),
-                            child: Icon(
-                              Icons.favorite,
-                              color: Colors.blue,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllDoctorHospital(
+                                      title: "Doctors", isHospital: false)));
+                        },
+                        child: Container(
+                            width: 55,
+                            height: 55,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 219, 234, 254),
                             ),
-                          )),
+                            child: const Padding(
+                              padding: EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.favorite,
+                                color: Colors.blue,
+                              ),
+                            )),
+                      ),
                       const Text(
                         "Dentist",
                         style: TextStyle(
@@ -294,20 +326,29 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Column(
                     children: [
-                      Container(
-                          width: 55,
-                          height: 55,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(255, 219, 234, 254),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(14.0),
-                            child: Icon(
-                              Icons.medical_services_rounded,
-                              color: Colors.blue,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllDoctorHospital(
+                                      title: "Doctors", isHospital: false)));
+                        },
+                        child: Container(
+                            width: 55,
+                            height: 55,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 219, 234, 254),
                             ),
-                          )),
+                            child: const Padding(
+                              padding: EdgeInsets.all(14.0),
+                              child: Icon(
+                                Icons.medical_services_rounded,
+                                color: Colors.blue,
+                              ),
+                            )),
+                      ),
                       const Text(
                         "Cardiologist",
                         style: TextStyle(
@@ -319,20 +360,29 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Column(
                     children: [
-                      Container(
-                          width: 55,
-                          height: 55,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(255, 219, 234, 254),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(14.0),
-                            child: Icon(
-                              Icons.earbuds,
-                              color: Colors.blue,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllDoctorHospital(
+                                      title: "Doctors", isHospital: false)));
+                        },
+                        child: Container(
+                            width: 55,
+                            height: 55,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 219, 234, 254),
                             ),
-                          )),
+                            child: const Padding(
+                              padding: EdgeInsets.all(14.0),
+                              child: Icon(
+                                Icons.earbuds,
+                                color: Colors.blue,
+                              ),
+                            )),
+                      ),
                       const Text(
                         "Orthopnea",
                         style: TextStyle(
@@ -344,20 +394,29 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Column(
                     children: [
-                      Container(
-                          width: 55,
-                          height: 55,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(255, 219, 234, 254),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(14.0),
-                            child: Icon(
-                              Icons.wifi_tethering_error_rounded_sharp,
-                              color: Colors.blue,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllDoctorHospital(
+                                      title: "Doctors", isHospital: false)));
+                        },
+                        child: Container(
+                            width: 55,
+                            height: 55,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 219, 234, 254),
                             ),
-                          )),
+                            child: const Padding(
+                              padding: EdgeInsets.all(14.0),
+                              child: Icon(
+                                Icons.wifi_tethering_error_rounded_sharp,
+                                color: Colors.blue,
+                              ),
+                            )),
+                      ),
                       const Text(
                         "Neurologist",
                         style: TextStyle(
@@ -372,7 +431,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 30,
               ),
-              const Row(
+              Row(
                 children: [
                   Text(
                     "Nearby Hospitals",
@@ -381,9 +440,21 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                       child: Align(
                           alignment: Alignment.topRight,
-                          child: Text(
-                            "See All",
-                            style: TextStyle(fontSize: 12, color: Colors.blue),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AllDoctorHospital(
+                                            title: 'Hospital',
+                                            isHospital: true,
+                                          )));
+                            },
+                            child: Text(
+                              "See All",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.blue),
+                            ),
                           )))
                 ],
               ),
@@ -440,7 +511,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 30,
               ),
-              const Row(
+              Row(
                 children: [
                   Text(
                     "Top Specialist",
@@ -449,9 +520,20 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                       child: Align(
                           alignment: Alignment.topRight,
-                          child: Text(
-                            "See All",
-                            style: TextStyle(fontSize: 12, color: Colors.blue),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AllDoctorHospital(
+                                          title: "Doctors",
+                                          isHospital: false)));
+                            },
+                            child: Text(
+                              "See All",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.blue),
+                            ),
                           )))
                 ],
               ),

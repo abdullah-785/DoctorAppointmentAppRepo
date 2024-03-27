@@ -22,7 +22,7 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  setIsShow(value){
+  setIsShow(value) {
     isShow = value;
     notifyListeners();
   }
@@ -51,7 +51,8 @@ class AuthViewModel with ChangeNotifier {
         userModel.uid = user!.uid;
         userModel.name = name;
         userModel.email = email.trim().toLowerCase();
-        userModel.image = "https://firebasestorage.googleapis.com/v0/b/doctor-appointment-8be7f.appspot.com/o/userImage%2Fistockphoto-1470505351-612x612.jpg?alt=media&token=ff83d33c-9b9d-4c5c-ba9f-68476427d5c0";
+        userModel.image =
+            "https://firebasestorage.googleapis.com/v0/b/doctor-appointment-8be7f.appspot.com/o/userImage%2Fistockphoto-1470505351-612x612.jpg?alt=media&token=ff83d33c-9b9d-4c5c-ba9f-68476427d5c0";
         userModel.role = "user";
 
         await firebaseFirestore
@@ -59,11 +60,12 @@ class AuthViewModel with ChangeNotifier {
             .doc(user.uid)
             .set(userModel.toMap())
             .then((value) => {
-              //Save logged in user in shared preferences
-              sharedPref(),
+                  //Save logged in user in shared preferences
+                  sharedPref(),
                   setLoading(false),
+
                   /// navigate to next page
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => ReadyForHome()))
                 });
       } else if (password != confirmPasswrod) {
@@ -101,11 +103,10 @@ class AuthViewModel with ChangeNotifier {
             email: email, password: password);
         // Utils.FlushBarErrorMessage("Logged In Successfully", context);
 
-        
         //Save logged in user in shared preferences
-          sharedPref();
+        sharedPref();
         setLoading(false);
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => ReadyForHome()));
 
         // ReadyForHome()
@@ -122,10 +123,9 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
- void sharedPref() async{
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setBool('isLoggedIn', true);
-  print("Shared Preference is saved");
-
- }
+  void sharedPref() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+    print("Shared Preference is saved");
+  }
 }

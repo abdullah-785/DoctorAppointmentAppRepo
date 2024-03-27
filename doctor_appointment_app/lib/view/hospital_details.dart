@@ -7,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class HospitalDetails extends StatefulWidget {
-  
-
-   HospitalDetails({super.key, required this.hospitalDoc});
+  HospitalDetails({super.key, required this.hospitalDoc});
 
   HospitalModel hospitalDoc;
 
@@ -41,12 +39,15 @@ class _HospitalDetailsState extends State<HospitalDetails>
             children: [
               Stack(children: [
                 Container(
-                    width: width * 1,
-                    height: 250,
-                    child:  Image.network(widget.hospitalDoc.image.toString())),
+                  width: width * 1,
+                  height: 250,
+                  child: Image.network(
+                    widget.hospitalDoc.image.toString(),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 Padding(
-                  padding:
-                       EdgeInsets.only(top: 40.0, left: 16, right: 16),
+                  padding: EdgeInsets.only(top: 40.0, left: 16, right: 16),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -147,7 +148,7 @@ class _HospitalDetailsState extends State<HospitalDetails>
                         const SizedBox(
                           height: 20,
                         ),
-                         Row(
+                        Row(
                           // mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
