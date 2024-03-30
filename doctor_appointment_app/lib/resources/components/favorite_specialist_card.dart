@@ -374,8 +374,8 @@ class _FavoriteSpecialistCardState extends State<FavoriteSpecialistCard> {
                                             widget.favoriteDoc);
                                       },
                                       child: Icon(
-                                        Icons.favorite_border_rounded,
-                                        color: Colors.grey[500],
+                                        Icons.favorite,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ),

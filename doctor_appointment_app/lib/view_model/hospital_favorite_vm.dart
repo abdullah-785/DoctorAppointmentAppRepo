@@ -51,4 +51,27 @@ class HospitalFavoriteViewModel with ChangeNotifier {
       print("Error deleting favorite document: $e");
     }
   }
+
+  Stream<bool> CheckLikedOrNot(HospitalModel fav) {
+    try {
+      DocumentReference<Map<String, dynamic>> hospitalRef =
+          FirebaseFirestore.instance.collection("Hospital").doc(fav.uid)
+              as DocumentReference<Map<String, dynamic>>;
+
+      String hospitalPath = hospitalRef.path;
+
+      return FirebaseFirestore.instance
+          .collection("FavoriteHospital")
+          .where('hospitalRef', isEqualTo: hospitalPath)
+          .snapshots()
+          .map((snapshot) => snapshot.docs.isNotEmpty)
+          .handleError((error) {
+        print("Error checking favorite: $error");
+        return false;
+      });
+    } catch (e) {
+      print("Error checking favorite: $e");
+      return Stream.value(false);
+    }
+  }
 }

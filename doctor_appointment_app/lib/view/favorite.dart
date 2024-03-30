@@ -28,7 +28,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            automaticallyImplyLeading: false,
+            // automaticallyImplyLeading: false,
             centerTitle: true,
             foregroundColor: Colors.black,
             elevation: 0,

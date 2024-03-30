@@ -47,4 +47,27 @@ class DoctorFavoriteViewModel with ChangeNotifier {
       print("Error deleting favorite document: $e");
     }
   }
+
+  Stream<bool> CheckLikedOrNot(DoctorModel fav) {
+    try {
+      DocumentReference<Map<String, dynamic>> doctorRef =
+          FirebaseFirestore.instance.collection("Doctor").doc(fav.uid)
+              as DocumentReference<Map<String, dynamic>>;
+
+      String doctorPath = doctorRef.path;
+
+      return FirebaseFirestore.instance
+          .collection("Favorite")
+          .where('doctorRef', isEqualTo: doctorPath)
+          .snapshots()
+          .map((snapshot) => snapshot.docs.isNotEmpty)
+          .handleError((error) {
+        print("Error checking favorite: $error");
+        return false;
+      });
+    } catch (e) {
+      print("Error checking favorite: $e");
+      return Stream.value(false);
+    }
+  }
 }

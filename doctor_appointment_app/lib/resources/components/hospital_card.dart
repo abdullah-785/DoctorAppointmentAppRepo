@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
+import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/hospital_details.dart';
 import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class HospitalCard extends StatefulWidget {
@@ -67,8 +70,6 @@ class _HospitalCardState extends State<HospitalCard> {
                         child: InkWell(
                           onTap: () {
                             //here to create favorite Hospital
-                            hospitalViewModel.hospitalLiked(
-                                widget.hospitalModel!, context);
                           },
                           child: Container(
                             width: 35,
@@ -77,9 +78,52 @@ class _HospitalCardState extends State<HospitalCard> {
                               shape: BoxShape.circle,
                               color: Colors.white.withOpacity(.6),
                             ),
-                            child: Icon(
-                              Icons.favorite_border,
-                              color: Colors.white,
+                            child: StreamBuilder<bool>(
+                              stream: hospitalViewModel.CheckLikedOrNot(
+                                  widget.hospitalModel!),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return SpinKitThreeBounce(
+                                    color: Colors.blue,
+                                    size: 10,
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text("Error ${snapshot.error}");
+                                } else {
+                                  return snapshot.data == false
+                                      ? InkWell(
+                                          onTap: () async {
+                                            // favoriteViewModel.doctorLiked(
+                                            //   widget.doctorDoc!,
+                                            //   context,
+                                            // );
+
+                                            hospitalViewModel.hospitalLiked(
+                                                widget.hospitalModel!, context);
+                                          },
+                                          child: Icon(
+                                            Icons.favorite_border_rounded,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    FavoriteScreen(),
+                                              ),
+                                            );
+                                            // favoriteViewModel.deleteFavoriteDoctor(favoriteDoc)
+                                          },
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: Colors.white,
+                                          ));
+                                }
+                              },
                             ),
                           ),
                         ),

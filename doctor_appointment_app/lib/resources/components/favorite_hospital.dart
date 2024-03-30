@@ -103,7 +103,7 @@ class _FavoriteHospitalCardState extends State<FavoriteHospitalCard> {
                                         color: Colors.white.withOpacity(.6),
                                       ),
                                       child: Icon(
-                                        Icons.favorite_border,
+                                        Icons.favorite,
                                         color: Colors.white,
                                       ),
                                     ),
