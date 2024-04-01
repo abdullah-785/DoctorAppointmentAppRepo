@@ -4,13 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
+import 'package:doctor_appointment_app/view/help_center.dart';
+import 'package:doctor_appointment_app/view/privacy_policy.dart';
+import 'package:doctor_appointment_app/view/setting.dart';
+import 'package:doctor_appointment_app/view/update_password.dart';
+import 'package:doctor_appointment_app/view/your_profile.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
+import 'package:doctor_appointment_app/view_model/profile_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  Profile({super.key});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -19,37 +27,19 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    final profileViewModel = Provider.of<ProfileViewModel>(context);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text("Profile"),
+        centerTitle: true,
+      ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(children: [
           SizedBox(
             height: 30,
-          ),
-          Row(
-            children: [
-              // Container(
-              //   width: 35,
-              //   height: 35,
-              //   decoration: BoxDecoration(
-              //       shape: BoxShape.circle,
-              //       border: Border.all(color: Colors.grey.shade400)),
-              //   child: Icon(
-              //     Icons.arrow_back,
-              //     size: 18,
-              //   ),
-              // ),
-              Expanded(
-                  child: Text(
-                textAlign: TextAlign.center,
-                "Your Profile",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ))
-            ],
-          ),
-          SizedBox(
-            height: 40,
           ),
 
           Stack(alignment: Alignment.bottomRight, children: [
@@ -91,25 +81,31 @@ class _ProfileState extends State<Profile> {
             height: 60,
           ),
 
-          Row(
-            children: [
-              Icon(
-                Icons.person,
-                color: Colors.blue,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                  child: Text(
-                "Your Profile",
-              )),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: Colors.blue,
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => YourProfile()));
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.person,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: Text(
+                  "Your Profile",
+                )),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: Colors.blue,
+                )
+              ],
+            ),
           ),
           Divider(
             color: Colors.grey.shade300,
@@ -118,25 +114,31 @@ class _ProfileState extends State<Profile> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Icon(
-                Icons.settings,
-                color: Colors.blue,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                  child: Text(
-                "Settings",
-              )),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: Colors.blue,
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Setting()));
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.settings,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: Text(
+                  "Setting",
+                )),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: Colors.blue,
+                )
+              ],
+            ),
           ),
           Divider(
             color: Colors.grey.shade300,
@@ -144,25 +146,31 @@ class _ProfileState extends State<Profile> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Icon(
-                Icons.info_outline,
-                color: Colors.blue,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                  child: Text(
-                "Help Center",
-              )),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: Colors.blue,
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HelpCenter()));
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: Text(
+                  "Help Center",
+                )),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: Colors.blue,
+                )
+              ],
+            ),
           ),
           Divider(
             color: Colors.grey.shade300,
@@ -171,25 +179,31 @@ class _ProfileState extends State<Profile> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Icon(
-                Icons.lock_outline_rounded,
-                color: Colors.blue,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                  child: Text(
-                "Privacy Policy",
-              )),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: Colors.blue,
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.lock_outline_rounded,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: Text(
+                  "Privacy Policy",
+                )),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: Colors.blue,
+                )
+              ],
+            ),
           ),
           Divider(
             color: Colors.grey.shade300,
@@ -208,9 +222,9 @@ class _ProfileState extends State<Profile> {
                 width: 10,
               ),
               Expanded(
-                  child: InkWell(
+                  child: GestureDetector(
                 onTap: () {
-                  logout(context);
+                  profileViewModel.logout(context);
                 },
                 child: Text(
                   "Logout",
@@ -229,12 +243,12 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('isLoggedIn');
+  // Future<void> logout(BuildContext context) async {
+  //   await FirebaseAuth.instance.signOut();
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.remove('isLoggedIn');
 
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => SignIn()));
-  }
+  //   Navigator.of(context)
+  //       .pushReplacement(MaterialPageRoute(builder: (context) => SignIn()));
+  // }
 }

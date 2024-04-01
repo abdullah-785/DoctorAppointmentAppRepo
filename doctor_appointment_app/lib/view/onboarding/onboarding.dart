@@ -1,8 +1,9 @@
-
 import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class OnBoarding1 extends StatefulWidget {
   const OnBoarding1({super.key});
@@ -28,12 +29,12 @@ class _OnBoarding1State extends State<OnBoarding1> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 12.0),
-              child:  Align(
+              child: Align(
                 alignment: Alignment.topRight,
-                child: InkWell(
-                  onTap: (){
+                child: GestureDetector(
+                  onTap: () {
                     Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => SignIn()));
+                        MaterialPageRoute(builder: (context) => SignIn()));
                   },
                   child: Text(
                     "Skip",
@@ -238,7 +239,7 @@ class _OnBoarding1State extends State<OnBoarding1> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       if (index == 0) {
                         //
@@ -293,7 +294,7 @@ class _OnBoarding1State extends State<OnBoarding1> {
                       )
                     ],
                   ),
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       if (index == 2) {
                         Navigator.pushReplacement(context,

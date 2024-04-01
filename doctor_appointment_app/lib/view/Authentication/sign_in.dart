@@ -56,19 +56,26 @@ class _SignInState extends State<SignIn> {
             SizedBox(
               height: 4,
             ),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.email_outlined),
-                hintText: "example@gamil.com",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.black54, width: .4)),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Colors.black54, width: .4),
-                  borderRadius: BorderRadius.circular(8.0),
+            Container(
+              height: 56,
+              child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                controller: _emailController,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 0, bottom: 0, left: 16),
+                  prefixIcon: const Icon(
+                    Icons.email_outlined,
+                    size: 22,
+                  ),
+                  hintText: "example@gamil.com",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.black54, width: .4)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black54, width: .4),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
             ),
@@ -84,30 +91,43 @@ class _SignInState extends State<SignIn> {
             SizedBox(
               height: 4,
             ),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: authViewModel.isShow,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.lock_outline),
-                suffixIcon: authViewModel.isShow == false
-                    ? InkWell(
-                        onTap: () {
-                          authViewModel.setIsShow(true);
-                        },
-                        child: Icon(Icons.visibility))
-                    : InkWell(
-                        onTap: () {
-                          authViewModel.setIsShow(false);
-                        },
-                        child: Icon(Icons.visibility_off)),
-                hintText: "Passoword",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.black54, width: .4)),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Colors.black54, width: .4),
-                  borderRadius: BorderRadius.circular(8.0),
+            Container(
+              height: 56,
+              child: TextFormField(
+                controller: _passwordController,
+                obscureText: authViewModel.isShow,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 0, bottom: 0, left: 16),
+                  prefixIcon: const Icon(
+                    Icons.lock_outline,
+                    size: 22,
+                  ),
+                  suffixIcon: authViewModel.isShow == false
+                      ? InkWell(
+                          onTap: () {
+                            authViewModel.setIsShow(true);
+                          },
+                          child: Icon(
+                            Icons.visibility,
+                            size: 22,
+                          ))
+                      : InkWell(
+                          onTap: () {
+                            authViewModel.setIsShow(false);
+                          },
+                          child: Icon(
+                            Icons.visibility_off,
+                            size: 22,
+                          )),
+                  hintText: "Passoword",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.black54, width: .4)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black54, width: .4),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
             ),

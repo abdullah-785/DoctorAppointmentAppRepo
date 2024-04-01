@@ -4,8 +4,10 @@ class UserModel {
   String? email;
   String? password;
   String? image;
-  // String? phone;
-  // String? address;
+  String? phone;
+  String? dob;
+  String? gender;
+  String? address;
   String? role;
 
   UserModel(
@@ -14,8 +16,10 @@ class UserModel {
       this.email,
       this.password,
       this.image,
-      // this.phone,
-      // this.address,
+      this.dob,
+      this.gender,
+      this.phone,
+      this.address,
       this.role});
 
   factory UserModel.fromMap(map) {
@@ -25,8 +29,10 @@ class UserModel {
         email: map['email'],
         password: map['password'],
         image: map['image'],
-        // phone: map['phone'],
-        // address: map['address'],
+        dob: map['dob'],
+        gender: map['gender'],
+        phone: map['phone'],
+        address: map['address'],
         role: map['role']);
   }
 
@@ -37,8 +43,10 @@ class UserModel {
       'email': email,
       'password': password,
       'image': image,
-      // 'phone': phone,
-      // 'address': address,
+      'dob': dob,
+      'gender': gender,
+      'phone': phone,
+      'address': address,
       'role': role
     };
   }

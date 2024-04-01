@@ -1,8 +1,12 @@
+import 'dart:ffi';
+
+import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HospitalReview extends StatefulWidget {
-  const HospitalReview({super.key});
+  HospitalReview({super.key, required this.hospitalDoc});
+  HospitalModel hospitalDoc;
 
   @override
   State<HospitalReview> createState() => _HospitalReviewState();
@@ -14,6 +18,8 @@ class _HospitalReviewState extends State<HospitalReview>
 
 // controller object
   late TabController _tabController;
+  final TextEditingController _reviewController = TextEditingController();
+  Double? ratingController;
   @override
   void initState() {
     // TODO: implement initState
@@ -34,9 +40,7 @@ class _HospitalReviewState extends State<HospitalReview>
                 Container(
                     width: width * 1,
                     height: 230,
-                    child: const Image(
-                        fit: BoxFit.cover,
-                        image: AssetImage("images/hospital1.jpg"))),
+                    child: Image.network(widget.hospitalDoc.image.toString())),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 30.0, left: 16, right: 16),
@@ -121,14 +125,14 @@ class _HospitalReviewState extends State<HospitalReview>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Serenty Wellness Clinic",
+                          "${widget.hospitalDoc.name}",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
-                          "Dental, Skin Care, Eye Care",
+                          "${widget.hospitalDoc.specializeIn}",
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -148,7 +152,7 @@ class _HospitalReviewState extends State<HospitalReview>
                               width: 8,
                             ),
                             Text(
-                              "8502 Preston Rd, Inglewood, Maine 9870",
+                              "${widget.hospitalDoc.address}",
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -199,6 +203,7 @@ class _HospitalReviewState extends State<HospitalReview>
                               height: 20,
                             ),
                             RatingBar.builder(
+                              unratedColor: Colors.grey[350],
                               itemSize: 50,
                               initialRating: 4.5,
                               minRating: 1,
@@ -212,6 +217,9 @@ class _HospitalReviewState extends State<HospitalReview>
                               ),
                               onRatingUpdate: (rating) {
                                 print(rating);
+                                setState(() {
+                                  ratingController = rating as Double?;
+                                });
                               },
                             ),
                             SizedBox(
@@ -227,11 +235,14 @@ class _HospitalReviewState extends State<HospitalReview>
                               height: 5,
                             ),
                             TextFormField(
+                              controller: _reviewController,
                               maxLines: 4,
                               minLines: 4,
                               decoration: InputDecoration(
                                   hintText: "Enter here",
                                   border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.green.withOpacity(0.5)),
                                       borderRadius: BorderRadius.circular(12))),
                             )
                           ],

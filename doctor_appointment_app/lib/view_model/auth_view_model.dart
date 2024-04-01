@@ -15,7 +15,7 @@ class AuthViewModel with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isLoading = false;
-  bool isShow = false;
+  bool isShow = true;
 
   setLoading(value) {
     isLoading = value;
@@ -26,6 +26,28 @@ class AuthViewModel with ChangeNotifier {
     isShow = value;
     notifyListeners();
   }
+
+  // void loggedInUser() {
+  //   UserModel loggedIn = UserModel();
+  //   User? user = FirebaseAuth.instance.currentUser;
+  //   FirebaseFirestore.instance
+  //       .collection("Users")
+  //       .doc(user!.uid)
+  //       .get()
+  //       .then((value) {
+  //     loggedIn = UserModel.fromMap(value.data());
+  //     print(loggedIn.email);
+  //     Utils.name = loggedIn.name;
+  //     Utils.email = loggedIn.email;
+  //     Utils.image = loggedIn.image;
+  //     Utils.uid = loggedIn.uid;
+  //     Utils.role = loggedIn.role;
+  //     Utils.phone = loggedIn.phone;
+  //     Utils.dob = loggedIn.dob;
+  //     Utils.gender = loggedIn.gender;
+  //     Utils.address = loggedIn.address;
+  //   });
+  // }
 
   Future<void> signUp(String email, String password, String confirmPasswrod,
       String name, BuildContext context) async {

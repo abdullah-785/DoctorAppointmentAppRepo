@@ -447,7 +447,11 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                HospitalReview()));
+                                                                HospitalReview(
+                                                                  hospitalDoc:
+                                                                      widget
+                                                                          .hospitalDoc,
+                                                                )));
                                                   },
                                                   child: const Row(
                                                     children: [

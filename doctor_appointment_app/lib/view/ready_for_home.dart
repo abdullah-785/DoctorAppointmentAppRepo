@@ -6,6 +6,7 @@ import 'package:doctor_appointment_app/view/Booking.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/home_page.dart';
 import 'package:doctor_appointment_app/view/profile.dart';
+import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,34 +18,34 @@ class ReadyForHome extends StatefulWidget {
 }
 
 class _ReadyForHomeState extends State<ReadyForHome> {
-
   UserModel loggedIn = UserModel();
-        User? user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
+  // AuthViewModel? authViewModel;
 
-        
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // authViewModel!.loggedInUser();
     FirebaseFirestore.instance
-            .collection("Users")
-            .doc(user!.uid)
-            .get()
-            .then((value) {
-          loggedIn = UserModel.fromMap(value.data());
-          print(loggedIn.email);
-          Utils.name = loggedIn.name;
-        Utils.email = loggedIn.email;
-        Utils.image = loggedIn.image;
-        Utils.uid = loggedIn.uid;
-        Utils.role = loggedIn.role;
-        });
-
-        
-        
-
-        
+        .collection("Users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedIn = UserModel.fromMap(value.data());
+      print(loggedIn.email);
+      Utils.name = loggedIn.name;
+      Utils.email = loggedIn.email;
+      Utils.image = loggedIn.image;
+      Utils.uid = loggedIn.uid;
+      Utils.role = loggedIn.role;
+      Utils.phone = loggedIn.phone;
+      Utils.dob = loggedIn.dob;
+      Utils.gender = loggedIn.gender;
+      Utils.address = loggedIn.address;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return MyBottomNavBar();

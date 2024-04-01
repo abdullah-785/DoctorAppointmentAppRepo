@@ -25,6 +25,7 @@ class _AllDoctorHospitalState extends State<AllDoctorHospital> {
     final width = MediaQuery.sizeOf(context).width * 1;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text("${widget.title}"),
         centerTitle: true,
       ),

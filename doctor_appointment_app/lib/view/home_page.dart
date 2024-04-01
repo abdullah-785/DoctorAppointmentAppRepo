@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        height: MediaQuery.of(context).size.height * 1,
+        // height: MediaQuery.of(context).size.height * 1,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SingleChildScrollView(

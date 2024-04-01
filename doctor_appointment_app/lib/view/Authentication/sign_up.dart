@@ -39,7 +39,7 @@ class _SignUpState extends State<SignUp> {
   // // bool isLoading = false;
 
   // ImagePicker image = ImagePicker();
-  
+
   // String? imageUrl;
 
   @override
@@ -66,7 +66,7 @@ class _SignUpState extends State<SignUp> {
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 20,
+                      height: 25,
                     ),
                     const Text(
                       "Sign Up",
@@ -108,19 +108,24 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 4,
                     ),
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.person_4_outlined),
-                        hintText: "Enter Your Name",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                BorderSide(color: Colors.black54, width: .4)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black54, width: .4),
-                          borderRadius: BorderRadius.circular(8.0),
+                    Container(
+                      height: 56,
+                      child: TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.only(top: 0, bottom: 0, left: 16),
+                          prefixIcon: const Icon(Icons.person_4_outlined),
+                          hintText: "Enter Your Name",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide:
+                                  BorderSide(color: Colors.black54, width: .4)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.black54, width: .4),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
                       ),
                     ),
@@ -137,19 +142,24 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 4,
                     ),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.email_outlined),
-                        hintText: "example@gamil.com",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                BorderSide(color: Colors.black54, width: .4)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black54, width: .4),
-                          borderRadius: BorderRadius.circular(8.0),
+                    Container(
+                      height: 56,
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.only(top: 0, bottom: 0, left: 16),
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          hintText: "example@gamil.com",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide:
+                                  BorderSide(color: Colors.black54, width: .4)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.black54, width: .4),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
                       ),
                     ),
@@ -166,21 +176,26 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 4,
                     ),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: const Icon(Icons.remove_red_eye),
-                        hintText: "passoword",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                BorderSide(color: Colors.black54, width: .4)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black54, width: .4),
-                          borderRadius: BorderRadius.circular(8.0),
+                    Container(
+                      height: 56,
+                      child: TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.only(top: 0, bottom: 0, left: 16),
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: const Icon(Icons.remove_red_eye),
+                          hintText: "passoword",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide:
+                                  BorderSide(color: Colors.black54, width: .4)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.black54, width: .4),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
                       ),
                     ),
@@ -197,21 +212,26 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 4,
                     ),
-                    TextFormField(
-                      controller: _confirmPasswrordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: const Icon(Icons.remove_red_eye),
-                        hintText: "Confirm Password",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                BorderSide(color: Colors.black54, width: .4)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black54, width: .4),
-                          borderRadius: BorderRadius.circular(8.0),
+                    Container(
+                      height: 56,
+                      child: TextFormField(
+                        controller: _confirmPasswrordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.only(top: 0, bottom: 0, left: 16),
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: const Icon(Icons.remove_red_eye),
+                          hintText: "Confirm Password",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide:
+                                  BorderSide(color: Colors.black54, width: .4)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.black54, width: .4),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
                       ),
                     ),
@@ -236,8 +256,12 @@ class _SignUpState extends State<SignUp> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12))),
                             onPressed: () async {
-
-                              authViewModel.signUp(_emailController.text, _passwordController.text, _confirmPasswrordController.text, _nameController.text, context );
+                              authViewModel.signUp(
+                                  _emailController.text,
+                                  _passwordController.text,
+                                  _confirmPasswrordController.text,
+                                  _nameController.text,
+                                  context);
                             },
                             child: authViewModel.isLoading == false
                                 ? Text(
@@ -353,14 +377,4 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-
-  
-
-
-
 }
-
-
-
-
-
