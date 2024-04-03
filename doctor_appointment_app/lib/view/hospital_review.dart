@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
+import 'package:doctor_appointment_app/view_model/hospital_review_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class HospitalReview extends StatefulWidget {
   HospitalReview({super.key, required this.hospitalDoc});
@@ -31,6 +33,7 @@ class _HospitalReviewState extends State<HospitalReview>
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).height * 1;
+    final hospitalReview = Provider.of<HospitalReviewViewModel>(context);
     return Scaffold(
       body: Stack(alignment: Alignment.bottomCenter, children: [
         Stack(alignment: Alignment.bottomCenter, children: [
@@ -298,17 +301,23 @@ class _HospitalReviewState extends State<HospitalReview>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                alignment: Alignment.center,
-                width: width * .8,
-                height: 40,
-                child: const Text(
-                  "Submit",
-                  style: TextStyle(color: Colors.white),
+              InkWell(
+                onTap: () {
+                  hospitalReview.createReview(
+                      _reviewController.text, widget.hospitalDoc, context);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: width * .8,
+                  height: 40,
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(12)),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(12)),
               ),
             ],
           ),

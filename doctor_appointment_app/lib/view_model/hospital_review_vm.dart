@@ -8,11 +8,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class HospitalReviewViewModel with ChangeNotifier {
-  Future<void> createReview(Double rating, String review,
-      HospitalModel hospitalModel, BuildContext context) async {
+  Future<void> createReview(
+      String review, HospitalModel hospitalModel, BuildContext context) async {
     try {
       HospitalReviewModel hospitalReview = HospitalReviewModel(
-        rating: rating,
+        // rating: 4.0,
         review: review,
         hospitalRef: FirebaseFirestore.instance
             .collection("Hospital")

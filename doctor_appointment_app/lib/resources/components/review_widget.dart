@@ -1,11 +1,10 @@
-
+import 'package:doctor_appointment_app/Models/hospital_review.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ReviewWidget extends StatelessWidget {
-  const ReviewWidget({
-    super.key,
-  });
+  ReviewWidget({super.key, this.hospitalReviewModelDoc});
+  HospitalReviewModel? hospitalReviewModelDoc;
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +27,11 @@ class ReviewWidget extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: const Image(
-                        image: AssetImage("images/doctor1.jpg"),
+                        image: AssetImage("images/1.png"),
                         fit: BoxFit.cover,
                       )),
                 ),
-                const Icon(Icons.verified,
-                    color: Colors.blue, size: 16),
+                const Icon(Icons.verified, color: Colors.blue, size: 16),
               ]),
               const SizedBox(
                 width: 8,
@@ -59,43 +57,52 @@ class ReviewWidget extends StatelessWidget {
                       Text("5.0")
                     ],
                   ),
-                  Text("11 month ago", style: TextStyle(fontSize: 11, color: Colors.grey),)
+                  Text(
+                    "11 month ago",
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  )
                 ],
               )
             ],
           ),
-          SizedBox(height: 4,),
-          Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-          style: TextStyle(fontSize: 14, color: Colors.grey),
-          
+          SizedBox(
+            height: 4,
           ),
-          SizedBox(height: 5,),
-
+          Text(
+            "${hospitalReviewModelDoc!.review}",
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+          SizedBox(
+            height: 5,
+          ),
           Row(
             children: [
-
               RatingBar.builder(
-                              itemSize: 16,
-                              initialRating: 4.5,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Colors.blue,
-                              ),
-                              onRatingUpdate: (rating) {
-                                print(rating);
-                              },
-                            ),
-                            SizedBox(width: 8,),
-
-                            Text("5.0", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),)
+                itemSize: 16,
+                initialRating:
+                    (hospitalReviewModelDoc!.rating ?? 0.0) as double,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.blue,
+                ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(
+                "5.0",
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              )
             ],
           ),
-          
         ],
       ),
     );

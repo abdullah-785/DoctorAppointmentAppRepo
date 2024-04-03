@@ -8,6 +8,7 @@ import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
 import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
 import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
+import 'package:doctor_appointment_app/view_model/hospital_review_vm.dart';
 import 'package:doctor_appointment_app/view_model/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -61,7 +62,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => BookOppointmentViewModel()),
         ChangeNotifierProvider(create: (_) => DoctorFavoriteViewModel()),
         ChangeNotifierProvider(create: (_) => HospitalFavoriteViewModel()),
-        ChangeNotifierProvider(create: (_) => ProfileViewModel())
+        ChangeNotifierProvider(create: (_) => ProfileViewModel()),
+        ChangeNotifierProvider(create: (_) => HospitalReviewViewModel())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
