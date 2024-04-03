@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/Models/hospital_review.dart';
+import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,23 @@ class HospitalReviewViewModel with ChangeNotifier {
       Navigator.pop(context);
     } catch (e) {
       Utils.FlushBarErrorMessage(e.toString(), context);
+    }
+  }
+
+  Future<UserModel> getUser(HospitalReviewModel hospitalReviewDoc) async {
+    DocumentReference<Map<String, dynamic>>? userRef =
+        hospitalReviewDoc.userRef;
+
+    if (userRef != null) {
+      String userReff = userRef.id;
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userReff)
+          .get();
+
+      return UserModel.fromMap(documentSnapshot.data());
+    } else {
+      throw Exception("Null");
     }
   }
 }

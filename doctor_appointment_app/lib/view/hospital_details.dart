@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/Models/hospital_review.dart';
 import 'package:doctor_appointment_app/resources/components/review_widget.dart';
@@ -374,18 +375,50 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                       child: TabBarView(
                                         controller: _tabController,
                                         children: [
-                                          SingleChildScrollView(
-                                            scrollDirection: Axis.vertical,
-                                            child: Column(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                // SpecialistCard(width: width),
-                                                // SpecialistCard(width: width),
-                                                // SpecialistCard(width: width),
-                                              ],
-                                            ),
+                                          StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance
+                                                .collection('Doctor')
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return SpinKitThreeBounce(
+                                                  color: Colors.blue,
+                                                  size: 25,
+                                                );
+                                              }
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Error: ${snapshot.error}');
+                                              }
+
+                                              if (!snapshot.hasData) {
+                                                return const Text(
+                                                    'No data found');
+                                              }
+
+                                              final List<DoctorModel> doctor =
+                                                  snapshot.data!.docs.map(
+                                                      (DocumentSnapshot
+                                                          document) {
+                                                return DoctorModel.fromMap(
+                                                    document.data() as Map<
+                                                        String, dynamic>);
+                                              }).toList();
+
+                                              return ListView.builder(
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: doctor.length,
+                                                itemBuilder: (context, index) {
+                                                  return SpecialistCard(
+                                                    width: width,
+                                                    doctorDoc: doctor[index],
+                                                  );
+                                                },
+                                              );
+                                            },
                                           ),
                                           GridView.count(
                                             primary: false,
@@ -437,168 +470,78 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                               ),
                                             ],
                                           ),
-                                          SingleChildScrollView(
-                                            scrollDirection: Axis.vertical,
-                                            child: Column(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                HospitalReview(
-                                                                  hospitalDoc:
-                                                                      widget
-                                                                          .hospitalDoc,
-                                                                )));
-                                                  },
-                                                  child: const Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Text(
-                                                          "Reviews",
-                                                          style: TextStyle(
-                                                              fontSize: 18),
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .edit_note_outlined,
-                                                        size: 20,
-                                                        color: Colors.blue,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Align(
-                                                          alignment: Alignment
-                                                              .topRight,
-                                                          child: Text(
-                                                            "add review",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .blue),
-                                                          ))
-                                                    ],
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 20.0),
+                                            child: StreamBuilder<QuerySnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('HospitalReview')
+                                                  .where('hospitalRef',
+                                                      isEqualTo:
+                                                          'Hospital/${widget.hospitalDoc.uid}')
+                                                  .snapshots(),
+
+                                              // .snapshots(),
+
+                                              // .where('status',isEqualTo: 'Upcomming')
+                                              // .orderBy('createAt', descending: true)
+
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<QuerySnapshot>
+                                                      snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return SpinKitThreeBounce(
+                                                      size: 20,
+                                                      color: Colors.blue);
+                                                }
+                                                if (snapshot.hasError) {
+                                                  return Text(
+                                                      'Error: ${snapshot.error}');
+                                                }
+
+                                                if (!snapshot.hasData) {
+                                                  return const Text(
+                                                      'No data found');
+                                                }
+
+                                                final List<HospitalReviewModel>
+                                                    hospitalReviewModel =
+                                                    snapshot.data!.docs.map(
+                                                        (DocumentSnapshot
+                                                            document) {
+                                                  return HospitalReviewModel
+                                                      .fromMap(document.data()
+                                                          as Map<String,
+                                                              dynamic>);
+                                                }).toList();
+
+                                                return SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      1,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      1,
+                                                  child: ListView.builder(
+                                                    // scrollDirection:
+                                                    //     Axis.vertical,
+                                                    itemCount:
+                                                        hospitalReviewModel
+                                                            .length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return ReviewWidget(
+                                                        hospitalReviewModelDoc:
+                                                            hospitalReviewModel[
+                                                                index],
+                                                      );
+                                                    },
                                                   ),
-                                                ),
-
-                                                TextFormField(
-                                                    style: const TextStyle(
-                                                        fontSize: 12),
-                                                    decoration: InputDecoration(
-                                                      prefixIcon: const Icon(
-                                                          Icons.search),
-                                                      // hintText: "Search",
-                                                      label:
-                                                          const Text("Search"),
-
-                                                      border:
-                                                          OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8)),
-                                                    )),
-
-                                                //Reviews
-
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-
-                                                StreamBuilder<QuerySnapshot>(
-                                                  stream: FirebaseFirestore
-                                                      .instance
-                                                      .collection(
-                                                          'HospitalReview')
-                                                      .where('hospitalRef',
-                                                          isEqualTo:
-                                                              'Hospital/${widget.hospitalDoc.uid}')
-                                                      .snapshots(),
-
-                                                  // .snapshots(),
-
-                                                  // .where('status',isEqualTo: 'Upcomming')
-                                                  // .orderBy('createAt', descending: true)
-
-                                                  builder:
-                                                      (BuildContext context,
-                                                          AsyncSnapshot<
-                                                                  QuerySnapshot>
-                                                              snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState
-                                                            .waiting) {
-                                                      return SpinKitThreeBounce(
-                                                          size: 35,
-                                                          color: Colors.blue);
-                                                    }
-                                                    if (snapshot.hasError) {
-                                                      return Text(
-                                                          'Error: ${snapshot.error}');
-                                                    }
-
-                                                    if (!snapshot.hasData) {
-                                                      return const Text(
-                                                          'No data found');
-                                                    }
-
-                                                    final List<
-                                                            HospitalReviewModel>
-                                                        hospitalReviewModel =
-                                                        snapshot.data!.docs.map(
-                                                            (DocumentSnapshot
-                                                                document) {
-                                                      return HospitalReviewModel
-                                                          .fromMap(
-                                                              document.data()
-                                                                  as Map<String,
-                                                                      dynamic>);
-                                                    }).toList();
-
-                                                    return SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              1,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              1,
-                                                      child: ListView.builder(
-                                                        scrollDirection:
-                                                            Axis.vertical,
-                                                        itemCount:
-                                                            hospitalReviewModel
-                                                                .length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          return ReviewWidget(
-                                                            hospitalReviewModelDoc:
-                                                                hospitalReviewModel[
-                                                                    index],
-                                                          );
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                                // ReviewWidget(),
-                                                // ReviewWidget(),
-                                                // ReviewWidget(),
-                                                // ReviewWidget(),
-                                                // ReviewWidget(),
-                                                // ReviewWidget(),
-                                              ],
+                                                );
+                                              },
                                             ),
                                           ),
                                           Column(
@@ -609,8 +552,8 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                                 "About",
                                                 style: TextStyle(fontSize: 16),
                                               ),
-                                              const Text(
-                                                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                                              Text(
+                                                "${widget.hospitalDoc.description ?? "Description"}",
                                                 maxLines: 3,
                                                 style: TextStyle(
                                                     color: Colors.grey),
@@ -676,6 +619,9 @@ class _HospitalDetailsState extends State<HospitalDetails>
                         ),
                         Text(
                           " 4.8 (1k+ Reviews)",
+                          // "${countHospitalReviews(
+                          //   widget.hospitalDoc,
+                          // )}",
                           style: TextStyle(color: Colors.white, fontSize: 11),
                         )
                       ],
@@ -701,22 +647,45 @@ class _HospitalDetailsState extends State<HospitalDetails>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                alignment: Alignment.center,
-                width: width * .8,
-                height: 40,
-                child: Text(
-                  "Book Appointment",
-                  style: TextStyle(color: Colors.white),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HospitalReview(
+                                hospitalDoc: widget.hospitalDoc,
+                              )));
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: width * .8,
+                  height: 40,
+                  child: Text(
+                    "Add Review",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(12)),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(12)),
               ),
             ],
           ),
         )
       ]),
     );
+  }
+
+  int countHospitalReviews(
+      HospitalModel hospital, List<HospitalReviewModel> allReviews) {
+    // Filter the allReviews list based on the hospital's UID
+    List<HospitalReviewModel> specificHospitalReviews = allReviews
+        .where((review) => review.hospitalRef == hospital.uid)
+        .toList();
+
+    // Count the number of reviews for the specific hospital
+    int specificHospitalReviewCount = specificHospitalReviews.length;
+
+    return specificHospitalReviewCount;
   }
 }
