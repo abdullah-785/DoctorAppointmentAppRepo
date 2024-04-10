@@ -63,6 +63,7 @@ class HospitalFavoriteViewModel with ChangeNotifier {
       return FirebaseFirestore.instance
           .collection("FavoriteHospital")
           .where('hospitalRef', isEqualTo: hospitalPath)
+          .where("userRef", isEqualTo: "Users/${Utils.uid}")
           .snapshots()
           .map((snapshot) => snapshot.docs.isNotEmpty)
           .handleError((error) {
