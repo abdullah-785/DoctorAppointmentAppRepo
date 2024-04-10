@@ -208,7 +208,7 @@ class _HospitalReviewState extends State<HospitalReview>
                             RatingBar.builder(
                               unratedColor: Colors.grey[350],
                               itemSize: 50,
-                              initialRating: 4.5,
+                              initialRating: 0.0,
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,
@@ -219,10 +219,11 @@ class _HospitalReviewState extends State<HospitalReview>
                                 color: Colors.amber,
                               ),
                               onRatingUpdate: (rating) {
+                                hospitalReview.setRating(rating);
                                 print(rating);
-                                setState(() {
-                                  ratingController = rating as Double?;
-                                });
+                                // setState(() {
+
+                                // });
                               },
                             ),
                             SizedBox(

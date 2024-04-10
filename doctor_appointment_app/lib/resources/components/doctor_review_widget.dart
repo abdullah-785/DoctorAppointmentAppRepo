@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/Models/doctor_review_model.dart';
 import 'package:doctor_appointment_app/Models/hospital_review.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
+import 'package:doctor_appointment_app/view_model/doctor_review_vm.dart';
 import 'package:doctor_appointment_app/view_model/hospital_review_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -8,18 +10,18 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:relative_time/relative_time.dart';
 
-class ReviewWidget extends StatefulWidget {
-  ReviewWidget({
+class DoctorReviewWidget extends StatefulWidget {
+  DoctorReviewWidget({
     super.key,
-    this.hospitalReviewModelDoc,
+    this.doctorReviewModelDoc,
   });
-  HospitalReviewModel? hospitalReviewModelDoc;
+  DoctorReviewModel? doctorReviewModelDoc;
 
   @override
-  State<ReviewWidget> createState() => _ReviewWidgetState();
+  State<DoctorReviewWidget> createState() => _DoctorReviewWidgetState();
 }
 
-class _ReviewWidgetState extends State<ReviewWidget> {
+class _DoctorReviewWidgetState extends State<DoctorReviewWidget> {
   //  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   @override
@@ -29,10 +31,9 @@ class _ReviewWidgetState extends State<ReviewWidget> {
 
     // });
 
-    final hospitalReviewViewModel =
-        Provider.of<HospitalReviewViewModel>(context);
+    final doctorReviewViewModel = Provider.of<DoctorReviewViewModel>(context);
     return FutureBuilder<UserModel>(
-        future: hospitalReviewViewModel.getUser(widget.hospitalReviewModelDoc!),
+        future: doctorReviewViewModel.getUser(widget.doctorReviewModelDoc!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return SpinKitThreeBounce(
@@ -91,7 +92,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                                 size: 18,
                               ),
                               Text(
-                                  "${widget.hospitalReviewModelDoc!.rating ?? 0.0}")
+                                  "${widget.doctorReviewModelDoc!.rating ?? 0.0}")
                             ],
                           ),
                           // Text(
@@ -105,7 +106,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                           // )
 
                           Text(
-                            "${widget.hospitalReviewModelDoc!.createdAt!.year}",
+                            "${widget.doctorReviewModelDoc!.createdAt!.year}",
                             style: TextStyle(fontSize: 11, color: Colors.grey),
                           )
                         ],
@@ -116,7 +117,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                     height: 4,
                   ),
                   Text(
-                    "${widget.hospitalReviewModelDoc!.review}",
+                    "${widget.doctorReviewModelDoc!.review}",
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   SizedBox(
@@ -126,7 +127,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                     children: [
                       RatingBar.builder(
                         itemSize: 16,
-                        initialRating: (widget.hospitalReviewModelDoc!.rating ??
+                        initialRating: (widget.doctorReviewModelDoc!.rating ??
                             0.0) as double,
                         minRating: 1,
                         direction: Axis.horizontal,

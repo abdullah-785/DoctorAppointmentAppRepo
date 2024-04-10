@@ -2,25 +2,25 @@ import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HospitalReviewModel {
+class DoctorReviewModel {
   String? uid;
   double? rating;
   String? review;
   DateTime? createdAt;
   DocumentReference<Map<String, dynamic>>? userRef;
-  DocumentReference<Map<String, dynamic>>? hospitalRef;
+  DocumentReference<Map<String, dynamic>>? doctorRef;
 
-  HospitalReviewModel({
+  DoctorReviewModel({
     this.uid,
     this.rating,
     this.review,
     this.createdAt,
     this.userRef,
-    this.hospitalRef,
+    this.doctorRef,
   });
 
-  factory HospitalReviewModel.fromMap(Map<String, dynamic> map) {
-    return HospitalReviewModel(
+  factory DoctorReviewModel.fromMap(Map<String, dynamic> map) {
+    return DoctorReviewModel(
       uid: map['uid'] as String?,
       // rating: map['rating'],
       rating: map['rating'] as double?, // Explicitly cast as double?
@@ -28,7 +28,7 @@ class HospitalReviewModel {
       review: map['review'],
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
       userRef: FirebaseFirestore.instance.doc(map['userRef']),
-      hospitalRef: FirebaseFirestore.instance.doc(map['hospitalRef']),
+      doctorRef: FirebaseFirestore.instance.doc(map['doctorRef']),
     );
   }
 
@@ -40,7 +40,7 @@ class HospitalReviewModel {
       "createdAt": createdAt != null ? Timestamp.fromDate(createdAt!) : null,
       "userRef":
           userRef?.path ?? '', // Provide a default value if userRef is null
-      "hospitalRef": hospitalRef?.path ??
+      "doctorRef": doctorRef?.path ??
           '', // Provide a default value if hospitalRef is null
     };
   }

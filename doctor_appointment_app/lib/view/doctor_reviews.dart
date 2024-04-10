@@ -1,8 +1,12 @@
+import 'package:doctor_appointment_app/Models/doctor_model.dart';
+import 'package:doctor_appointment_app/view_model/doctor_review_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class DoctorReview extends StatefulWidget {
-  const DoctorReview({super.key});
+  DoctorReview({super.key, required this.doctorModel});
+  DoctorModel doctorModel;
 
   @override
   State<DoctorReview> createState() => _DoctorReviewState();
@@ -15,10 +19,13 @@ class _DoctorReviewState extends State<DoctorReview> {
     super.initState();
   }
 
+  final TextEditingController _reviewController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).height * 1;
+    final doctorReviewViewModel = Provider.of<DoctorReviewViewModel>(context);
     return Scaffold(
       body: Stack(alignment: Alignment.bottomCenter, children: [
         Stack(alignment: Alignment.bottomCenter, children: [
@@ -28,9 +35,10 @@ class _DoctorReviewState extends State<DoctorReview> {
                 Container(
                     width: width * 1,
                     height: 230,
-                    child: const Image(
-                        fit: BoxFit.cover,
-                        image: AssetImage("images/hospital1.jpg"))),
+                    child: Image.network(
+                      "${widget.doctorModel.image}",
+                      fit: BoxFit.cover,
+                    )),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 30.0, left: 16, right: 16),
@@ -112,7 +120,7 @@ class _DoctorReviewState extends State<DoctorReview> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Dr. Jonny Wilson",
+                              "${widget.doctorModel.name}",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -146,7 +154,7 @@ class _DoctorReviewState extends State<DoctorReview> {
                             ),
                             RatingBar.builder(
                               itemSize: 50,
-                              initialRating: 4.5,
+                              initialRating: 0.0,
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,
@@ -159,6 +167,7 @@ class _DoctorReviewState extends State<DoctorReview> {
                               ),
                               onRatingUpdate: (rating) {
                                 print(rating);
+                                doctorReviewViewModel.rating = rating;
                               },
                             ),
                             const SizedBox(
@@ -174,6 +183,7 @@ class _DoctorReviewState extends State<DoctorReview> {
                               height: 5,
                             ),
                             TextFormField(
+                              controller: _reviewController,
                               maxLines: 4,
                               minLines: 4,
                               decoration: InputDecoration(
@@ -202,8 +212,8 @@ class _DoctorReviewState extends State<DoctorReview> {
                       ),
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          child: const Image(
-                            image: AssetImage("images/doctor1.jpg"),
+                          child: Image.network(
+                            widget.doctorModel.image!,
                             fit: BoxFit.cover,
                           )),
                     ),
@@ -229,17 +239,23 @@ class _DoctorReviewState extends State<DoctorReview> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                alignment: Alignment.center,
-                width: width * .8,
-                height: 40,
-                child: const Text(
-                  "Submit",
-                  style: TextStyle(color: Colors.white),
+              InkWell(
+                onTap: () {
+                  doctorReviewViewModel.createReview(
+                      _reviewController.text, widget.doctorModel, context);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: width * .8,
+                  height: 40,
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(12)),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(12)),
               ),
             ],
           ),

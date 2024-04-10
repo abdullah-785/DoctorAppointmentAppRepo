@@ -358,7 +358,7 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                       controller: _tabController,
                                       tabs: [
                                         const Tab(text: 'Specialist'),
-                                        const Tab(text: 'Gallery'),
+                                        // const Tab(text: 'Gallery'),
                                         const Tab(text: 'Review'),
                                         const Tab(text: 'About'),
                                       ],
@@ -420,56 +420,56 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                               );
                                             },
                                           ),
-                                          GridView.count(
-                                            primary: false,
-                                            padding:
-                                                const EdgeInsets.only(top: 5),
-                                            crossAxisSpacing: 10,
-                                            mainAxisSpacing: 10,
-                                            crossAxisCount: 2,
-                                            children: <Widget>[
-                                              Container(
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: const Image(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            "images/hospital1.jpg"))),
-                                              ),
-                                              Container(
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: const Image(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            "images/hospital1.jpg"))),
-                                              ),
-                                              Container(
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: const Image(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            "images/hospital1.jpg"))),
-                                              ),
-                                              Container(
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: const Image(
-                                                        fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                            "images/hospital1.jpg"))),
-                                              ),
-                                            ],
-                                          ),
+                                          // GridView.count(
+                                          //   primary: false,
+                                          //   padding:
+                                          //       const EdgeInsets.only(top: 5),
+                                          //   crossAxisSpacing: 10,
+                                          //   mainAxisSpacing: 10,
+                                          //   crossAxisCount: 2,
+                                          //   children: <Widget>[
+                                          //     Container(
+                                          //       child: ClipRRect(
+                                          //           borderRadius:
+                                          //               BorderRadius.circular(
+                                          //                   8),
+                                          //           child: const Image(
+                                          //               fit: BoxFit.cover,
+                                          //               image: AssetImage(
+                                          //                   "images/hospital1.jpg"))),
+                                          //     ),
+                                          //     Container(
+                                          //       child: ClipRRect(
+                                          //           borderRadius:
+                                          //               BorderRadius.circular(
+                                          //                   8),
+                                          //           child: const Image(
+                                          //               fit: BoxFit.cover,
+                                          //               image: AssetImage(
+                                          //                   "images/hospital1.jpg"))),
+                                          //     ),
+                                          //     Container(
+                                          //       child: ClipRRect(
+                                          //           borderRadius:
+                                          //               BorderRadius.circular(
+                                          //                   8),
+                                          //           child: const Image(
+                                          //               fit: BoxFit.cover,
+                                          //               image: AssetImage(
+                                          //                   "images/hospital1.jpg"))),
+                                          //     ),
+                                          //     Container(
+                                          //       child: ClipRRect(
+                                          //           borderRadius:
+                                          //               BorderRadius.circular(
+                                          //                   8),
+                                          //           child: const Image(
+                                          //               fit: BoxFit.cover,
+                                          //               image: AssetImage(
+                                          //                   "images/hospital1.jpg"))),
+                                          //     ),
+                                          //   ],
+                                          // ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 20.0),

@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
+import 'package:doctor_appointment_app/Models/doctor_review_model.dart';
 import 'package:doctor_appointment_app/resources/components/doctor_detail_card.dart';
+import 'package:doctor_appointment_app/resources/components/doctor_review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
 import 'package:doctor_appointment_app/view/book_appointment.dart';
 import 'package:doctor_appointment_app/view/doctor_reviews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class DoctorDetails extends StatefulWidget {
   DoctorDetails({super.key, required this.doctorDoc});
@@ -103,8 +107,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           ),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: Image.network(widget.doctorDoc!.image.toString(),
-                              fit: BoxFit.cover,
+                              child: Image.network(
+                                widget.doctorDoc!.image.toString(),
+                                fit: BoxFit.cover,
                               )),
                         ),
                         const Icon(
@@ -127,14 +132,15 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                             widget.doctorDoc!.specializeIn.toString(),
                             style: TextStyle(color: Colors.grey[500]),
                           ),
-                           Row(children: [
+                          Row(children: [
                             Icon(
                               Icons.location_on_outlined,
                               size: 18,
                               color: Colors.blue,
                             ),
                             Text(
-                              widget.doctorDoc!.address.toString(), style: TextStyle(
+                              widget.doctorDoc!.address.toString(),
+                              style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[500],
                               ),
@@ -185,7 +191,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     style: TextStyle(fontSize: 16),
                   ),
 
-                   Text(
+                  Text(
                     widget.doctorDoc!.about.toString(),
                     maxLines: 3,
                     style: TextStyle(color: Colors.grey),
@@ -243,7 +249,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   const SizedBox(
                     height: 5,
                   ),
-                   Row(children: [
+                  Row(children: [
                     Icon(
                       Icons.location_on_outlined,
                       size: 18,
@@ -277,7 +283,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DoctorReview()));
+                              builder: (context) => DoctorReview(
+                                    doctorModel: widget.doctorDoc!,
+                                  )));
                     },
                     child: const Row(
                       children: [
@@ -323,10 +331,59 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     height: 20,
                   ),
 
-                  ReviewWidget(),
-                  ReviewWidget(),
-                  ReviewWidget(),
-                  ReviewWidget(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('DoctorReview')
+                          .where('doctorRef',
+                              isEqualTo: 'Doctor/${widget.doctorDoc!.uid}')
+                          .snapshots(),
+
+                      // .snapshots(),
+
+                      // .where('status',isEqualTo: 'Upcomming')
+                      // .orderBy('createAt', descending: true)
+
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return SpinKitThreeBounce(
+                              size: 20, color: Colors.blue);
+                        }
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (!snapshot.hasData) {
+                          return const Text('No data found');
+                        }
+
+                        final List<DoctorReviewModel> doctorReviewModel =
+                            snapshot.data!.docs
+                                .map((DocumentSnapshot document) {
+                          return DoctorReviewModel.fromMap(
+                              document.data() as Map<String, dynamic>);
+                        }).toList();
+
+                        return SizedBox(
+                          width: MediaQuery.of(context).size.width * 1,
+                          height: MediaQuery.of(context).size.height * 1,
+                          child: ListView.builder(
+                            // scrollDirection:
+                            //     Axis.vertical,
+                            itemCount: doctorReviewModel.length,
+                            itemBuilder: (context, index) {
+                              return DoctorReviewWidget(
+                                doctorReviewModelDoc: doctorReviewModel[index],
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -335,8 +392,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             padding: EdgeInsets.only(bottom: 20.0),
             child: InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BookOppointment(doctorDocument: widget.doctorDoc!,)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BookOppointment(
+                              doctorDocument: widget.doctorDoc!,
+                            )));
               },
               child: Container(
                 alignment: Alignment.center,

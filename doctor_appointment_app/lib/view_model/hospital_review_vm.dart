@@ -9,11 +9,47 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class HospitalReviewViewModel with ChangeNotifier {
+  // Future<void> createReview(String review, HospitalModel hospitalModel,
+  //     double? rating, BuildContext context) async {
+  //   try {
+  //     HospitalReviewModel hospitalReview = HospitalReviewModel(
+  //       rating: rating,
+  //       review: review,
+  //       hospitalRef: FirebaseFirestore.instance
+  //           .collection("Hospital")
+  //           .doc(hospitalModel.uid),
+  //       userRef: FirebaseFirestore.instance.collection("Users").doc(Utils.uid),
+  //       createdAt: DateTime.now(),
+  //     );
+
+  //     Map<String, dynamic> reviewMap = hospitalReview.toMap();
+
+  //     DocumentReference docRef = await FirebaseFirestore.instance
+  //         .collection("HospitalReview")
+  //         .add(reviewMap);
+
+  //     await docRef.update({"uid": docRef.id});
+  //     Navigator.pop(context);
+  //   } catch (e) {
+  //     Utils.FlushBarErrorMessage(e.toString(), context);
+  //   }
+  // }
+  double rating = 0.0;
+
+  setRating(value) {
+    rating = value;
+    notifyListeners();
+  }
+
   Future<void> createReview(
-      String review, HospitalModel hospitalModel, BuildContext context) async {
+    String review,
+    HospitalModel hospitalModel,
+    BuildContext context,
+  ) async {
     try {
+      print("Rating is : $rating");
       HospitalReviewModel hospitalReview = HospitalReviewModel(
-        // rating: 4.0,
+        rating: rating,
         review: review,
         hospitalRef: FirebaseFirestore.instance
             .collection("Hospital")
