@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -6,15 +8,19 @@ import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/resources/components/hospital_card.dart';
 import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
+import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Booking.dart';
 import 'package:doctor_appointment_app/view/all_hospital_doctor.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
+import 'package:doctor_appointment_app/view_model/home_view_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,6 +32,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final _auth = FirebaseAuth.instance;
+  String? country;
 
   @override
   void initState() {
@@ -34,10 +41,25 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  // Future<String> _fetchIpInfo() async {
+  //   final response = await http.get(Uri.parse('http://ip-api.com/json'));
+  //   if (response.statusCode == 200) {
+  //     print(response.body);
+
+  //     var result = jsonDecode(response.body);
+  //     country = result['country'];
+  //     print(result['country']);
+  //     return result;
+  //   } else {
+  //     throw Exception('Failed to load IP info');
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).width * 1;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -54,20 +76,37 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("London"),
+                        Text("${Utils.country}"),
                         Row(
                           children: [
                             Icon(
                               Icons.location_on_outlined,
                               color: Colors.blue,
                             ),
-                            Text(
-                              "New York, USA",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            Row(
+                              children: [
+                                Text(
+                                  "${Utils.city}",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  ", ",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  "${Utils.countryCode}",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
                             ),
                             Icon(Icons.keyboard_arrow_down_rounded)
                           ],

@@ -29,7 +29,7 @@ class _HospitalDetailsState extends State<HospitalDetails>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 3);
   }
 
   @override

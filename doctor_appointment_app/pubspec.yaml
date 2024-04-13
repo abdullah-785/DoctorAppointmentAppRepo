@@ -49,6 +49,7 @@ dependencies:
   permission_handler: ^11.3.0
   shared_preferences: ^2.2.2
   relative_time: ^5.0.0
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:

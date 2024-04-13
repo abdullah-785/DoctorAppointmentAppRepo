@@ -159,45 +159,45 @@ class _SpecialistCardState extends State<SpecialistCard> {
                         widget.doctorDoc!.specializeIn.toString(),
                         style: TextStyle(color: Colors.grey[600]),
                       ),
-                      SizedBox(height: 15),
-                      Container(
-                        width: widget.width * 0.52,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RatingBar.builder(
-                              itemSize: 14,
-                              initialRating: 4.8,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {
-                                print(rating);
-                              },
-                            ),
-                            Text(
-                              "4.8",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            Container(
-                              height: 15,
-                              width: 1,
-                              color: Colors.grey[400],
-                            ),
-                            Text(
-                              "4991 Reviews",
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.grey[500]),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // SizedBox(height: 15),
+                      // Container(
+                      //   width: widget.width * 0.52,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       RatingBar.builder(
+                      //         itemSize: 14,
+                      //         initialRating: 4.8,
+                      //         minRating: 1,
+                      //         direction: Axis.horizontal,
+                      //         allowHalfRating: true,
+                      //         itemCount: 5,
+                      //         itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                      //         itemBuilder: (context, _) => Icon(
+                      //           Icons.star,
+                      //           color: Colors.amber,
+                      //         ),
+                      //         onRatingUpdate: (rating) {
+                      //           print(rating);
+                      //         },
+                      //       ),
+                      //       Text(
+                      //         "4.8",
+                      //         style: TextStyle(fontSize: 12),
+                      //       ),
+                      //       Container(
+                      //         height: 15,
+                      //         width: 1,
+                      //         color: Colors.grey[400],
+                      //       ),
+                      //       Text(
+                      //         "4991 Reviews",
+                      //         style: TextStyle(
+                      //             fontSize: 12, color: Colors.grey[500]),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

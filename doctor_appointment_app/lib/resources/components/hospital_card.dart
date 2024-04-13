@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
+import 'package:doctor_appointment_app/Models/hospital_review.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/hospital_details.dart';
 import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
@@ -21,6 +22,22 @@ class HospitalCard extends StatefulWidget {
 }
 
 class _HospitalCardState extends State<HospitalCard> {
+  double? rating;
+
+  @override
+  void initState() {
+    super.initState();
+    // Call the method to calculate the rating
+    calculateAndSetRating();
+  }
+
+  Future<void> calculateAndSetRating() async {
+    double calculatedRating = await calculateRating(widget.hospitalModel!);
+    setState(() {
+      rating = calculatedRating;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final hospitalViewModel = Provider.of<HospitalFavoriteViewModel>(context);
@@ -128,38 +145,70 @@ class _HospitalCardState extends State<HospitalCard> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 55,
-                          height: 23,
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                topRight: Radius.circular(8),
-                                bottomLeft: Radius.circular(12),
-                              )),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 16,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "4.8",
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.all(8.0),
+                      //   child: Container(
+                      //     width: 55,
+                      //     height: 23,
+                      //     decoration: const BoxDecoration(
+                      //         color: Colors.white,
+                      //         borderRadius: BorderRadius.only(
+                      //           topLeft: Radius.circular(12),
+                      //           topRight: Radius.circular(8),
+                      //           bottomLeft: Radius.circular(12),
+                      //         )),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Icon(
+                      //           Icons.star,
+                      //           color: Colors.yellow,
+                      //           size: 16,
+                      //         ),
+                      //         SizedBox(
+                      //           width: 5,
+                      //         ),
+                      //         // FutureBuilder(
+                      //         //     future:
+                      //         //         calculateRating(widget.hospitalModel!),
+                      //         //     builder: (context, snapshot) {
+                      //         //       if (snapshot.connectionState ==
+                      //         //           ConnectionState.waiting) {
+                      //         //         return SpinKitThreeBounce(
+                      //         //           color: Colors.blue,
+                      //         //           size: 15,
+                      //         //         );
+                      //         //       } else if (snapshot.hasError) {
+                      //         //         return Text("Error: ${snapshot.error}");
+                      //         //       }else{
+                      //         //         return Text("${snapshot.data.rating}")
+                      //         //       }
+                      //         //     })
+                      //         // FutureBuilder<double>(
+                      //         //     future:
+                      //         //         calculateRating(widget.hospitalModel!),
+                      //         //     builder: (context, snapshot) {
+                      //         //       if (snapshot.connectionState ==
+                      //         //           ConnectionState.waiting) {
+                      //         //         return SpinKitThreeBounce(
+                      //         //           color: Colors.blue,
+                      //         //           size: 15,
+                      //         //         );
+                      //         //       } else if (snapshot.hasError) {
+                      //         //         return Text("Error: ${snapshot.error}");
+                      //         //       } else {
+                      //         //         // Handle the case where data is available
+                      //         //         double? rating = snapshot.data;
+                      //         //         return Text(rating != null
+                      //         //             ? rating.toString()
+                      //         //             : 'No rating available');
+                      //         //       }
+                      //         //     })
+                      //         Text(rating.toString())
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 )
@@ -180,18 +229,18 @@ class _HospitalCardState extends State<HospitalCard> {
                     ),
                     // Spacer(),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.access_time_filled_outlined,
-                          size: 16,
-                          color: Colors.blue,
-                        ),
+                        // Icon(
+                        //   Icons.safety_check,
+                        //   size: 16,
+                        //   color: Colors.blue,
+                        // ),
                         SizedBox(
                           width: 5,
                         ),
-                        Text("15 min - 1.5Km")
+                        Text("${widget.hospitalModel!.specializeIn}")
                       ],
                     )
                   ],
@@ -202,5 +251,38 @@ class _HospitalCardState extends State<HospitalCard> {
         ),
       ),
     );
+  }
+
+  Future<double> calculateRating(HospitalModel hospitalDoc) async {
+    try {
+      // Get the list of reviews for the specified hospital
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection("HospitalReview")
+              .where("hospitalRef",
+                  isEqualTo: FirebaseFirestore.instance
+                      .collection("Hospital")
+                      .doc(hospitalDoc.uid))
+              .get();
+
+      // Calculate the total rating and count of reviews
+      double totalRating = 0;
+      int reviewCount = querySnapshot.docs.length;
+
+      // Iterate through the reviews to sum up the ratings
+      querySnapshot.docs.forEach((doc) {
+        HospitalReviewModel review = HospitalReviewModel.fromMap(doc.data());
+        totalRating += review.rating ?? 0; // Ensure rating is not null
+        print("Total Rating: $totalRating");
+      });
+
+      // Calculate the average rating
+      double averageRating = reviewCount > 0 ? totalRating / reviewCount : 0;
+
+      return averageRating;
+    } catch (e) {
+      print("Error calculating rating: $e");
+      return 0; // Return 0 in case of an error
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,12 +11,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AuthViewModel with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isLoading = false;
   bool isShow = true;
+  String country = "Country";
 
   setLoading(value) {
     isLoading = value;
@@ -149,5 +152,19 @@ class AuthViewModel with ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', true);
     print("Shared Preference is saved");
+  }
+
+  Future<String> _fetchIpInfo() async {
+    final response = await http.get(Uri.parse('http://ip-api.com/json'));
+    if (response.statusCode == 200) {
+      print(response.body);
+
+      var result = jsonDecode(response.body);
+      country = result['country'];
+      print(result['country']);
+      return result;
+    } else {
+      throw Exception('Failed to load IP info');
+    }
   }
 }
