@@ -584,35 +584,35 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  height: 320,
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('Doctor')
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SpinKitThreeBounce(
-                          color: Colors.blue,
-                          size: 25,
-                        );
-                      }
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Doctor')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SpinKitThreeBounce(
+                        color: Colors.blue,
+                        size: 25,
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
 
-                      if (!snapshot.hasData) {
-                        return const Text('No data found');
-                      }
+                    if (!snapshot.hasData) {
+                      return const Text('No data found');
+                    }
 
-                      final List<DoctorModel> doctor =
-                          snapshot.data!.docs.map((DocumentSnapshot document) {
-                        return DoctorModel.fromMap(
-                            document.data() as Map<String, dynamic>);
-                      }).toList();
+                    final List<DoctorModel> doctor =
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      return DoctorModel.fromMap(
+                          document.data() as Map<String, dynamic>);
+                    }).toList();
 
-                      return ListView.builder(
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.33,
+                      child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         itemCount: doctor.length,
                         itemBuilder: (context, index) {
@@ -621,9 +621,9 @@ class _HomePageState extends State<HomePage> {
                             doctorDoc: doctor[index],
                           );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
                 // SpecialistCard(width: width),
                 // SpecialistCard(width: width),

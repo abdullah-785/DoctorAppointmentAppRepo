@@ -282,9 +282,9 @@ class _FavoriteSpecialistCardState extends State<FavoriteSpecialistCard> {
       future: favoriteViewModel.fetchDoctorDetails(widget.favoriteDoc),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SpinKitCircle(
+          return SpinKitThreeBounce(
             color: Colors.blue,
-            size: 30,
+            size: 25,
           );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');

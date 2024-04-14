@@ -68,7 +68,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SpinKitCircle(size: 35, color: Colors.blue);
+                        return SpinKitThreeBounce(size: 20, color: Colors.blue);
                       }
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
@@ -124,6 +124,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('FavoriteHospital')
+                        .where('userRef', isEqualTo: 'Users/${Utils.uid}')
                         .snapshots(),
                     // .where('userRef', isEqualTo: 'Users/${Utils.uid}')
 
@@ -135,7 +136,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SpinKitCircle(size: 35, color: Colors.blue);
+                        return SpinKitThreeBounce(size: 25, color: Colors.blue);
                       }
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');

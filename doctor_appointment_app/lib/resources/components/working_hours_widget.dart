@@ -1,12 +1,21 @@
-
+import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class WorkingHoursWidget extends StatelessWidget {
-  const WorkingHoursWidget({
-    super.key, required this.day,
+class WorkingHoursWidget extends StatefulWidget {
+  WorkingHoursWidget({
+    super.key,
+    required this.day,
+    this.doctorDoc,
   });
   final String day;
+  DoctorModel? doctorDoc;
 
+  @override
+  State<WorkingHoursWidget> createState() => _WorkingHoursWidgetState();
+}
+
+class _WorkingHoursWidgetState extends State<WorkingHoursWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,34 +23,42 @@ class WorkingHoursWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(day, style: TextStyle(color: Colors.grey),),
+          Text(
+            widget.day,
+            style: TextStyle(color: Colors.grey),
+          ),
           RichText(
-        textAlign: TextAlign.center,
-        text: const TextSpan(
-          text: '00:00',
-          style: TextStyle(
-              fontSize: 14,
-              // color: Colors.,
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: widget.doctorDoc != null
+                  ? DateFormat('hh:mm a')
+                      .format(widget.doctorDoc!.availabilityTimeTo!)
+                  : "00:00",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
               ),
-          children: <TextSpan>[
-            TextSpan(
-                text: ' - ',
-                style: TextStyle(
-                    fontSize: 14,
-                    // color: Colors.black,
-                  )),
-            TextSpan(
-                text: '00:00',
-                style: TextStyle(
-                    fontSize: 14,
-                    // color: Colors.black,
+              children: <TextSpan>[
+                TextSpan(
+                    text: ' - ',
+                    style: TextStyle(
+                      fontSize: 14,
+                      // color: Colors.black,
                     )),
-          ],
-        ),
-      ),
+                TextSpan(
+                    text: widget.doctorDoc != null
+                        ? DateFormat('hh:mm a')
+                            .format(widget.doctorDoc!.availabilityTimeFrom!)
+                        : "00:00",
+                    style: TextStyle(
+                      fontSize: 14,
+                      // color: Colors.black,
+                    )),
+              ],
+            ),
+          ),
         ],
       ),
-
     );
   }
 }

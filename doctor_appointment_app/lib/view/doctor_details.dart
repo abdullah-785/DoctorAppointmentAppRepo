@@ -7,9 +7,11 @@ import 'package:doctor_appointment_app/resources/components/review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
 import 'package:doctor_appointment_app/view/book_appointment.dart';
 import 'package:doctor_appointment_app/view/doctor_reviews.dart';
+import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class DoctorDetails extends StatefulWidget {
   DoctorDetails({super.key, required this.doctorDoc});
@@ -21,6 +23,9 @@ class DoctorDetails extends StatefulWidget {
 class _DoctorDetailsState extends State<DoctorDetails> {
   @override
   Widget build(BuildContext context) {
+    final doctorViewModel = Provider.of<DoctorViewModel>(context);
+    doctorViewModel.countDocuments(widget.doctorDoc!);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -158,12 +163,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       DoctorDetailCard(
                         iconData: Icons.group,
-                        audience: "7500+",
+                        audience: "${doctorViewModel.patient}+",
                         audienceName: "Patients",
                       ),
                       DoctorDetailCard(
@@ -173,12 +178,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       ),
                       DoctorDetailCard(
                         iconData: Icons.star_purple500_rounded,
-                        audience: "4.9+",
-                        audienceName: "Patients",
+                        audience: "${doctorViewModel.reviews}+",
+                        audienceName: "Reviews",
                       ),
                       DoctorDetailCard(
                         iconData: Icons.message_rounded,
-                        audience: "4956+",
+                        audience: "${doctorViewModel.patient}+",
                         audienceName: "Patients",
                       ),
                     ],
@@ -211,69 +216,84 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     height: 5,
                   ),
 
-                  const WorkingHoursWidget(day: "Monday"),
-                  const WorkingHoursWidget(day: "Tuesday"),
-                  const WorkingHoursWidget(day: "Wednessday"),
-                  const WorkingHoursWidget(day: "Thursday"),
-                  const WorkingHoursWidget(day: "Friday"),
-                  const WorkingHoursWidget(day: "Saturday"),
-                  const WorkingHoursWidget(day: "Sunday"),
+                  WorkingHoursWidget(
+                    day: "Monday",
+                    doctorDoc: widget.doctorDoc!,
+                  ),
+                  WorkingHoursWidget(
+                    day: "Tuesday",
+                    doctorDoc: widget.doctorDoc!,
+                  ),
+                  WorkingHoursWidget(
+                    day: "Wednessday",
+                    doctorDoc: widget.doctorDoc!,
+                  ),
+                  WorkingHoursWidget(
+                    day: "Thursday",
+                    doctorDoc: widget.doctorDoc!,
+                  ),
+                  WorkingHoursWidget(
+                    day: "Friday",
+                    doctorDoc: widget.doctorDoc!,
+                  ),
+                  WorkingHoursWidget(day: "Saturday"),
+                  WorkingHoursWidget(day: "Sunday"),
 
                   const SizedBox(
                     height: 20,
                   ),
-                  const Row(
-                    children: [
-                      Text(
-                        "Address",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Expanded(
-                          child: Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                "View on Map",
-                                style:
-                                    TextStyle(fontSize: 12, color: Colors.blue),
-                              )))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 1,
-                    height: 2,
-                    color: Colors.grey[100],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Row(children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      size: 18,
-                      color: Colors.blue,
-                    ),
-                    Expanded(
-                      child: Text(
-                        widget.doctorDoc!.address.toString(),
-                        style: TextStyle(),
-                      ),
-                    ),
-                  ]),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  // const Row(
+                  //   children: [
+                  //     Text(
+                  //       "Address",
+                  //       style: TextStyle(fontSize: 18),
+                  //     ),
+                  // Expanded(
+                  //     child: Align(
+                  //         alignment: Alignment.topRight,
+                  //         child: Text(
+                  //           "View on Map",
+                  //           style:
+                  //               TextStyle(fontSize: 12, color: Colors.blue),
+                  //         )))
+                  // ],
+                  // ),
+                  // const SizedBox(
+                  //   height: 5,
+                  // ),
+                  // Container(
+                  //   width: MediaQuery.of(context).size.width * 1,
+                  //   height: 2,
+                  //   color: Colors.grey[100],
+                  // ),
+                  // const SizedBox(
+                  //   height: 5,
+                  // ),
+                  // Row(children: [
+                  //   Icon(
+                  //     Icons.location_on_outlined,
+                  //     size: 18,
+                  //     color: Colors.blue,
+                  //   ),
+                  //   Expanded(
+                  //     child: Text(
+                  //       widget.doctorDoc!.address.toString(),
+                  //       style: TextStyle(),
+                  //     ),
+                  //   ),
+                  // ]),
+                  // const SizedBox(
+                  //   height: 5,
+                  // ),
 
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image(
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 180,
-                        image: const AssetImage("images/map.png")),
-                  ),
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(5),
+                  //   child: Image(
+                  //       fit: BoxFit.cover,
+                  //       width: MediaQuery.of(context).size.width * 1,
+                  //       height: 180,
+                  //       image: const AssetImage("images/map.png")),
+                  // ),
 
                   const SizedBox(
                     height: 20,
@@ -314,16 +334,16 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     ),
                   ),
 
-                  TextFormField(
-                      style: const TextStyle(fontSize: 12),
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        // hintText: "Search",
-                        label: const Text("Search"),
+                  // TextFormField(
+                  //     style: const TextStyle(fontSize: 12),
+                  //     decoration: InputDecoration(
+                  //       prefixIcon: const Icon(Icons.search),
+                  //       // hintText: "Search",
+                  //       label: const Text("Search"),
 
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                      )),
+                  //       border: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(8)),
+                  //     )),
 
                   //Reviews
 
@@ -369,7 +389,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
                         return SizedBox(
                           width: MediaQuery.of(context).size.width * 1,
-                          height: MediaQuery.of(context).size.height * 1,
+                          height: MediaQuery.of(context).size.height * .32,
                           child: ListView.builder(
                             // scrollDirection:
                             //     Axis.vertical,
@@ -417,4 +437,26 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       ),
     );
   }
+
+  // Future<int> countDocuments(
+  //     String collectionName, DoctorModel doctorDoc) async {
+  //   try {
+  //     // Get a reference to the collection
+  //     CollectionReference collectionRef =
+  //         FirebaseFirestore.instance.collection(collectionName);
+
+  //     // Get the documents based on the filter
+  //     QuerySnapshot querySnapshot = await collectionRef
+  //         .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
+  //         .get();
+
+  //     // Count the documents
+  //     int count = querySnapshot.size;
+  //     print("Count is :  ${count}");
+  //     return count;
+  //   } catch (e) {
+  //     print("Error counting documents: $e");
+  //     return 0;
+  //   }
+  // }
 }

@@ -572,20 +572,17 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                               const SizedBox(
                                                 height: 5,
                                               ),
-                                              const WorkingHoursWidget(
-                                                  day: "Monday"),
-                                              const WorkingHoursWidget(
+                                              WorkingHoursWidget(day: "Monday"),
+                                              WorkingHoursWidget(
                                                   day: "Tuesday"),
-                                              const WorkingHoursWidget(
+                                              WorkingHoursWidget(
                                                   day: "Wednessday"),
-                                              const WorkingHoursWidget(
+                                              WorkingHoursWidget(
                                                   day: "Thursday"),
-                                              const WorkingHoursWidget(
-                                                  day: "Friday"),
-                                              const WorkingHoursWidget(
+                                              WorkingHoursWidget(day: "Friday"),
+                                              WorkingHoursWidget(
                                                   day: "Saturday"),
-                                              const WorkingHoursWidget(
-                                                  day: "Sunday"),
+                                              WorkingHoursWidget(day: "Sunday"),
                                             ],
                                           ),
                                         ],

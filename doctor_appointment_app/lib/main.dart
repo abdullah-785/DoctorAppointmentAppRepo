@@ -9,6 +9,7 @@ import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
 import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
 import 'package:doctor_appointment_app/view_model/doctor_review_vm.dart';
+import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
 import 'package:doctor_appointment_app/view_model/home_view_model.dart';
 import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
 import 'package:doctor_appointment_app/view_model/hospital_review_vm.dart';
@@ -94,6 +95,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => DoctorViewModel()),
         ChangeNotifierProvider(create: (_) => BookOppointmentViewModel()),
         ChangeNotifierProvider(create: (_) => DoctorFavoriteViewModel()),
         ChangeNotifierProvider(create: (_) => HospitalFavoriteViewModel()),
