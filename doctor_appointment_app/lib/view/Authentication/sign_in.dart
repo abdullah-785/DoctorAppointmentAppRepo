@@ -70,7 +70,8 @@ class _SignInState extends State<SignIn> {
                   hintText: "example@gamil.com",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black54, width: .4)),
+                      borderSide:
+                          BorderSide(color: Colors.grey.shade200, width: .4)),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         const BorderSide(color: Colors.black54, width: .4),
@@ -122,10 +123,9 @@ class _SignInState extends State<SignIn> {
                   hintText: "Passoword",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black54, width: .4)),
+                      borderSide: BorderSide(width: .4)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: .4),
+                    borderSide: BorderSide(width: .4),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),

@@ -119,11 +119,9 @@ class _SignUpState extends State<SignUp> {
                           hintText: "Enter Your Name",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: Colors.black54, width: .4)),
+                              borderSide: BorderSide(width: .4)),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.black54, width: .4),
+                            borderSide: const BorderSide(width: .4),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
@@ -153,11 +151,9 @@ class _SignUpState extends State<SignUp> {
                           hintText: "example@gamil.com",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: Colors.black54, width: .4)),
+                              borderSide: BorderSide(width: .4)),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.black54, width: .4),
+                            borderSide: const BorderSide(width: .4),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
@@ -189,11 +185,9 @@ class _SignUpState extends State<SignUp> {
                           hintText: "passoword",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: Colors.black54, width: .4)),
+                              borderSide: BorderSide(width: .4)),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.black54, width: .4),
+                            borderSide: const BorderSide(width: .4),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
@@ -225,11 +219,9 @@ class _SignUpState extends State<SignUp> {
                           hintText: "Confirm Password",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: Colors.black54, width: .4)),
+                              borderSide: BorderSide(width: .4)),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.black54, width: .4),
+                            borderSide: const BorderSide(width: .4),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),

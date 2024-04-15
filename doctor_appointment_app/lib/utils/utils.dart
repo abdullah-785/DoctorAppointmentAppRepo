@@ -12,9 +12,9 @@ class Utils {
   static String? dob;
   static String? gender;
   static String? address;
-  static String? country;
-  static String? countryCode;
-  static String? city;
+  static String? country = "London";
+  static String? countryCode = "UK";
+  static String? city = "New York";
 
   static FlushBarErrorMessage(String message, BuildContext context) {
     showFlushbar(

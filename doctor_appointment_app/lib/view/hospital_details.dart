@@ -16,6 +16,9 @@ import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 class HospitalDetails extends StatefulWidget {
   HospitalDetails({super.key, required this.hospitalDoc});
@@ -32,6 +35,8 @@ class _HospitalDetailsState extends State<HospitalDetails>
   int hospitalReview = 0;
 // controller object
   late TabController _tabController;
+  late final WebViewController controller;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +44,10 @@ class _HospitalDetailsState extends State<HospitalDetails>
     super.initState();
 
     _tabController = TabController(vsync: this, length: 3);
+    controller = WebViewController()
+      ..loadRequest(
+        Uri.parse('https://abdullahservicesforyou.netlify.app/'),
+      );
   }
 
   @override
@@ -276,31 +285,39 @@ class _HospitalDetailsState extends State<HospitalDetails>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              children: [
-                                Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color.fromARGB(255, 219, 234, 254),
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(0.0),
-                                      child: Icon(
-                                        Icons.web_stories_rounded,
-                                        size: 22,
-                                        color: Colors.blue,
+                            GestureDetector(
+                              onTap: () {
+                                WebViewWidget(
+                                  controller: controller,
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Color.fromARGB(255, 219, 234, 254),
                                       ),
-                                    )),
-                                const Text(
-                                  "Website",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    // fontWeight: FontWeight.bold
-                                  ),
-                                )
-                              ],
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(0.0),
+                                        child: Icon(
+                                          Icons.web_stories_rounded,
+                                          size: 22,
+                                          color: Colors.blue,
+                                        ),
+                                      )),
+                                  const Text(
+                                    "Website",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      // fontWeight: FontWeight.bold
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                             Column(
                               children: [
@@ -328,57 +345,76 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                 )
                               ],
                             ),
-                            Column(
-                              children: [
-                                Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color.fromARGB(255, 219, 234, 254),
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(0.0),
-                                      child: Icon(
-                                        Icons.call,
-                                        size: 20,
-                                        color: Colors.blue,
+                            GestureDetector(
+                              onTap: () async {
+                                Uri phoneno =
+                                    Uri.parse('tel:${widget.hospitalDoc.call}');
+                                if (await launchUrl(phoneno)) {
+                                  //dialer opened
+                                } else {
+                                  //dailer is not opened
+                                }
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Color.fromARGB(255, 219, 234, 254),
                                       ),
-                                    )),
-                                const Text(
-                                  "Call",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    // fontWeight: FontWeight.bold
-                                  ),
-                                )
-                              ],
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(0.0),
+                                        child: Icon(
+                                          Icons.call,
+                                          size: 20,
+                                          color: Colors.blue,
+                                        ),
+                                      )),
+                                  const Text(
+                                    "Call",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      // fontWeight: FontWeight.bold
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: [
-                                Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color.fromARGB(255, 219, 234, 254),
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(0.0),
-                                      child: Icon(
-                                        Icons.location_on_sharp,
-                                        size: 24,
-                                        color: Colors.blue,
+                            GestureDetector(
+                              onTap: () {
+                                MapsLauncher.launchQuery(
+                                    widget.hospitalDoc.address!);
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Color.fromARGB(255, 219, 234, 254),
                                       ),
-                                    )),
-                                const Text(
-                                  "Direction",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    // fontWeight: FontWeight.bold
-                                  ),
-                                )
-                              ],
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(0.0),
+                                        child: Icon(
+                                          Icons.location_on_sharp,
+                                          size: 24,
+                                          color: Colors.blue,
+                                        ),
+                                      )),
+                                  const Text(
+                                    "Direction",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      // fontWeight: FontWeight.bold
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                             Column(
                               children: [

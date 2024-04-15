@@ -129,16 +129,16 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                    style: const TextStyle(fontSize: 12),
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      // hintText: "Search",
-                      label: const Text("Search"),
+                // TextFormField(
+                //     style: const TextStyle(fontSize: 12),
+                //     decoration: InputDecoration(
+                //       prefixIcon: const Icon(Icons.search),
+                //       // hintText: "Search",
+                //       label: const Text("Search"),
 
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    )),
+                //       border: OutlineInputBorder(
+                //           borderRadius: BorderRadius.circular(8)),
+                //     )),
                 const SizedBox(
                   height: 20,
                 ),

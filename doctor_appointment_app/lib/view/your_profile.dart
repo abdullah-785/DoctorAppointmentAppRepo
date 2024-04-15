@@ -125,11 +125,9 @@ class _YourProfileState extends State<YourProfile> {
 
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide:
-                              BorderSide(color: Colors.black54, width: .4)),
+                          borderSide: BorderSide(width: .4)),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black54, width: .4),
+                        borderSide: const BorderSide(width: .4),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
@@ -158,11 +156,9 @@ class _YourProfileState extends State<YourProfile> {
 
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide:
-                              BorderSide(color: Colors.black54, width: .4)),
+                          borderSide: BorderSide(width: .4)),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black54, width: .4),
+                        borderSide: const BorderSide(width: .4),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
@@ -190,11 +186,9 @@ class _YourProfileState extends State<YourProfile> {
 
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide:
-                              BorderSide(color: Colors.black54, width: .4)),
+                          borderSide: BorderSide(width: .4)),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black54, width: .4),
+                        borderSide: const BorderSide(width: .4),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
@@ -222,11 +216,9 @@ class _YourProfileState extends State<YourProfile> {
 
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide:
-                              BorderSide(color: Colors.black54, width: .4)),
+                          borderSide: BorderSide(width: .4)),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black54, width: .4),
+                        borderSide: const BorderSide(width: .4),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
@@ -254,11 +246,9 @@ class _YourProfileState extends State<YourProfile> {
 
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide:
-                              BorderSide(color: Colors.black54, width: .4)),
+                          borderSide: BorderSide(width: .4)),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black54, width: .4),
+                        borderSide: const BorderSide(width: .4),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),

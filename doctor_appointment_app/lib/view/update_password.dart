@@ -70,10 +70,9 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   hintText: "New Passoword",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black54, width: .4)),
+                      borderSide: BorderSide(width: .4)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: .4),
+                    borderSide: const BorderSide(width: .4),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
@@ -121,10 +120,9 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   hintText: "Confirm Passoword",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black54, width: .4)),
+                      borderSide: BorderSide(width: .4)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: .4),
+                    borderSide: const BorderSide(width: .4),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
