@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
@@ -14,6 +15,7 @@ import 'package:doctor_appointment_app/view_model/profile_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,11 +53,25 @@ class _ProfileState extends State<Profile> {
                 color: Colors.blue,
               ),
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image(
-                    image: NetworkImage(Utils.image.toString()),
-                    fit: BoxFit.cover,
-                  )),
+                borderRadius: BorderRadius.circular(50),
+                child: CachedNetworkImage(
+                  imageUrl: Utils.image.toString(),
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    color: Colors.grey,
+                    child: Center(
+                      child: BlurHash(
+                        hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                        imageFit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                // Image(
+                //   image: NetworkImage(Utils.image.toString()),
+                //   fit: BoxFit.cover,
+                // ),
+              ),
             ),
             Container(
               width: 30,
@@ -224,7 +240,87 @@ class _ProfileState extends State<Profile> {
               Expanded(
                   child: GestureDetector(
                 onTap: () {
-                  profileViewModel.logout(context);
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                          height: 250,
+                          width: MediaQuery.of(context).size.width * 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Logout Account?",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                "Are you sure you want to logout your account?",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 100,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Text(
+                                        "No",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      profileViewModel.logout(context);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 100,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Text(
+                                        "Yes",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ));
+                    },
+                  );
                 },
                 child: Text(
                   "Logout",

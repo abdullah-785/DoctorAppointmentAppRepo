@@ -30,7 +30,7 @@ class _ReadyForHomeState extends State<ReadyForHome> {
     // TODO: implement initState
     super.initState();
     // authViewModel!.loggedInUser();
-    _fetchIpInfo();
+    // _fetchIpInfo();
     FirebaseFirestore.instance
         .collection("Users")
         .doc(user!.uid)
@@ -50,21 +50,21 @@ class _ReadyForHomeState extends State<ReadyForHome> {
     });
   }
 
-  Future<String> _fetchIpInfo() async {
-    final response = await http.get(Uri.parse('http://ip-api.com/json'));
-    if (response.statusCode == 200) {
-      print(response.body);
+  // Future<String> _fetchIpInfo() async {
+  //   final response = await http.get(Uri.parse('http://ip-api.com/json'));
+  //   if (response.statusCode == 200) {
+  //     print(response.body);
 
-      var result = jsonDecode(response.body);
-      Utils.country = result['country'];
-      Utils.city = result['city'];
-      Utils.countryCode = result['countryCode'];
-      print(result['country']);
-      return result;
-    } else {
-      throw Exception('Failed to load IP info');
-    }
-  }
+  //     var result = jsonDecode(response.body);
+  //     Utils.country = result['country'];
+  //     Utils.city = result['city'];
+  //     Utils.countryCode = result['countryCode'];
+  //     print(result['country']);
+  //     return result;
+  //   } else {
+  //     throw Exception('Failed to load IP info');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

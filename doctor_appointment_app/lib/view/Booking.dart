@@ -61,7 +61,7 @@ class _BookingsState extends State<Bookings> {
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return SpinKitCircle(size: 35, color: Colors.blue);
+                return SpinKitThreeBounce(size: 20, color: Colors.blue);
               }
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
@@ -105,7 +105,7 @@ class _BookingsState extends State<Bookings> {
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return SpinKitCircle(size: 35, color: Colors.blue);
+                return SpinKitThreeBounce(size: 20, color: Colors.blue);
               }
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
@@ -150,7 +150,7 @@ class _BookingsState extends State<Bookings> {
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return SpinKitCircle(size: 35, color: Colors.blue);
+                return SpinKitThreeBounce(size: 20, color: Colors.blue);
               }
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');

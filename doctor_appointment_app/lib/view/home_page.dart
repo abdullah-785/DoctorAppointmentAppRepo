@@ -37,23 +37,25 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-
+    _fetchIpInfo();
     super.initState();
   }
 
-  // Future<String> _fetchIpInfo() async {
-  //   final response = await http.get(Uri.parse('http://ip-api.com/json'));
-  //   if (response.statusCode == 200) {
-  //     print(response.body);
+  Future<String> _fetchIpInfo() async {
+    final response = await http.get(Uri.parse('http://ip-api.com/json'));
+    if (response.statusCode == 200) {
+      print(response.body);
 
-  //     var result = jsonDecode(response.body);
-  //     country = result['country'];
-  //     print(result['country']);
-  //     return result;
-  //   } else {
-  //     throw Exception('Failed to load IP info');
-  //   }
-  // }
+      var result = jsonDecode(response.body);
+      Utils.country = result['country'];
+      Utils.city = result['city'];
+      Utils.countryCode = result['countryCode'];
+      print(result['country']);
+      return result;
+    } else {
+      throw Exception('Failed to load IP info');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -307,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                         child: Align(
                             alignment: Alignment.topRight,
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -333,13 +335,16 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Column(
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AllDoctorHospital(
-                                        title: "Doctors", isHospital: false)));
+                                          title: "Doctors",
+                                          isHospital: false,
+                                          doctorSpeicalist: "Dentist",
+                                        )));
                           },
                           child: Container(
                               width: 55,
@@ -367,13 +372,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Column(
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AllDoctorHospital(
-                                        title: "Doctors", isHospital: false)));
+                                          title: "Doctors",
+                                          isHospital: false,
+                                          doctorSpeicalist: "Cardiologist",
+                                        )));
                           },
                           child: Container(
                               width: 55,
@@ -401,13 +409,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Column(
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AllDoctorHospital(
-                                        title: "Doctors", isHospital: false)));
+                                          title: "Doctors",
+                                          isHospital: false,
+                                          doctorSpeicalist: "Orthopnea",
+                                        )));
                           },
                           child: Container(
                               width: 55,
@@ -435,13 +446,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Column(
                       children: [
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AllDoctorHospital(
-                                        title: "Doctors", isHospital: false)));
+                                          title: "Doctors",
+                                          isHospital: false,
+                                          doctorSpeicalist: "Neurologist",
+                                        )));
                           },
                           child: Container(
                               width: 55,
@@ -481,7 +495,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                         child: Align(
                             alignment: Alignment.topRight,
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -514,7 +528,7 @@ class _HomePageState extends State<HomePage> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return SpinKitThreeBounce(
                         color: Colors.blue,
-                        size: 25,
+                        size: 20,
                       );
                     }
                     if (snapshot.hasError) {
@@ -564,7 +578,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                         child: Align(
                             alignment: Alignment.topRight,
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -593,7 +607,7 @@ class _HomePageState extends State<HomePage> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return SpinKitThreeBounce(
                         color: Colors.blue,
-                        size: 25,
+                        size: 20,
                       );
                     }
                     if (snapshot.hasError) {

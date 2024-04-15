@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/view_model/doctor_review_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -33,12 +35,26 @@ class _DoctorReviewState extends State<DoctorReview> {
             children: [
               Stack(children: [
                 Container(
-                    width: width * 1,
-                    height: 230,
-                    child: Image.network(
-                      "${widget.doctorModel.image}",
-                      fit: BoxFit.cover,
-                    )),
+                  width: width * 1,
+                  height: 230,
+                  child: CachedNetworkImage(
+                    imageUrl: "${widget.doctorModel.image}",
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                      child: Center(
+                        child: BlurHash(
+                          hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                          imageFit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Image.network(
+                  //   "${widget.doctorModel.image}",
+                  //   fit: BoxFit.cover,
+                  // ),
+                ),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 30.0, left: 16, right: 16),
@@ -139,11 +155,11 @@ class _DoctorReviewState extends State<DoctorReview> {
                         /////////////////////////////////////////////////////////////////
                         Column(
                           children: [
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Who was your experience with Jonny",
+                                  "Who was your experience with ${widget.doctorModel.name}",
                                   style: TextStyle(
                                       fontSize: 14, color: Colors.grey),
                                 ),
@@ -211,11 +227,25 @@ class _DoctorReviewState extends State<DoctorReview> {
                         color: Colors.blue,
                       ),
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.network(
-                            widget.doctorModel.image!,
-                            fit: BoxFit.cover,
-                          )),
+                        borderRadius: BorderRadius.circular(50),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.doctorModel.image!,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            color: Colors.grey,
+                            child: Center(
+                              child: BlurHash(
+                                hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                                imageFit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Image.network(
+                        //   widget.doctorModel.image!,
+                        //   fit: BoxFit.cover,
+                        // ),
+                      ),
                     ),
                     const Icon(Icons.verified, color: Colors.blue, size: 16),
                   ]),

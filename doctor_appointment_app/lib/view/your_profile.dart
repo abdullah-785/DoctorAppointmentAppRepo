@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
@@ -8,6 +9,7 @@ import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:doctor_appointment_app/view_model/profile_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,11 +60,26 @@ class _YourProfileState extends State<YourProfile> {
                   color: Colors.blue,
                 ),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image(
-                      image: NetworkImage(Utils.image.toString()),
-                      fit: BoxFit.cover,
-                    )),
+                  borderRadius: BorderRadius.circular(50),
+                  child: CachedNetworkImage(
+                    imageUrl: Utils.image.toString(),
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                      child: Center(
+                        child: BlurHash(
+                          hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                          imageFit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Image(
+                  //   image: NetworkImage(Utils.image.toString()),
+                  //   fit: BoxFit.cover,
+                  // ),
+                ),
               ),
               Container(
                 width: 30,

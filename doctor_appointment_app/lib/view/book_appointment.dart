@@ -1,14 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/resources/components/booking_date.dart';
 import 'package:doctor_appointment_app/resources/components/booking_time.dart';
 import 'package:doctor_appointment_app/resources/components/doctor_detail_card.dart';
+import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
+import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
+import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BookOppointment extends StatefulWidget {
   BookOppointment({super.key, required this.doctorDocument});
@@ -19,10 +26,14 @@ class BookOppointment extends StatefulWidget {
 }
 
 class _BookOppointmentState extends State<BookOppointment> {
+  int patient = 0;
+  int recover = 0;
+  int reviews = 0;
+
   @override
   void initState() {
     super.initState();
-
+    countDocuments(widget.doctorDocument);
     // print("Date is : ${widget.doctorDocument.availabilityTimeTo}");
   }
 
@@ -30,6 +41,10 @@ class _BookOppointmentState extends State<BookOppointment> {
   Widget build(BuildContext context) {
     final bookOppointmentViewModel =
         Provider.of<BookOppointmentViewModel>(context);
+
+    // final doctorViewModel = Provider.of<DoctorViewModel>(context);
+    // doctorViewModel.countDocuments(widget.doctorDocument!);
+    final favoriteViewModel = Provider.of<DoctorFavoriteViewModel>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -69,15 +84,22 @@ class _BookOppointmentState extends State<BookOppointment> {
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
                       )),
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey)),
-                        child: const Icon(
-                          Icons.share,
-                          size: 20,
+                      GestureDetector(
+                        onTap: () {
+                          Share.share("${widget.doctorDocument.name}",
+                              subject: "${widget.doctorDocument.about}");
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.grey)),
+                          child: Icon(
+                            Icons.share,
+                            // color: Colors.grey[500],
+                            size: 20,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -89,9 +111,51 @@ class _BookOppointmentState extends State<BookOppointment> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.grey)),
-                        child: const Icon(
-                          Icons.favorite_border,
-                          size: 20,
+                        child: StreamBuilder<bool>(
+                          stream: favoriteViewModel.CheckLikedOrNot(
+                              widget.doctorDocument),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return SpinKitThreeBounce(
+                                color: Colors.blue,
+                                size: 10,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("Error ${snapshot.error}");
+                            } else {
+                              return snapshot.data == false
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        favoriteViewModel.doctorLiked(
+                                          widget.doctorDocument,
+                                          context,
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.favorite_border_rounded,
+                                        // color: Colors.grey[500],
+                                        size: 20,
+                                      ),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                FavoriteScreen(),
+                                          ),
+                                        );
+                                        // favoriteViewModel.deleteFavoriteDoctor(favoriteDoc)
+                                      },
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Colors.blue,
+                                        size: 20,
+                                      ));
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -113,12 +177,21 @@ class _BookOppointmentState extends State<BookOppointment> {
                             color: Colors.blue,
                           ),
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image(
-                                image: NetworkImage(
-                                    widget.doctorDocument.image.toString()),
-                                fit: BoxFit.cover,
-                              )),
+                            borderRadius: BorderRadius.circular(50),
+                            child: CachedNetworkImage(
+                              imageUrl: widget.doctorDocument.image.toString(),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey,
+                                child: Center(
+                                  child: BlurHash(
+                                    hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                                    imageFit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                         const Icon(
                           Icons.verified,
@@ -148,6 +221,10 @@ class _BookOppointmentState extends State<BookOppointment> {
                             ),
                             Text(
                               widget.doctorDocument.address.toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[500],
+                              ),
                             ),
                           ]),
                         ],
@@ -162,28 +239,28 @@ class _BookOppointmentState extends State<BookOppointment> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       DoctorDetailCard(
                         iconData: Icons.group,
-                        audience: "7500+",
+                        audience: "${patient}",
                         audienceName: "Patients",
                       ),
                       DoctorDetailCard(
                         iconData: Icons.badge,
-                        audience: "10+",
-                        audienceName: "Patients",
+                        audience: "${recover}",
+                        audienceName: "Recover",
                       ),
                       DoctorDetailCard(
                         iconData: Icons.star_purple500_rounded,
-                        audience: "4.9+",
-                        audienceName: "Patients",
+                        audience: "${reviews}",
+                        audienceName: "Reviews",
                       ),
                       DoctorDetailCard(
                         iconData: Icons.message_rounded,
-                        audience: "4956+",
-                        audienceName: "Patients",
+                        audience: "${patient}",
+                        audienceName: "Chats",
                       ),
                     ],
                   ),
@@ -207,10 +284,11 @@ class _BookOppointmentState extends State<BookOppointment> {
                       setState(() {
                         bookOppointmentViewModel.setDateTime(date);
 
-                        final slots = slotsBWOpeningAndClosingTime(
-                            widget.doctorDocument.availabilityTimeTo!,
-                            widget.doctorDocument.availabilityTimeFrom!,
-                            60);
+                        final slots = bookOppointmentViewModel
+                            .slotsBWOpeningAndClosingTime(
+                                widget.doctorDocument.availabilityTimeTo!,
+                                widget.doctorDocument.availabilityTimeFrom!,
+                                60);
                         print(slots);
                       });
                     },
@@ -247,7 +325,8 @@ class _BookOppointmentState extends State<BookOppointment> {
                     height: 10,
                   ),
                   FutureBuilder<List<DateTime>>(
-                    future: Future.value(slotsBWOpeningAndClosingTime(
+                    future: Future.value(
+                        bookOppointmentViewModel.slotsBWOpeningAndClosingTime(
                       widget.doctorDocument.availabilityTimeTo!,
                       widget.doctorDocument.availabilityTimeFrom!,
                       60, // Slot duration in minutes
@@ -307,18 +386,18 @@ class _BookOppointmentState extends State<BookOppointment> {
                   const SizedBox(
                     height: 50,
                   ),
-                  Container(
-                    child: TextFormField(
-                      autofocus: false,
-                      decoration: InputDecoration(
-                          suffix: const Text("Request Schedule"),
-                          suffixStyle:
-                              const TextStyle(color: Colors.blue, fontSize: 12),
-                          hintText: "Want a custom shedule?",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20))),
-                    ),
-                  ),
+                  // Container(
+                  //   child: TextFormField(
+                  //     autofocus: false,
+                  //     decoration: InputDecoration(
+                  //         suffix: const Text("Request Schedule"),
+                  //         suffixStyle:
+                  //             const TextStyle(color: Colors.blue, fontSize: 12),
+                  //         hintText: "Want a custom shedule?",
+                  //         border: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(20))),
+                  //   ),
+                  // ),
 
                   const SizedBox(
                     height: 30,
@@ -350,308 +429,41 @@ class _BookOppointmentState extends State<BookOppointment> {
         )));
   }
 
-  List<DateTime> slotsBWOpeningAndClosingTime(
-    DateTime opening,
-    DateTime closing,
-    int slotDuration,
-  ) {
-    /// MODIFY CODE ONLY BELOW THIS LINE
+  Future<void> countDocuments(DoctorModel doctorDoc) async {
+    try {
+      // Get a reference to the collection of Oppointment
+      CollectionReference oppointmentCollectionRef =
+          FirebaseFirestore.instance.collection("Oppointments");
 
-    List<DateTime> slots = [];
-    int slotDurationInMinutes = slotDuration ?? 60;
-    DateTime currentSlot = DateTime(
-      opening.year,
-      opening.month,
-      opening.day,
-      opening.hour,
-      opening.minute,
-    );
+      CollectionReference reviewCollectionRef =
+          FirebaseFirestore.instance.collection("DoctorReview");
 
-    while (currentSlot.isBefore(closing) || currentSlot == closing) {
-      slots.add(currentSlot);
-      currentSlot = currentSlot.add(Duration(minutes: slotDurationInMinutes));
+      // Get the documents based on the filter
+      QuerySnapshot oppointQuerySnapshot = await oppointmentCollectionRef
+          .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
+          .get();
+
+      //count the recovered patients means that which oppointments that have status = Completed
+      QuerySnapshot recoverQuerySnapshot = await oppointmentCollectionRef
+          .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
+          .where("status", isEqualTo: "Completed")
+          .get();
+
+      //review query snapshot
+      QuerySnapshot reviewQuerySnapshot = await reviewCollectionRef
+          .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
+          .get();
+
+      // Count the documents
+      // int oppointCount = oppointQuerySnapshot.size;
+      // int reviewCont = reviewQuerySnapshot.size;
+      setState(() {
+        patient = oppointQuerySnapshot.size;
+        recover = recoverQuerySnapshot.size;
+        reviews = reviewQuerySnapshot.size;
+      });
+    } catch (e) {
+      print("Error counting documents: $e");
     }
-    final now = DateTime.now();
-    return slots.where((dateTime) => dateTime.isAfter(now)).toList();
-
-    /// MODIFY CODE ONLY ABOVE THIS LINE
   }
 }
-
-
-
-
-
-// SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: Row(
-                  //     children: [
-                  //       GestureDetector(
-                  //         onTap: () {
-                  //           bookOppointmentViewModel.setSlot("10:00 am");
-                  //         },
-                  //         child: BookingTime(
-                  //           col: bookOppointmentViewModel.slot == "10:00 am"
-                  //               ? Colors.blue
-                  //               : Colors.white,
-                  //           borderColor:
-                  //               bookOppointmentViewModel.slot == "10:00 am"
-                  //                   ? Colors.blue
-                  //                   : Color.fromARGB(226, 158, 158, 158),
-                  //           textColor:
-                  //               bookOppointmentViewModel.slot == "10:00 am"
-                  //                   ? Colors.white
-                  //                   : Colors.grey,
-                  //           time: "10:00 am",
-                  //         ),
-                  //       ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("11:00 am");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "11:00 am"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "11:00 am"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "11:00 am"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "11:00 am",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("12:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "12:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "12:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "12:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "12:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("01:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "01:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "01:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "01:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "01:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("02:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "02:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "02:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "02:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "02:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("03:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "03:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "03:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "03:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "03:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("04:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "04:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "04:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "04:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "04:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("05:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "05:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "05:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "05:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "05:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("06:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "06:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "06:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "06:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "06:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("07:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "07:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "07:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "07:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "07:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("08:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "08:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "08:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "08:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "08:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("09:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "09:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "09:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "09:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "09:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("10:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "10:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "10:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "10:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "10:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     bookOppointmentViewModel.setSlot("11:00 pm");
-                  //       //   },
-                  //       //   child: BookingTime(
-                  //       //     col: bookOppointmentViewModel.slot == "11:00 pm"
-                  //       //         ? Colors.blue
-                  //       //         : Colors.white,
-                  //       //     borderColor:
-                  //       //         bookOppointmentViewModel.slot == "11:00 pm"
-                  //       //             ? Colors.blue
-                  //       //             : Color.fromARGB(226, 158, 158, 158),
-                  //       //     textColor:
-                  //       //         bookOppointmentViewModel.slot == "11:00 pm"
-                  //       //             ? Colors.white
-                  //       //             : Colors.grey,
-                  //       //     time: "11:00 pm",
-                  //       //   ),
-                  //       // ),
-                  //     ],
-                  //   ),
-                  // ),

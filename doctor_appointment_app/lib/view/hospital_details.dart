@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
@@ -5,10 +6,16 @@ import 'package:doctor_appointment_app/Models/hospital_review.dart';
 import 'package:doctor_appointment_app/resources/components/review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/specialist_card.dart';
 import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
+import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/hospital_review.dart';
+import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HospitalDetails extends StatefulWidget {
   HospitalDetails({super.key, required this.hospitalDoc});
@@ -22,13 +29,15 @@ class HospitalDetails extends StatefulWidget {
 class _HospitalDetailsState extends State<HospitalDetails>
     with TickerProviderStateMixin {
   // List of Tabs
-
+  int hospitalReview = 0;
 // controller object
   late TabController _tabController;
   @override
   void initState() {
     // TODO: implement initState
+    countDocuments(widget.hospitalDoc);
     super.initState();
+
     _tabController = TabController(vsync: this, length: 3);
   }
 
@@ -36,6 +45,7 @@ class _HospitalDetailsState extends State<HospitalDetails>
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).height * 1;
+    final hospitalViewModel = Provider.of<HospitalFavoriteViewModel>(context);
     return Scaffold(
       body: Stack(alignment: Alignment.bottomCenter, children: [
         Stack(alignment: Alignment.bottomCenter, children: [
@@ -45,10 +55,24 @@ class _HospitalDetailsState extends State<HospitalDetails>
                 Container(
                   width: width * 1,
                   height: 250,
-                  child: Image.network(
-                    widget.hospitalDoc.image.toString(),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.hospitalDoc.image.toString(),
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                      child: Center(
+                        child: BlurHash(
+                          hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                          imageFit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                   ),
+
+                  //  Image.network(
+                  //   widget.hospitalDoc.image.toString(),
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 40.0, left: 16, right: 16),
@@ -79,16 +103,21 @@ class _HospitalDetailsState extends State<HospitalDetails>
                       //   style:
                       //       TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       // )),
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white)),
-                        child: const Icon(
-                          Icons.share,
-                          size: 20,
+                      GestureDetector(
+                        onTap: () {
+                          Share.share(widget.hospitalDoc.name!);
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              border: Border.all(color: Colors.white)),
+                          child: const Icon(
+                            Icons.share,
+                            size: 18,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -101,9 +130,49 @@ class _HospitalDetailsState extends State<HospitalDetails>
                             shape: BoxShape.circle,
                             color: Colors.white,
                             border: Border.all(color: Colors.white)),
-                        child: const Icon(
-                          Icons.favorite_border,
-                          size: 20,
+                        child: StreamBuilder<bool>(
+                          stream: hospitalViewModel.CheckLikedOrNot(
+                              widget.hospitalDoc),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return SpinKitThreeBounce(
+                                color: Colors.blue,
+                                size: 10,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("Error ${snapshot.error}");
+                            } else {
+                              return snapshot.data == false
+                                  ? InkWell(
+                                      onTap: () async {
+                                        hospitalViewModel.hospitalLiked(
+                                            widget.hospitalDoc, context);
+                                      },
+                                      child: Icon(
+                                        Icons.favorite_border_rounded,
+                                        color: Colors.black,
+                                        size: 18,
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                FavoriteScreen(),
+                                          ),
+                                        );
+                                        // favoriteViewModel.deleteFavoriteDoctor(favoriteDoc)
+                                      },
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Colors.blue,
+                                        size: 18,
+                                      ));
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -150,7 +219,7 @@ class _HospitalDetailsState extends State<HospitalDetails>
                         ),
 
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.start,
@@ -179,28 +248,28 @@ class _HospitalDetailsState extends State<HospitalDetails>
                           ],
                         ),
 
-                        const Row(
-                          children: [
-                            Icon(
-                              Icons.access_time_outlined,
-                              size: 18,
-                              color: Colors.blue,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              "15 min, 1.5km, Mon Sun | 11 am - 11pm",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey),
-                            ),
-                          ],
-                        ),
+                        // const Row(
+                        //   children: [
+                        //     Icon(
+                        //       Icons.access_time_outlined,
+                        //       size: 18,
+                        //       color: Colors.blue,
+                        //     ),
+                        //     SizedBox(
+                        //       width: 8,
+                        //     ),
+                        //     Text(
+                        //       "15 min, 1.5km, Mon Sun | 11 am - 11pm",
+                        //       style: TextStyle(
+                        //           fontSize: 14,
+                        //           fontWeight: FontWeight.w400,
+                        //           color: Colors.grey),
+                        //     ),
+                        //   ],
+                        // ),
 
                         const SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
 
                         ////////////////
@@ -558,31 +627,31 @@ class _HospitalDetailsState extends State<HospitalDetails>
                                                 style: TextStyle(
                                                     color: Colors.grey),
                                               ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              const Text(
-                                                "Working Hours",
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              Divider(
-                                                color:
-                                                    Colors.grey.withOpacity(.2),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              WorkingHoursWidget(day: "Monday"),
-                                              WorkingHoursWidget(
-                                                  day: "Tuesday"),
-                                              WorkingHoursWidget(
-                                                  day: "Wednessday"),
-                                              WorkingHoursWidget(
-                                                  day: "Thursday"),
-                                              WorkingHoursWidget(day: "Friday"),
-                                              WorkingHoursWidget(
-                                                  day: "Saturday"),
-                                              WorkingHoursWidget(day: "Sunday"),
+                                              // const SizedBox(
+                                              //   height: 20,
+                                              // ),
+                                              // const Text(
+                                              //   "Working Hours",
+                                              //   style: TextStyle(fontSize: 16),
+                                              // ),
+                                              // Divider(
+                                              //   color:
+                                              //       Colors.grey.withOpacity(.2),
+                                              // ),
+                                              // const SizedBox(
+                                              //   height: 5,
+                                              // ),
+                                              // WorkingHoursWidget(day: "Monday"),
+                                              // WorkingHoursWidget(
+                                              //     day: "Tuesday"),
+                                              // WorkingHoursWidget(
+                                              //     day: "Wednessday"),
+                                              // WorkingHoursWidget(
+                                              //     day: "Thursday"),
+                                              // WorkingHoursWidget(day: "Friday"),
+                                              // WorkingHoursWidget(
+                                              //     day: "Saturday"),
+                                              // WorkingHoursWidget(day: "Sunday"),
                                             ],
                                           ),
                                         ],
@@ -600,7 +669,7 @@ class _HospitalDetailsState extends State<HospitalDetails>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 140,
+                    width: 100,
                     height: 24,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -610,12 +679,12 @@ class _HospitalDetailsState extends State<HospitalDetails>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.star_border_rounded,
-                          size: 20,
+                          Icons.star_border,
+                          size: 18,
                           color: Colors.white,
                         ),
                         Text(
-                          " 4.8 (1k+ Reviews)",
+                          " ${hospitalReview} Reviews",
                           // "${countHospitalReviews(
                           //   widget.hospitalDoc,
                           // )}",
@@ -673,16 +742,22 @@ class _HospitalDetailsState extends State<HospitalDetails>
     );
   }
 
-  int countHospitalReviews(
-      HospitalModel hospital, List<HospitalReviewModel> allReviews) {
-    // Filter the allReviews list based on the hospital's UID
-    List<HospitalReviewModel> specificHospitalReviews = allReviews
-        .where((review) => review.hospitalRef == hospital.uid)
-        .toList();
+  Future<void> countDocuments(HospitalModel hospitalDoc) async {
+    try {
+      // Get a reference to the collection of Oppointment
+      CollectionReference hospitalCollectionRef =
+          FirebaseFirestore.instance.collection("HospitalReview");
 
-    // Count the number of reviews for the specific hospital
-    int specificHospitalReviewCount = specificHospitalReviews.length;
+      //count the recovered patients means that which oppointments that have status = Completed
+      QuerySnapshot hospitalQuerySnapshot = await hospitalCollectionRef
+          .where("hospitalRef", isEqualTo: "Hospital/${hospitalDoc.uid}")
+          .get();
 
-    return specificHospitalReviewCount;
+      setState(() {
+        hospitalReview = hospitalQuerySnapshot.size;
+      });
+    } catch (e) {
+      print("Error counting documents: $e");
+    }
   }
 }

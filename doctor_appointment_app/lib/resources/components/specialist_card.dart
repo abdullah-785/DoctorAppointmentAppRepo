@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/doctor_favorite.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
@@ -5,7 +6,10 @@ import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/doctor_details.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
+import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
+import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +28,7 @@ class _SpecialistCardState extends State<SpecialistCard> {
   @override
   Widget build(BuildContext context) {
     final favoriteViewModel = Provider.of<DoctorFavoriteViewModel>(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
@@ -58,9 +63,18 @@ class _SpecialistCardState extends State<SpecialistCard> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        widget.doctorDoc!.image.toString(),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.doctorDoc!.image.toString(),
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          color: Colors.grey,
+                          child: Center(
+                            child: BlurHash(
+                              hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                              imageFit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -113,7 +127,7 @@ class _SpecialistCardState extends State<SpecialistCard> {
                                   return Text("Error ${snapshot.error}");
                                 } else {
                                   return snapshot.data == false
-                                      ? InkWell(
+                                      ? GestureDetector(
                                           onTap: () async {
                                             favoriteViewModel.doctorLiked(
                                               widget.doctorDoc!,
@@ -159,45 +173,46 @@ class _SpecialistCardState extends State<SpecialistCard> {
                         widget.doctorDoc!.specializeIn.toString(),
                         style: TextStyle(color: Colors.grey[600]),
                       ),
-                      // SizedBox(height: 15),
-                      // Container(
-                      //   width: widget.width * 0.52,
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       RatingBar.builder(
-                      //         itemSize: 14,
-                      //         initialRating: 4.8,
-                      //         minRating: 1,
-                      //         direction: Axis.horizontal,
-                      //         allowHalfRating: true,
-                      //         itemCount: 5,
-                      //         itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                      //         itemBuilder: (context, _) => Icon(
-                      //           Icons.star,
-                      //           color: Colors.amber,
-                      //         ),
-                      //         onRatingUpdate: (rating) {
-                      //           print(rating);
-                      //         },
-                      //       ),
-                      //       Text(
-                      //         "4.8",
-                      //         style: TextStyle(fontSize: 12),
-                      //       ),
-                      //       Container(
-                      //         height: 15,
-                      //         width: 1,
-                      //         color: Colors.grey[400],
-                      //       ),
-                      //       Text(
-                      //         "4991 Reviews",
-                      //         style: TextStyle(
-                      //             fontSize: 12, color: Colors.grey[500]),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: widget.width * 0.52,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            // RatingBar.builder(
+                            //   itemSize: 14,
+                            //   initialRating: 4.8,
+                            //   minRating: 1,
+                            //   direction: Axis.horizontal,
+                            //   allowHalfRating: true,
+                            //   itemCount: 5,
+                            //   itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                            //   itemBuilder: (context, _) => Icon(
+                            //     Icons.star,
+                            //     color: Colors.amber,
+                            //   ),
+                            //   onRatingUpdate: (rating) {
+                            //     print(rating);
+                            //   },
+                            // ),
+                            // Text(
+                            //   "4.8",
+                            //   style: TextStyle(fontSize: 12),
+                            // ),
+                            // Container(
+                            //   height: 15,
+                            //   width: 1,
+                            //   color: Colors.grey[400],
+                            // ),
+
+                            // Text(
+                            //   "${doctorViewModel.reviews} Reviews",
+                            //   style: TextStyle(
+                            //       fontSize: 12, color: Colors.grey[500]),
+                            // ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ],

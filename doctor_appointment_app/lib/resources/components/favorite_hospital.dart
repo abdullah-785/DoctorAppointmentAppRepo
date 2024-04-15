@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/hospital_favorite_model.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/view/hospital_details.dart';
 import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +39,7 @@ class _FavoriteHospitalCardState extends State<FavoriteHospitalCard> {
           return Text('Error: Unable to load hospital data');
         } else {
           HospitalModel hospitalModel = snapshot.data!;
-          return InkWell(
+          return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
@@ -70,12 +72,25 @@ class _FavoriteHospitalCardState extends State<FavoriteHospitalCard> {
                               topLeft: Radius.circular(8),
                               topRight: Radius.circular(8),
                             ),
-                            child: Image.network(
-                              hospitalModel.image.toString(),
-                              // hospitalModel.name.toString()
-                              // "https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fmedical-doctor&psig=AOvVaw3tNBbzGILohw-AN_Tj_vzk&ust=1711367563455000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMCE34_rjIUDFQAAAAAdAAAAABAE",
+                            child: CachedNetworkImage(
+                              imageUrl: hospitalModel.image.toString(),
                               fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey,
+                                child: Center(
+                                  child: BlurHash(
+                                    hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                                    imageFit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                             ),
+
+                            // Image.network(
+                            //   hospitalModel.image.toString(),
+
+                            //   fit: BoxFit.cover,
+                            // ),
                           ),
                         ),
                         Container(
@@ -84,12 +99,13 @@ class _FavoriteHospitalCardState extends State<FavoriteHospitalCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
-                                child: InkWell(
+                                padding:
+                                    const EdgeInsets.only(top: 5.0, left: 5),
+                                child: GestureDetector(
                                   onTap: () {
                                     // Handle favorite action
                                   },
-                                  child: InkWell(
+                                  child: GestureDetector(
                                     onTap: () {
                                       ///Remove Doc
                                       hospitalFavModel.deleteFavoriteHospital(
@@ -110,39 +126,39 @@ class _FavoriteHospitalCardState extends State<FavoriteHospitalCard> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: 55,
-                                  height: 23,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                      topRight: Radius.circular(8),
-                                      bottomLeft: Radius.circular(12),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.yellow,
-                                        size: 16,
-                                      ),
-                                      SizedBox(width: 5),
-                                      Text(
-                                        "4.8",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.all(8.0),
+                              //   child: Container(
+                              //     width: 55,
+                              //     height: 23,
+                              //     decoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       borderRadius: BorderRadius.only(
+                              //         topLeft: Radius.circular(12),
+                              //         topRight: Radius.circular(8),
+                              //         bottomLeft: Radius.circular(12),
+                              //       ),
+                              //     ),
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.center,
+                              //       children: [
+                              //         Icon(
+                              //           Icons.star,
+                              //           color: Colors.yellow,
+                              //           size: 16,
+                              //         ),
+                              //         SizedBox(width: 5),
+                              //         Text(
+                              //           "4.8",
+                              //           style: TextStyle(
+                              //             fontSize: 12,
+                              //             fontWeight: FontWeight.bold,
+                              //           ),
+                              //         )
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         )
@@ -165,13 +181,13 @@ class _FavoriteHospitalCardState extends State<FavoriteHospitalCard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.access_time_filled_outlined,
-                                size: 16,
-                                color: Colors.blue,
-                              ),
+                              // Icon(
+                              //   Icons.access_time_filled_outlined,
+                              //   size: 16,
+                              //   color: Colors.blue,
+                              // ),
                               SizedBox(width: 5),
-                              Text("15 min - 1.5Km")
+                              Text("${hospitalModel.specializeIn}")
                             ],
                           )
                         ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/Models/doctor_review_model.dart';
@@ -7,11 +8,16 @@ import 'package:doctor_appointment_app/resources/components/review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
 import 'package:doctor_appointment_app/view/book_appointment.dart';
 import 'package:doctor_appointment_app/view/doctor_reviews.dart';
+import 'package:doctor_appointment_app/view/favorite.dart';
+import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
 import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DoctorDetails extends StatefulWidget {
   DoctorDetails({super.key, required this.doctorDoc});
@@ -21,10 +27,20 @@ class DoctorDetails extends StatefulWidget {
 }
 
 class _DoctorDetailsState extends State<DoctorDetails> {
+  int patient = 0;
+  int recover = 0;
+  int reviews = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    countDocuments(widget.doctorDoc!);
+    // print("Date is : ${widget.doctorDocument.availabilityTimeTo}");
+  }
+
   @override
   Widget build(BuildContext context) {
-    final doctorViewModel = Provider.of<DoctorViewModel>(context);
-    doctorViewModel.countDocuments(widget.doctorDoc!);
+    final favoriteViewModel = Provider.of<DoctorFavoriteViewModel>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -67,15 +83,22 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
                       )),
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey)),
-                        child: const Icon(
-                          Icons.share,
-                          size: 20,
+                      GestureDetector(
+                        onTap: () {
+                          Share.share("${widget.doctorDoc!.name}",
+                              subject: "${widget.doctorDoc!.about}");
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.grey)),
+                          child: Icon(
+                            Icons.share,
+                            // color: Colors.grey[500],
+                            size: 20,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -87,9 +110,51 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.grey)),
-                        child: const Icon(
-                          Icons.favorite_border,
-                          size: 20,
+                        child: StreamBuilder<bool>(
+                          stream: favoriteViewModel.CheckLikedOrNot(
+                              widget.doctorDoc!),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return SpinKitThreeBounce(
+                                color: Colors.blue,
+                                size: 10,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("Error ${snapshot.error}");
+                            } else {
+                              return snapshot.data == false
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        favoriteViewModel.doctorLiked(
+                                          widget.doctorDoc!,
+                                          context,
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.favorite_border_rounded,
+                                        // color: Colors.grey[500],
+                                        size: 20,
+                                      ),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                FavoriteScreen(),
+                                          ),
+                                        );
+                                        // favoriteViewModel.deleteFavoriteDoctor(favoriteDoc)
+                                      },
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Colors.blue,
+                                        size: 20,
+                                      ));
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -111,11 +176,25 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                             color: Colors.blue,
                           ),
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image.network(
-                                widget.doctorDoc!.image.toString(),
-                                fit: BoxFit.cover,
-                              )),
+                            borderRadius: BorderRadius.circular(50),
+                            child: CachedNetworkImage(
+                              imageUrl: widget.doctorDoc!.image.toString(),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey,
+                                child: Center(
+                                  child: BlurHash(
+                                    hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                                    imageFit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Image.network(
+                            //   widget.doctorDoc!.image.toString(),
+                            //   fit: BoxFit.cover,
+                            // ),
+                          ),
                         ),
                         const Icon(
                           Icons.verified,
@@ -168,23 +247,23 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     children: [
                       DoctorDetailCard(
                         iconData: Icons.group,
-                        audience: "${doctorViewModel.patient}+",
+                        audience: "${patient}",
                         audienceName: "Patients",
                       ),
                       DoctorDetailCard(
                         iconData: Icons.badge,
-                        audience: "10+",
-                        audienceName: "Patients",
+                        audience: "${recover}",
+                        audienceName: "Recover",
                       ),
                       DoctorDetailCard(
                         iconData: Icons.star_purple500_rounded,
-                        audience: "${doctorViewModel.reviews}+",
+                        audience: "${reviews}",
                         audienceName: "Reviews",
                       ),
                       DoctorDetailCard(
                         iconData: Icons.message_rounded,
-                        audience: "${doctorViewModel.patient}+",
-                        audienceName: "Patients",
+                        audience: "${patient}",
+                        audienceName: "Chats",
                       ),
                     ],
                   ),
@@ -438,25 +517,41 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     );
   }
 
-  // Future<int> countDocuments(
-  //     String collectionName, DoctorModel doctorDoc) async {
-  //   try {
-  //     // Get a reference to the collection
-  //     CollectionReference collectionRef =
-  //         FirebaseFirestore.instance.collection(collectionName);
+  Future<void> countDocuments(DoctorModel doctorDoc) async {
+    try {
+      // Get a reference to the collection of Oppointment
+      CollectionReference oppointmentCollectionRef =
+          FirebaseFirestore.instance.collection("Oppointments");
 
-  //     // Get the documents based on the filter
-  //     QuerySnapshot querySnapshot = await collectionRef
-  //         .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
-  //         .get();
+      CollectionReference reviewCollectionRef =
+          FirebaseFirestore.instance.collection("DoctorReview");
 
-  //     // Count the documents
-  //     int count = querySnapshot.size;
-  //     print("Count is :  ${count}");
-  //     return count;
-  //   } catch (e) {
-  //     print("Error counting documents: $e");
-  //     return 0;
-  //   }
-  // }
+      // Get the documents based on the filter
+      QuerySnapshot oppointQuerySnapshot = await oppointmentCollectionRef
+          .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
+          .get();
+
+      //count the recovered patients means that which oppointments that have status = Completed
+      QuerySnapshot recoverQuerySnapshot = await oppointmentCollectionRef
+          .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
+          .where("status", isEqualTo: "Completed")
+          .get();
+
+      //review query snapshot
+      QuerySnapshot reviewQuerySnapshot = await reviewCollectionRef
+          .where("doctorRef", isEqualTo: "Doctor/${doctorDoc.uid}")
+          .get();
+
+      // Count the documents
+      // int oppointCount = oppointQuerySnapshot.size;
+      // int reviewCont = reviewQuerySnapshot.size;
+      setState(() {
+        patient = oppointQuerySnapshot.size;
+        recover = recoverQuerySnapshot.size;
+        reviews = reviewQuerySnapshot.size;
+      });
+    } catch (e) {
+      print("Error counting documents: $e");
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/Models/hospital_review.dart';
@@ -5,6 +6,7 @@ import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/hospital_details.dart';
 import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
@@ -67,13 +69,23 @@ class _HospitalCardState extends State<HospitalCard> {
                     height: 130,
                     width: widget.widthParam,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.circular(8)),
-                        child: Image.network(
-                          widget.hospitalModel!.image.toString(),
-                          fit: BoxFit.cover,
-                        ))),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8)),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.hospitalModel!.image.toString(),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          color: Colors.grey,
+                          child: Center(
+                            child: BlurHash(
+                              hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                              imageFit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
                 Container(
                   height: 130,
                   child: Column(

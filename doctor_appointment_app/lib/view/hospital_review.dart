@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_appointment_app/Models/hospital_model.dart';
 import 'package:doctor_appointment_app/view_model/hospital_review_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -41,9 +43,23 @@ class _HospitalReviewState extends State<HospitalReview>
             children: [
               Stack(children: [
                 Container(
-                    width: width * 1,
-                    height: 230,
-                    child: Image.network(widget.hospitalDoc.image.toString())),
+                  width: width * 1,
+                  height: 230,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.hospitalDoc.image.toString(),
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                      child: Center(
+                        child: BlurHash(
+                          hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                          imageFit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Image.network(widget.hospitalDoc.image.toString()),
+                ),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 30.0, left: 16, right: 16),

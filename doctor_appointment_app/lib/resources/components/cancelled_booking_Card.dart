@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/booking_model.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
 import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
@@ -99,10 +101,24 @@ class _BookingCardCancelledState extends State<BookingCardCancelled> {
                           height: 100,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              doctorModel.image.toString(),
+                            child: CachedNetworkImage(
+                              imageUrl: doctorModel.image.toString(),
                               fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey,
+                                child: Center(
+                                  child: BlurHash(
+                                    hash: "LKN]Rv%2Tw=w]~RBVZRi};RPxuwH",
+                                    imageFit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                             ),
+
+                            // Image.network(
+                            //   doctorModel.image.toString(),
+                            //   fit: BoxFit.cover,
+                            // ),
                           ),
                         ),
                         Expanded(

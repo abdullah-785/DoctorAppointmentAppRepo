@@ -136,7 +136,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SpinKitThreeBounce(size: 25, color: Colors.blue);
+                        return SpinKitThreeBounce(size: 20, color: Colors.blue);
                       }
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');

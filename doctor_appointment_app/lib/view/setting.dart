@@ -81,11 +81,21 @@ class _SettingState extends State<Setting> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Do you want to delete your account?",
+                            "Delete Account?",
                             style: TextStyle(
                                 color: Colors.black,
                                 // fontWeight: FontWeight.bold,
                                 fontSize: 18),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "Are you sure you want to delete your account?",
+                            style: TextStyle(
+                                color: Colors.black,
+                                // fontWeight: FontWeight.bold,
+                                fontSize: 14),
                           ),
                           SizedBox(
                             height: 30,

@@ -25,7 +25,10 @@ class _WorkingHoursWidgetState extends State<WorkingHoursWidget> {
         children: [
           Text(
             widget.day,
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
+            ),
           ),
           RichText(
             textAlign: TextAlign.center,
@@ -35,16 +38,13 @@ class _WorkingHoursWidgetState extends State<WorkingHoursWidget> {
                       .format(widget.doctorDoc!.availabilityTimeTo!)
                   : "00:00",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 color: Colors.grey,
               ),
               children: <TextSpan>[
                 TextSpan(
                     text: ' - ',
-                    style: TextStyle(
-                      fontSize: 14,
-                      // color: Colors.black,
-                    )),
+                    style: TextStyle(fontSize: 12, color: Colors.grey)),
                 TextSpan(
                     text: widget.doctorDoc != null
                         ? DateFormat('hh:mm a')

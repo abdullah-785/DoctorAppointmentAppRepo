@@ -91,6 +91,18 @@ class ProfileViewModel with ChangeNotifier {
     await FirebaseAuth.instance.signOut();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('isLoggedIn');
+    Utils.name = "";
+    Utils.address = "";
+    Utils.city = "";
+    Utils.country = "";
+    Utils.countryCode = "";
+    Utils.dob = "";
+    Utils.email = "";
+    Utils.gender = "";
+    Utils.image = "";
+    Utils.phone = "";
+    Utils.role = "";
+    Utils.uid = "";
 
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => SignIn()));
