@@ -189,7 +189,7 @@ class _BookingCardUpcomingState extends State<BookingCardUpcoming> {
                     ),
                     Spacer(),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      // mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         InkWell(
                           onTap: () {
@@ -208,7 +208,7 @@ class _BookingCardUpcomingState extends State<BookingCardUpcoming> {
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            width: 120,
+                            width: MediaQuery.of(context).size.width * 0.8,
                             height: 32,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
@@ -220,19 +220,19 @@ class _BookingCardUpcomingState extends State<BookingCardUpcoming> {
                             ),
                           ),
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 120,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.blue,
-                          ),
-                          child: Text(
-                            "Reschedule",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                        // Container(
+                        //   alignment: Alignment.center,
+                        //   width: 120,
+                        //   height: 32,
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(16),
+                        //     color: Colors.blue,
+                        //   ),
+                        //   child: Text(
+                        //     "Reschedule",
+                        //     style: TextStyle(color: Colors.white),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],

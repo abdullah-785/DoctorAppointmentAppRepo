@@ -59,6 +59,7 @@ dependencies:
   webview_flutter: ^4.7.0
   maps_launcher: ^2.2.1
   url_launcher: ^6.2.6
+  flutter_widget_from_html: ^0.15.0
 
 dev_dependencies:
   flutter_test:

@@ -52,6 +52,12 @@ class AuthViewModel with ChangeNotifier {
   //   });
   // }
 
+  Future<void> resetPassword(String userEmail) async {
+    setLoading(true);
+    await _auth.sendPasswordResetEmail(email: userEmail);
+    setLoading(false);
+  }
+
   Future<void> signUp(String email, String password, String confirmPasswrod,
       String name, BuildContext context) async {
     try {

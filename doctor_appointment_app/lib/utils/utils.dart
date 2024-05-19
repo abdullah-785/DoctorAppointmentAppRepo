@@ -16,7 +16,10 @@ class Utils {
   static String? countryCode = "UK";
   static String? city = "New York";
 
-  static FlushBarErrorMessage(String message, BuildContext context) {
+  static FlushBarErrorMessage(
+    String message,
+    BuildContext context,
+  ) {
     showFlushbar(
         context: context,
         flushbar: Flushbar(
@@ -39,5 +42,29 @@ class Utils {
 
           // forwardAnimationCurve: Curves.bounceIn,
         )..show(context));
+  }
+
+  static OutlineInputBorder focusBorder() {
+    return OutlineInputBorder(
+      borderSide: const BorderSide(
+          width: .4, color: Color.fromARGB(255, 178, 177, 177)),
+      borderRadius: BorderRadius.circular(8.0),
+    );
+  }
+
+  static OutlineInputBorder outlineBorder() {
+    return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(width: .4));
+  }
+
+  static OutlineInputBorder enableBorder() {
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Color.fromARGB(255, 178, 177, 177),
+        width: .4,
+      ),
+      borderRadius: BorderRadius.circular(8.0),
+    );
   }
 }

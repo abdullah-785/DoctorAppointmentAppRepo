@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
+import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
@@ -117,13 +118,9 @@ class _SignUpState extends State<SignUp> {
                               EdgeInsets.only(top: 0, bottom: 0, left: 16),
                           prefixIcon: const Icon(Icons.person_4_outlined),
                           hintText: "Enter Your Name",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(width: .4)),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: .4),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                          border: Utils.outlineBorder(),
+                          focusedBorder: Utils.focusBorder(),
+                          enabledBorder: Utils.enableBorder(),
                         ),
                       ),
                     ),
@@ -149,13 +146,9 @@ class _SignUpState extends State<SignUp> {
                               EdgeInsets.only(top: 0, bottom: 0, left: 16),
                           prefixIcon: const Icon(Icons.email_outlined),
                           hintText: "example@gamil.com",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(width: .4)),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: .4),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                          border: Utils.outlineBorder(),
+                          focusedBorder: Utils.focusBorder(),
+                          enabledBorder: Utils.enableBorder(),
                         ),
                       ),
                     ),
@@ -181,15 +174,15 @@ class _SignUpState extends State<SignUp> {
                           contentPadding:
                               EdgeInsets.only(top: 0, bottom: 0, left: 16),
                           prefixIcon: const Icon(Icons.lock_outline),
-                          suffixIcon: const Icon(Icons.remove_red_eye),
-                          hintText: "passoword",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(width: .4)),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: .4),
-                            borderRadius: BorderRadius.circular(8.0),
+                          suffixIcon: const Icon(
+                            Icons.remove_red_eye,
+                            size: 22,
+                            color: Color.fromARGB(255, 159, 157, 157),
                           ),
+                          hintText: "passoword",
+                          border: Utils.outlineBorder(),
+                          focusedBorder: Utils.focusBorder(),
+                          enabledBorder: Utils.enableBorder(),
                         ),
                       ),
                     ),
@@ -215,15 +208,15 @@ class _SignUpState extends State<SignUp> {
                           contentPadding:
                               EdgeInsets.only(top: 0, bottom: 0, left: 16),
                           prefixIcon: const Icon(Icons.lock_outline),
-                          suffixIcon: const Icon(Icons.remove_red_eye),
-                          hintText: "Confirm Password",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(width: .4)),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: .4),
-                            borderRadius: BorderRadius.circular(8.0),
+                          suffixIcon: const Icon(
+                            Icons.remove_red_eye,
+                            size: 22,
+                            color: Color.fromARGB(255, 159, 157, 157),
                           ),
+                          hintText: "Confirm Password",
+                          border: Utils.outlineBorder(),
+                          focusedBorder: Utils.focusBorder(),
+                          enabledBorder: Utils.enableBorder(),
                         ),
                       ),
                     ),

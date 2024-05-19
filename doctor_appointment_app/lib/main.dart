@@ -1,6 +1,7 @@
 import 'package:doctor_appointment_app/Models/doctor_favorite.dart';
 import 'package:doctor_appointment_app/Models/doctor_review_model.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
+import 'package:doctor_appointment_app/view/dummy.dart';
 import 'package:doctor_appointment_app/view/dumy.dart';
 import 'package:doctor_appointment_app/view/home_page.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
@@ -111,7 +112,7 @@ class MyApp extends StatelessWidget {
         ),
         home: isLoggedIn
             ? ReadyForHome()
-            : OnBoarding1(), // Decide the initial route based on shared preferences
+            : Dummy(), // Decide the initial route based on shared preferences
       ),
     );
   }

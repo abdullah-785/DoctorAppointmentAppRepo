@@ -1,9 +1,12 @@
+import 'package:doctor_appointment_app/utils/utils.dart';
+import 'package:doctor_appointment_app/view/Authentication/forget_password.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
@@ -68,15 +71,9 @@ class _SignInState extends State<SignIn> {
                     size: 22,
                   ),
                   hintText: "example@gamil.com",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide:
-                          BorderSide(color: Colors.grey.shade200, width: .4)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: .4),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+                  border: Utils.outlineBorder(),
+                  focusedBorder: Utils.focusBorder(),
+                  enabledBorder: Utils.enableBorder(),
                 ),
               ),
             ),
@@ -104,44 +101,50 @@ class _SignInState extends State<SignIn> {
                     size: 22,
                   ),
                   suffixIcon: authViewModel.isShow == false
-                      ? InkWell(
+                      ? GestureDetector(
                           onTap: () {
                             authViewModel.setIsShow(true);
                           },
                           child: Icon(
                             Icons.visibility,
                             size: 22,
+                            color: Color.fromARGB(255, 159, 157, 157),
                           ))
-                      : InkWell(
+                      : GestureDetector(
                           onTap: () {
                             authViewModel.setIsShow(false);
                           },
                           child: Icon(
                             Icons.visibility_off,
                             size: 22,
+                            color: Color.fromARGB(255, 159, 157, 157),
                           )),
                   hintText: "Passoword",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(width: .4)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: .4),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+                  border: Utils.outlineBorder(),
+                  focusedBorder: Utils.focusBorder(),
+                  enabledBorder: Utils.enableBorder(),
                 ),
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            const Align(
+            Align(
                 alignment: Alignment.topRight,
-                child: Text(
-                  "Forgot Password",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.blue),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgetPassword()));
+                  },
+                  child: Text(
+                    "Forgot Password",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.blue),
+                  ),
                 )),
             const SizedBox(
               height: 30,

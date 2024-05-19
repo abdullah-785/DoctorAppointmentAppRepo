@@ -1,3 +1,4 @@
+import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view_model/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -58,23 +59,24 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                             profileVierModel.setIsShowNewPass(true);
                           },
                           child: Icon(
+                            size: 22,
                             Icons.visibility_rounded,
-                            // color: Colors.blue,
+                            color: Color.fromARGB(255, 159, 157, 157),
                           ),
                         )
                       : GestureDetector(
                           onTap: () {
                             profileVierModel.setIsShowNewPass(false);
                           },
-                          child: Icon(Icons.visibility_off)),
+                          child: Icon(
+                            size: 22,
+                            Icons.visibility_off,
+                            color: Color.fromARGB(255, 159, 157, 157),
+                          )),
                   hintText: "New Passoword",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(width: .4)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(width: .4),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+                  border: Utils.outlineBorder(),
+                  focusedBorder: Utils.focusBorder(),
+                  enabledBorder: Utils.enableBorder(),
                 ),
               ),
             ),
@@ -108,23 +110,25 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                             profileVierModel.setIsShowConNewPass(true);
                           },
                           child: Icon(
+                            size: 22,
                             Icons.visibility_rounded,
-                            // color: Colors.blue,
+                            color: Color.fromARGB(255, 159, 157, 157),
                           ),
                         )
                       : GestureDetector(
                           onTap: () {
                             profileVierModel.setIsShowConNewPass(false);
                           },
-                          child: Icon(Icons.visibility_off)),
+                          child: Icon(
+                            size: 22,
+                            Icons.visibility_off,
+                            color: Color.fromARGB(255, 159, 157, 157),
+                          ),
+                        ),
                   hintText: "Confirm Passoword",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(width: .4)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(width: .4),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+                  border: Utils.outlineBorder(),
+                  focusedBorder: Utils.focusBorder(),
+                  enabledBorder: Utils.enableBorder(),
                 ),
               ),
             ),

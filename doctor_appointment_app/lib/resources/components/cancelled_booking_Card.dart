@@ -46,7 +46,7 @@ class _BookingCardCancelledState extends State<BookingCardCancelled> {
             padding: const EdgeInsets.only(bottom: 15.0, left: 12, right: 12),
             child: Container(
               width: widget.width * 0.9,
-              height: 200,
+              height: 165,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.white,
@@ -181,26 +181,26 @@ class _BookingCardCancelledState extends State<BookingCardCancelled> {
                         ),
                       ],
                     ),
-                    Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: widget.width * 0.8,
-                          height: 32,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: Colors.blue),
-                          child: Text(
-                            "Re-Book",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
+                    // Spacer(),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     Container(
+                    //       alignment: Alignment.center,
+                    //       width: widget.width * 0.8,
+                    //       height: 32,
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(16),
+                    //           color: Colors.blue),
+                    //       child: Text(
+                    //         "Re-Book",
+                    //         style: TextStyle(
+                    //           color: Colors.white,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // )
                   ],
                 ),
               ),

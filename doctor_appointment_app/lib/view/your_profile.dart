@@ -123,13 +123,9 @@ class _YourProfileState extends State<YourProfile> {
                       contentPadding:
                           EdgeInsets.only(top: 0, bottom: 0, left: 16),
 
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(width: .4)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(width: .4),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                      border: Utils.outlineBorder(),
+                      focusedBorder: Utils.focusBorder(),
+                      enabledBorder: Utils.enableBorder(),
                     ),
                   ),
                 ),
@@ -154,13 +150,9 @@ class _YourProfileState extends State<YourProfile> {
                       contentPadding:
                           EdgeInsets.only(top: 0, bottom: 0, left: 16),
 
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(width: .4)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(width: .4),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                      border: Utils.outlineBorder(),
+                      focusedBorder: Utils.focusBorder(),
+                      enabledBorder: Utils.enableBorder(),
                     ),
                   ),
                 ),
@@ -184,13 +176,9 @@ class _YourProfileState extends State<YourProfile> {
                       contentPadding:
                           EdgeInsets.only(top: 0, bottom: 0, left: 16),
 
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(width: .4)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(width: .4),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                      border: Utils.outlineBorder(),
+                      focusedBorder: Utils.focusBorder(),
+                      enabledBorder: Utils.enableBorder(),
                     ),
                   ),
                 ),
@@ -214,13 +202,9 @@ class _YourProfileState extends State<YourProfile> {
                       contentPadding:
                           EdgeInsets.only(top: 0, bottom: 0, left: 16),
 
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(width: .4)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(width: .4),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                      border: Utils.outlineBorder(),
+                      focusedBorder: Utils.focusBorder(),
+                      enabledBorder: Utils.enableBorder(),
                     ),
                   ),
                 ),
@@ -244,13 +228,9 @@ class _YourProfileState extends State<YourProfile> {
                       contentPadding:
                           EdgeInsets.only(top: 0, bottom: 0, left: 16),
 
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(width: .4)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(width: .4),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                      border: Utils.outlineBorder(),
+                      focusedBorder: Utils.focusBorder(),
+                      enabledBorder: Utils.enableBorder(),
                     ),
                   ),
                 ),

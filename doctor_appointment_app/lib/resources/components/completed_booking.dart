@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/booking_model.dart';
 import 'package:doctor_appointment_app/Models/doctor_model.dart';
+import 'package:doctor_appointment_app/view/doctor_reviews.dart';
 import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -204,17 +206,26 @@ class _BookingCardCompletedState extends State<BookingCardCompleted> {
                             style: TextStyle(color: Colors.blue),
                           ),
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 120,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.blue,
-                          ),
-                          child: Text(
-                            "Add Review",
-                            style: TextStyle(color: Colors.white),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DoctorReview(
+                                        doctorModel: doctorModel)));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 120,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Colors.blue,
+                            ),
+                            child: Text(
+                              "Add Review",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],

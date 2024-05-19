@@ -10,6 +10,7 @@ import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:doctor_appointment_app/view_model/profile_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +38,7 @@ class _SettingState extends State<Setting> {
           SizedBox(
             height: 20,
           ),
-          InkWell(
+          GestureDetector(
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => UpdatePassword()));
@@ -69,7 +70,7 @@ class _SettingState extends State<Setting> {
           SizedBox(
             height: 12,
           ),
-          InkWell(
+          GestureDetector(
             onTap: () {
               showModalBottomSheet(
                 context: context,
