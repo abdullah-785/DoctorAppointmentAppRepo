@@ -68,38 +68,8 @@ class _DummyState extends State<Dummy> {
     );
   }
 
-  // uploadImage() async {
-  //   final _firebaseStorage = FirebaseStorage.instance;
-  //   final _imagePicker = ImagePicker();
-  //   XFile image;
-  //   //Check Permissions
-  //   await Permission.photos.request();
-
-  //   var permissionStatus = await Permission.photos.status;
-
-  //   if (permissionStatus.isGranted){
-  //     //Select Image
-  //     image = await _imagePicker.pickImage(source: ImageSource.gallery);
-  //     var file = File(image.path);
-
-  //     if (image != null){
-  //       //Upload to Firebase
-  //       var snapshot = await _firebaseStorage.ref()
-  //       .child('images/imageName')
-  //       .putFile(file);
-  //       var downloadUrl = await snapshot.ref.getDownloadURL();
-  //       setState(() {
-  //         imageUrl = downloadUrl;
-  //       });
-  //     } else {
-  //       print('No Image Path Received');
-  //     }
-  //   } else {
-  //     print('Permission not granted. Try Again with permission access');
-  //   }
-  // }
-
   uploadImage() async {
+    //////////////////////////////
     final _firebaseStorage = FirebaseStorage.instance;
     final _imagePicker = ImagePicker();
     XFile? image;
@@ -114,13 +84,11 @@ class _DummyState extends State<Dummy> {
       image = await _imagePicker.pickImage(source: ImageSource.gallery);
 
       if (image != null) {
-        var file = File(image.path);
+        final file = File(image.path);
         // Upload to Firebase
-        var snapshot = await _firebaseStorage
-            .ref()
-            .child('images/imageName')
-            .putFile(file);
-        var downloadUrl = await snapshot.ref.getDownloadURL();
+        var snapshot =
+            await _firebaseStorage.ref().child('files').putFile(file);
+        final downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
           imageUrl = downloadUrl;
         });

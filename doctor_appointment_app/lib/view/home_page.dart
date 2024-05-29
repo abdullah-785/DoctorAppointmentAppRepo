@@ -11,8 +11,10 @@ import 'package:doctor_appointment_app/resources/components/specialist_card.dart
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Booking.dart';
 import 'package:doctor_appointment_app/view/all_hospital_doctor.dart';
+import 'package:doctor_appointment_app/view/dummy_files/token_generator.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
+import 'package:doctor_appointment_app/view/video_calling/agora_video.dart';
 import 'package:doctor_appointment_app/view_model/home_view_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  Future<String> _fetchIpInfo() async {
+  Future _fetchIpInfo() async {
     final response = await http.get(Uri.parse('http://ip-api.com/json'));
     if (response.statusCode == 200) {
       print(response.body);
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       Utils.city = result['city'];
       Utils.countryCode = result['countryCode'];
       print(result['country']);
-      return result;
+      // return result;
     } else {
       throw Exception('Failed to load IP info');
     }
@@ -75,56 +77,72 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 40,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("${Utils.country}"),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              color: Colors.blue,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "${Utils.city}",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  ", ",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  "${Utils.countryCode}",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                            Icon(Icons.keyboard_arrow_down_rounded)
-                          ],
-                        )
-                      ],
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey.withOpacity(0.3)),
-                      child: const Icon(Icons.notifications_none),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TokenGeneratorWidget()));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${Utils.country}"),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on_outlined,
+                                color: Colors.blue,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "${Utils.city}",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    ", ",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    "${Utils.countryCode}",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                              Icon(Icons.keyboard_arrow_down_rounded)
+                            ],
+                          )
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AgoraVideoCalling()));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey.withOpacity(0.3)),
+                          child: const Icon(Icons.notifications_none),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 10,

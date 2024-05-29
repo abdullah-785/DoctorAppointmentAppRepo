@@ -7,8 +7,10 @@ import 'package:doctor_appointment_app/resources/components/doctor_review_widget
 import 'package:doctor_appointment_app/resources/components/review_widget.dart';
 import 'package:doctor_appointment_app/resources/components/working_hours_widget.dart';
 import 'package:doctor_appointment_app/view/book_appointment.dart';
+// import 'package:doctor_appointment_app/view/chat_screen.dart';
 import 'package:doctor_appointment_app/view/doctor_reviews.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
+import 'package:doctor_appointment_app/view/dummy_files/list_of_chats.dart';
 import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
 import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -260,10 +262,20 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         audience: "${reviews}",
                         audienceName: "Reviews",
                       ),
-                      DoctorDetailCard(
-                        iconData: Icons.message_rounded,
-                        audience: "${patient}",
-                        audienceName: "Chats",
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListOfChats(
+                                        doctorDoc: widget.doctorDoc,
+                                      )));
+                        },
+                        child: DoctorDetailCard(
+                          iconData: Icons.message_rounded,
+                          audience: "${patient}",
+                          audienceName: "Chats",
+                        ),
                       ),
                     ],
                   ),

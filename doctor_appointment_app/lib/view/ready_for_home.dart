@@ -7,6 +7,7 @@ import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Booking.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/home_page.dart';
+import 'package:doctor_appointment_app/view/dummy_files/list_of_chats.dart';
 import 'package:doctor_appointment_app/view/profile.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';

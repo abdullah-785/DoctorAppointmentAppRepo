@@ -1,13 +1,14 @@
 import 'package:doctor_appointment_app/Models/doctor_favorite.dart';
 import 'package:doctor_appointment_app/Models/doctor_review_model.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_up.dart';
-import 'package:doctor_appointment_app/view/dummy.dart';
-import 'package:doctor_appointment_app/view/dumy.dart';
+// import 'package:doctor_appointment_app/view/dummy.dart';
+// import 'package:doctor_appointment_app/view/dumy.dart';
 import 'package:doctor_appointment_app/view/home_page.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
 import 'package:doctor_appointment_app/view/ready_for_home.dart';
 import 'package:doctor_appointment_app/view_model/auth_view_model.dart';
 import 'package:doctor_appointment_app/view_model/book_oppoint_view_model.dart';
+import 'package:doctor_appointment_app/view_model/chatMessage_view_model.dart';
 import 'package:doctor_appointment_app/view_model/doctor_favorite_vm.dart';
 import 'package:doctor_appointment_app/view_model/doctor_review_vm.dart';
 import 'package:doctor_appointment_app/view_model/doctor_view_model.dart';
@@ -15,6 +16,7 @@ import 'package:doctor_appointment_app/view_model/home_view_model.dart';
 import 'package:doctor_appointment_app/view_model/hospital_favorite_vm.dart';
 import 'package:doctor_appointment_app/view_model/hospital_review_vm.dart';
 import 'package:doctor_appointment_app/view_model/profile_view_model.dart';
+// import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -76,7 +78,13 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: firebaseOptions);
+  // await FirebaseAppCheck.instance.activate(
+  // // You can also use a `ReCaptchaEnterpriseProvider` provider instance as an
+  // // argument for `webProvider`
+  // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
 
+  // androidProvider: AndroidProvider.playIntegrity,
+  // );
   // Read shared preferences
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? isLoggedIn = prefs.getBool('isLoggedIn');
@@ -102,7 +110,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HospitalFavoriteViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewModel()),
         ChangeNotifierProvider(create: (_) => HospitalReviewViewModel()),
-        ChangeNotifierProvider(create: (_) => DoctorReviewViewModel())
+        ChangeNotifierProvider(create: (_) => DoctorReviewViewModel()),
+        ChangeNotifierProvider(create: (_) => ChatMessageViewModel())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -112,7 +121,7 @@ class MyApp extends StatelessWidget {
         ),
         home: isLoggedIn
             ? ReadyForHome()
-            : Dummy(), // Decide the initial route based on shared preferences
+            : OnBoarding1(), // Decide the initial route based on shared preferences
       ),
     );
   }

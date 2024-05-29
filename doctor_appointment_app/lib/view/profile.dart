@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/Models/user_model.dart';
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Authentication/sign_in.dart';
+import 'package:doctor_appointment_app/view/dummy_files/ChatGpt.dart';
+import 'package:doctor_appointment_app/view/dummy_files/dummy.dart';
 import 'package:doctor_appointment_app/view/help_center.dart';
 import 'package:doctor_appointment_app/view/privacy_policy.dart';
 import 'package:doctor_appointment_app/view/setting.dart';
@@ -73,17 +75,23 @@ class _ProfileState extends State<Profile> {
                 // ),
               ),
             ),
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white),
-                  color: Colors.blue),
-              child: const Icon(
-                Icons.edit,
-                color: Colors.white,
-                size: 16,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyWidget()));
+              },
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white),
+                    color: Colors.blue),
+                child: const Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                  size: 16,
+                ),
               ),
             )
           ]),
