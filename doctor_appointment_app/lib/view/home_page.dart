@@ -11,10 +11,12 @@ import 'package:doctor_appointment_app/resources/components/specialist_card.dart
 import 'package:doctor_appointment_app/utils/utils.dart';
 import 'package:doctor_appointment_app/view/Booking.dart';
 import 'package:doctor_appointment_app/view/all_hospital_doctor.dart';
-import 'package:doctor_appointment_app/view/dummy_files/token_generator.dart';
+import 'package:doctor_appointment_app/view/video_calling/join_meeting.dart';
+import 'package:doctor_appointment_app/view/video_calling/token_generator.dart';
 import 'package:doctor_appointment_app/view/favorite.dart';
 import 'package:doctor_appointment_app/view/onboarding/onboarding.dart';
 import 'package:doctor_appointment_app/view/video_calling/agora_video.dart';
+import 'package:doctor_appointment_app/view/video_calling/user_joining.dart';
 import 'package:doctor_appointment_app/view_model/home_view_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TokenGeneratorWidget()));
+                            builder: (context) => UserJoiningWidget()));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +131,8 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AgoraVideoCalling()));
+                                  builder: (context) =>
+                                      TokenGeneratorWidget()));
                         },
                         child: Container(
                           alignment: Alignment.center,

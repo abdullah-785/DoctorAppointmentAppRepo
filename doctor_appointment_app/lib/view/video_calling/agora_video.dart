@@ -6,7 +6,10 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AgoraVideoCalling extends StatefulWidget {
-  const AgoraVideoCalling({super.key});
+  AgoraVideoCalling(
+      {super.key, required this.channelNamee, required this.token});
+  String channelNamee;
+  String token;
 
   @override
   State<AgoraVideoCalling> createState() => _AgoraVideoCallingState();
@@ -14,9 +17,9 @@ class AgoraVideoCalling extends StatefulWidget {
 
 class _AgoraVideoCallingState extends State<AgoraVideoCalling> {
   final appId = "3f542839e29845dbadd47606f6c9b82f";
-  final channelName = "Testingss";
-  final token =
-      "007eJxTYBDXW3mIT2baHq+TVdd1WFrjhd4laPpKzLthZnboNxOr1WMFBuM0UxMjC2PLVCNLCxPTlKTElBQTczMDszSzZMskC6O0+H1haQ2BjAx7uyuYGRkgEMTnZAhJLS7JzEsvLmZgAAAhhx9Q";
+  // // String channelName = channelNamee;
+  // final token =
+  //     "0063f542839e29845dbadd47606f6c9b82fIAD5Nzr8wtCwbZOwxWi0CLCLlOK/p3PCpuR6OS8TezlVOpN3pHgcOvXLIgAg8Y4UQZFYZgQAAQDRTVdmAgDRTVdmAwDRTVdmBADRTVdm";
   bool isCameraOff = false;
   bool isMuted = false;
   RtcEngine? _engine;
@@ -30,6 +33,8 @@ class _AgoraVideoCallingState extends State<AgoraVideoCalling> {
   }
 
   Future<void> initializeAgora() async {
+    print("Channel name is: " + widget.channelNamee);
+    print("Token name is: " + widget.token);
     // Check and request necessary permissions: microphone and camera
     // This is required for mobile apps; permissions are typically managed by the browser for web apps
     if (!kIsWeb) {
@@ -73,7 +78,7 @@ class _AgoraVideoCallingState extends State<AgoraVideoCalling> {
     ));
 
     // Join the channel with a token, channel name, and optional additional information (empty string here)
-    await _engine!.joinChannel(token, channelName, null, 0);
+    await _engine!.joinChannel(widget.token, widget.channelNamee, null, 0);
   }
 
   @override
@@ -147,7 +152,7 @@ class _AgoraVideoCallingState extends State<AgoraVideoCalling> {
     if (_remoteUid != null) {
       return RtcRemoteView.SurfaceView(
         uid: _remoteUid!,
-        channelId: channelName,
+        channelId: widget.channelNamee,
       );
     } else {
       return Text("Waiting for other participant...");

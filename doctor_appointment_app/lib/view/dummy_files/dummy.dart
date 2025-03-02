@@ -1,12 +1,16 @@
 import 'dart:io';
 
+import 'package:doctor_appointment_app/view/video_calling/agora_video.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Dummy extends StatefulWidget {
-  const Dummy({super.key});
+  Dummy({super.key, required this.name, required this.token});
+  String name;
+  String token;
 
   @override
   State<Dummy> createState() => _DummyState();
@@ -14,6 +18,8 @@ class Dummy extends StatefulWidget {
 
 class _DummyState extends State<Dummy> {
   String? imageUrl;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _tokenController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,47 +28,75 @@ class _DummyState extends State<Dummy> {
       ),
       body: Column(
         children: [
-          Container(
-            color: Colors.white,
-            child: Column(
-              children: <Widget>[
-                Container(
-                    margin: EdgeInsets.all(15),
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      border: Border.all(color: Colors.white),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(2, 2),
-                          spreadRadius: 2,
-                          blurRadius: 1,
-                        ),
-                      ],
-                    ),
-                    child: (imageUrl != null)
-                        ? Image.network(imageUrl!)
-                        : Image.network('https://i.imgur.com/sUFH1Aq.png')),
-                SizedBox(
-                  height: 20.0,
-                ),
-                ElevatedButton(
-                  child: Text("Upload Image",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20)),
-                  onPressed: () {
-                    uploadImage();
-                  },
-                ),
-              ],
-            ),
+          Text(widget.token),
+          ElevatedButton(
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: widget.token));
+              },
+              child: Text("Copy token")),
+
+          Text("Name:  " + widget.name),
+          TextFormField(
+            controller: _nameController,
+            decoration: InputDecoration(hintText: "Name"),
           ),
+
+          TextFormField(
+            controller: _tokenController,
+            decoration: InputDecoration(hintText: "Token"),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AgoraVideoCalling(
+                              channelNamee: _nameController.text,
+                              token: _tokenController.text,
+                            )));
+              },
+              child: Text("Join Now"))
+          // Container(
+          //   color: Colors.white,
+          //   child: Column(
+          //     children: <Widget>[
+          //       Container(
+          //           margin: EdgeInsets.all(15),
+          //           padding: EdgeInsets.all(15),
+          //           decoration: BoxDecoration(
+          //             color: Colors.white,
+          //             borderRadius: BorderRadius.all(
+          //               Radius.circular(15),
+          //             ),
+          //             border: Border.all(color: Colors.white),
+          //             boxShadow: [
+          //               BoxShadow(
+          //                 color: Colors.black12,
+          //                 offset: Offset(2, 2),
+          //                 spreadRadius: 2,
+          //                 blurRadius: 1,
+          //               ),
+          //             ],
+          //           ),
+          //           child: (imageUrl != null)
+          //               ? Image.network(imageUrl!)
+          //               : Image.network('https://i.imgur.com/sUFH1Aq.png')),
+          //       SizedBox(
+          //         height: 20.0,
+          //       ),
+          //       ElevatedButton(
+          //         child: Text("Upload Image",
+          //             style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontWeight: FontWeight.bold,
+          //                 fontSize: 20)),
+          //         onPressed: () {
+          //           uploadImage();
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
